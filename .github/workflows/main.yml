@@ -1,0 +1,50 @@
+name: Build and Deploy develop
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+ 
+jobs:
+  build_and_deploy_to_ftp:
+    runs-on: ubuntu-latest
+ 
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: develop
+      - name: Publish
+        run: |
+          dotnet publish -c Release -o ./publish --runtime win-x64 --self-contained true
+         
+      - name: Rename _app_offline.htm to app_offline.htm to stop the site
+        shell: python
+        run: |
+          import ftplib
+          ftp = ftplib.FTP('nt7.unoeuro.com')
+          ftp.login('vgcms.dk', '${{ secrets.VGCMS_FTP_PASSWORD }}')
+          ftp.cwd('test')
+          ftp.rename('_app_offline.htm', 'app_offline.htm')
+          ftp.quit()
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          server: 'nt7.unoeuro.com'
+          # FTP account username
+          username: 'vgcms.dk'
+          # FTP account password
+          password: ${{ secrets.VGCMS_FTP_PASSWORD }}
+          # The local folder to copy, defaults to root project folder
+          local-dir: ./publish/
+          server-dir: ./caddie/
+ 
+      - name: Rename app_offline.htm to _app_offline.htm to start the site
+        shell: python
+        run: |
+          import ftplib
+          ftp = ftplib.FTP('nt7.unoeuro.com')
+          ftp.login('vgcms.dk', '${{ secrets.VGCMS_FTP_PASSWORD }}')
+          ftp.cwd('caddie')
+          ftp.rename('app_offline.htm', '_app_offline.htm')
+          ftp.quit()
+ 
