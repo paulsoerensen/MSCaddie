@@ -1036,3 +1036,4 @@ C:\websites\MensSection\MSCaddie\MSCaddie.Client\obj\Debug\net8.0\MSCaddie.Clien
 C:\websites\MensSection\MSCaddie\MSCaddie.Client\obj\Debug\net8.0\refint\MSCaddie.Client.dll
 C:\websites\MensSection\MSCaddie\MSCaddie.Client\obj\Debug\net8.0\MSCaddie.Client.pdb
 C:\websites\MensSection\MSCaddie\MSCaddie.Client\obj\Debug\net8.0\ref\MSCaddie.Client.dll
+C:\websites\MensSection\MSCaddie\MSCaddie.Client\obj\Debug\net8.0\MSCaddie.Client.sourcelink.json

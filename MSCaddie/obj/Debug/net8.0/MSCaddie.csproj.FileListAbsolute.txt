@@ -171,3 +171,4 @@ C:\websites\MensSection\MSCaddie\MSCaddie\obj\Debug\net8.0\ref\MSCaddie.dll
 C:\websites\MensSection\MSCaddie\MSCaddie\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\websites\MensSection\MSCaddie\MSCaddie\bin\Debug\net8.0\SendGrid.dll
 C:\websites\MensSection\MSCaddie\MSCaddie\bin\Debug\net8.0\StarkbankEcdsa.dll
+C:\websites\MensSection\MSCaddie\MSCaddie\obj\Debug\net8.0\MSCaddie.sourcelink.json
