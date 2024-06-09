@@ -1,0 +1,51 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- master
+
+pool:
+  vmImage: windows-latest
+
+variables:
+  buildConfiguration: 'Release'
+  dotNetFramework: 'net8.0'
+  dotNetVersion: '8.0.x'
+  targetRuntime: 'win-x86'
+  ASPNETCORE_ENVIRONMENT: 'Production'
+
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  displayName: Restore NuGet
+  inputs:
+    restoreSolution: '$(solution)'
+
+- script: dotnet build --configuration $(BuildConfiguration)
+  displayName: 'dotnet build $(BuildConfiguration)'
+    
+#3 Build the VS Solution and publish the output to a directory
+- task: VSBuild@1
+  displayName: Build
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: /p:UseWPP_CopyWebApplication=True /p:PipelineDependsOnBuild=False /p:PublishProfile=FTPProfile.pubxml /p:DeployOnBuild=true /p:AutoParameterizationWebConfigConnectionStrings=False /p:PublishOutDir=$(Build.ArtifactStagingDirectory) /p:MarkWebConfigAssistFilesAsExclude=false /p:TransformWebConfigEnabled=false
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+    clean: true
+
+- task: FtpUpload@2
+  displayName: "FTP upload"
+  inputs:
+    credentialsOption: inputs
+    serverurl: "ftp://vgcms.dk"
+    username: "vgcms.dk"
+    password: "passiv"
+    remoteDirectory: "/caddie"
+    trustSSL: true
+    cleanContents: true
+    rootDirectory: $(Build.artifactstagingdirectory)
