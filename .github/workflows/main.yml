@@ -21,7 +21,7 @@ jobs:
         shell: python
         run: |
           import ftplib
-          ftp = ftplib.FTP('nt7.unoeuro.com')
+          ftp = ftplib.FTP('vgcms.dk')
           ftp.login('vgcms.dk', '${{ secrets.VGCMS_FTP_PASSWORD }}')
           ftp.cwd('test')
           ftp.rename('_app_offline.htm', 'app_offline.htm')
@@ -29,7 +29,7 @@ jobs:
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
-          server: 'nt7.unoeuro.com'
+          server: 'vgcms.dk'
           # FTP account username
           username: 'vgcms.dk'
           # FTP account password
@@ -42,7 +42,7 @@ jobs:
         shell: python
         run: |
           import ftplib
-          ftp = ftplib.FTP('nt7.unoeuro.com')
+          ftp = ftplib.FTP('vgcms.dk')
           ftp.login('vgcms.dk', '${{ secrets.VGCMS_FTP_PASSWORD }}')
           ftp.cwd('caddie')
           ftp.rename('app_offline.htm', '_app_offline.htm')
