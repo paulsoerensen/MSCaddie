@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\websites\\MensSection\\MSCaddie\\MSCaddie\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\MSCaddie.bundle.scp.css",
+      "PackagePath": "staticwebassets\\MSCaddie.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\websites\\MensSection\\MSCaddie\\MSCaddie\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "C:\\websites\\MensSection\\MSCaddie\\MSCaddie\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\websites\\MensSection\\MSCaddie\\MSCaddie\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\websites\\MensSection\\MSCaddie\\MSCaddie\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.MSCaddie.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.MSCaddie.props",
+      "PackagePath": "build\\MSCaddie.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.MSCaddie.props",
+      "PackagePath": "buildMultiTargeting\\MSCaddie.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.MSCaddie.props",
+      "PackagePath": "buildTransitive\\MSCaddie.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
