@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MSCaddie.Client")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e96f62a7bb8329995ddbfc96ccd9d0bbe321b808")]
 [assembly: System.Reflection.AssemblyProductAttribute("MSCaddie.Client")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MSCaddie.Client")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
