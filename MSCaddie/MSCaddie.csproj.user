@@ -2,6 +2,6 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ActiveDebugProfile>https</ActiveDebugProfile>
-    <NameOfLastUsedPublishProfile>caddie</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>C:\websites\MensSection\MSCaddie\MSCaddie\Properties\PublishProfiles\caddie.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>
