@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-	  <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
-	  <Nullable>enable</Nullable>
+	<AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+	<Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-MSCaddie-efeea936-2289-41e4-ad2a-f6fdb54ec6d2</UserSecretsId>
   </PropertyGroup>
