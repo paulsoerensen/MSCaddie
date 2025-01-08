@@ -1,0 +1,11 @@
+﻿@page "/ResultView"
+@inherits ResultViewBase
+
+<PageTitle>Results</PageTitle>
+
+<h1>Results</h1>
+
+@if (results == null)
+{
+    <DisplaySpinner/>
+}

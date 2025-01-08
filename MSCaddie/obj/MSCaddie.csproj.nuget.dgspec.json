@@ -1,24 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\websites\\MensSection\\MSCaddie\\MSCaddie\\MSCaddie.csproj": {}
+    "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie\\MSCaddie.csproj": {}
   },
   "projects": {
-    "C:\\websites\\MensSection\\MSCaddie\\MSCaddie.Client\\MSCaddie.Client.csproj": {
+    "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie.Client\\MSCaddie.Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\websites\\MensSection\\MSCaddie\\MSCaddie.Client\\MSCaddie.Client.csproj",
+        "projectUniqueName": "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie.Client\\MSCaddie.Client.csproj",
         "projectName": "MSCaddie.Client",
-        "projectPath": "C:\\websites\\MensSection\\MSCaddie\\MSCaddie.Client\\MSCaddie.Client.csproj",
-        "packagesPath": "C:\\Users\\pas\\.nuget\\packages\\",
-        "outputPath": "C:\\websites\\MensSection\\MSCaddie\\MSCaddie.Client\\obj\\",
+        "projectPath": "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie.Client\\MSCaddie.Client.csproj",
+        "packagesPath": "C:\\Users\\pauls\\.nuget\\packages\\",
+        "outputPath": "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie.Client\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\pas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\pauls\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -28,8 +27,141 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://www.myget.org/F/umbracoprereleases/api/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie.Shared\\MSCaddie.Shared.csproj": {
+                "projectPath": "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie.Shared\\MSCaddie.Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "all"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "Blazored.LocalStorage": {
+              "target": "Package",
+              "version": "[4.5.0, )"
+            },
+            "Blazored.SessionStorage": {
+              "target": "Package",
+              "version": "[2.4.0, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly": {
+              "target": "Package",
+              "version": "[8.0.6, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly.Authentication": {
+              "target": "Package",
+              "version": "[8.0.6, )"
+            },
+            "Microsoft.NET.ILLink.Tasks": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.11, )",
+              "autoReferenced": true
+            },
+            "Microsoft.NET.Sdk.WebAssembly.Pack": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.0, )",
+              "autoReferenced": true
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.Net.Sdk.Compilers.Toolset",
+              "version": "[9.0.100, 9.0.100]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.Mono.browser-wasm",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "browser-wasm": {
+          "#import": []
+        }
+      }
+    },
+    "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie.Shared\\MSCaddie.Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie.Shared\\MSCaddie.Shared.csproj",
+        "projectName": "MSCaddie.Shared",
+        "projectPath": "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie.Shared\\MSCaddie.Shared.csproj",
+        "packagesPath": "C:\\Users\\pauls\\.nuget\\packages\\",
+        "outputPath": "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie.Shared\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\pauls\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
@@ -45,32 +177,20 @@
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
-          "auditMode": "direct"
+          "auditMode": "all"
         }
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "Microsoft.AspNetCore.Components.WebAssembly": {
+            "Microsoft.Extensions.Logging": {
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[8.0.1, )"
             },
-            "Microsoft.AspNetCore.Components.WebAssembly.Authentication": {
+            "Serilog": {
               "target": "Package",
-              "version": "[8.0.6, )"
-            },
-            "Microsoft.NET.ILLink.Tasks": {
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[8.0.6, )",
-              "autoReferenced": true
-            },
-            "Microsoft.NET.Sdk.WebAssembly.Pack": {
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[8.0.6, )",
-              "autoReferenced": true
+              "version": "[4.2.0, )"
             }
           },
           "imports": [
@@ -84,35 +204,47 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.Net.Sdk.Compilers.Toolset",
+              "version": "[9.0.100, 9.0.100]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.206/PortableRuntimeIdentifierGraph.json"
-        }
-      },
-      "runtimes": {
-        "browser-wasm": {
-          "#import": []
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\websites\\MensSection\\MSCaddie\\MSCaddie\\MSCaddie.csproj": {
+    "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie\\MSCaddie.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\websites\\MensSection\\MSCaddie\\MSCaddie\\MSCaddie.csproj",
+        "projectUniqueName": "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie\\MSCaddie.csproj",
         "projectName": "MSCaddie",
-        "projectPath": "C:\\websites\\MensSection\\MSCaddie\\MSCaddie\\MSCaddie.csproj",
-        "packagesPath": "C:\\Users\\pas\\.nuget\\packages\\",
-        "outputPath": "C:\\websites\\MensSection\\MSCaddie\\MSCaddie\\obj\\",
+        "projectPath": "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie\\MSCaddie.csproj",
+        "packagesPath": "C:\\Users\\pauls\\.nuget\\packages\\",
+        "outputPath": "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\pas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\pauls\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -122,15 +254,17 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://www.myget.org/F/umbracoprereleases/api/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\websites\\MensSection\\MSCaddie\\MSCaddie.Client\\MSCaddie.Client.csproj": {
-                "projectPath": "C:\\websites\\MensSection\\MSCaddie\\MSCaddie.Client\\MSCaddie.Client.csproj"
+              "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie.Client\\MSCaddie.Client.csproj": {
+                "projectPath": "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie.Client\\MSCaddie.Client.csproj"
+              },
+              "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie.Shared\\MSCaddie.Shared.csproj": {
+                "projectPath": "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie.Shared\\MSCaddie.Shared.csproj"
               }
             }
           }
@@ -143,7 +277,7 @@
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
-          "auditMode": "direct"
+          "auditMode": "all"
         }
       },
       "frameworks": {
@@ -170,6 +304,10 @@
               "target": "Package",
               "version": "[8.0.6, )"
             },
+            "Microsoft.Extensions.Logging": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            },
             "SendGrid": {
               "target": "Package",
               "version": "[9.29.3, )"
@@ -186,6 +324,28 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.Net.Sdk.Compilers.Toolset",
+              "version": "[9.0.100, 9.0.100]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -194,7 +354,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.206/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

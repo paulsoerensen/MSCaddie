@@ -1,0 +1,106 @@
+﻿@page "/MatchDetailView/{matchId:int}"
+@using MSCaddie.Client.Utils
+@using MSCaddie.Shared
+@using MSCaddie.Shared.Dtos
+@inherits MatchDetailViewBase
+
+@inject HttpClient Http
+
+<PageTitle>Match administration</PageTitle>
+
+@if (!Saved)
+{
+    if (match != null)
+    {
+        <section class="employee-edit">
+            <h1 class="page-title">Match @match?.MatchDate.ToString("dd MMM, yyyy")</h1>
+            <InputFile OnChange="@OnInputFileChange" class="form-control" accept=".csv" 
+                title="Indlæs spillere">Indlæs spillere</InputFile>
+            <p>@Message</p>
+
+            <EditForm Model="@match" OnValidSubmit="@HandleValidSubmit"
+                  OnInvalidSubmit="@HandleInValidSubmit">
+
+                <div class="row mb-3">
+                    <label for="matchDate" class="col-form-label col-md-3">Match dato: </label>
+                    <div class="col-md-8">
+                        <InputDate id="lastName" @bind-Value="@match.MatchDate" 
+                            class="form-control col-md-8" placeholder="Match dato"></InputDate>
+                    </div>
+                    <ValidationMessage class="offset-md-3 col-md-8" For="@(() => match.MatchDate)" />
+                </div>
+                <div class="row mb-3">
+                    <label for="Name" class="col-form-label col-md-3">Tekst: </label>
+                    <div class="col-md-8">
+                        <InputText id="lastName" @bind-Value="@match.MatchText"
+                               class="form-control col-md-8" placeholder="Tekst"></InputText>
+                    </div>
+                    <ValidationMessage class="offset-md-3 col-md-8" For="@(() => match.MatchText)" />
+                </div>
+                <div class="row mb-3">
+                    <label for="Sponsor" class="col-form-label col-md-3">Sponsor</label>
+                    <div class="col-md-8">
+                        <InputText id="Sponsor" @bind-Value="@match.Sponsor"
+                               class="form-control col-md-8" placeholder="Sponsor"></InputText>
+                    </div>
+                    <ValidationMessage class="offset-md-3 col-md-8" For="@(() => match.MatchText)" />
+                </div>
+                <div class="row mb-3">
+                    <label for="matchform" class="col-form-label col-md-3">Matchform:</label>
+                    <div class="col-md-8">
+                        <InputSelect id="matchform" class="form-select col-md-8" @bind-Value="@match.MatchformId">
+                            @foreach (var item in matchForms)
+                            {
+                                <option value="@item.KeyId">@item.KeyValue</option>
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="club" class="col-form-label col-md-3">Klub:</label>
+                    <div class="col-md-8">
+                        <InputSelect id="course" class="form-select col-md-8"
+                             Value="@match.ClubId"
+                             ValueExpression="@(()=>match.ClubId)"
+                             ValueChanged="@((int value) => OnClubChanged(value))">
+                            @foreach (var item in clubs)
+                            {
+                                <option value="@item.ClubId">@item.ClubName</option>
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="course" class="col-form-label col-md-3">Bane:</label>
+                    <div class="col-md-8">
+                        <InputSelect id="course" class="form-select col-md-8" @bind-Value="@match.CourseDetailId">
+                            @foreach (var item in clubCourses)
+                            {
+                                <option value="@item.CourseDetailId">@item.CourseText</option>
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+            <div class="row mb-3">
+                <label for="Official" class="col-form-label col-md-3">Tællende</label>
+                <div class="col-md-3">
+                    <InputCheckbox id="Official" @bind-Value="@match.Official"
+                            class="form-check-input" placeholder="Sponsor"></InputCheckbox>
+                </div>
+                <label for="Shootout" class="col-form-label col-md-3">Shoot out</label>
+                <div class="col-md-3">
+                    <InputCheckbox id="Shootout" @bind-Value="@match.Shootout"
+                            class="form-check-input"></InputCheckbox>
+                </div>
+            </div>
+                <button type="submit" class="btn btn-primary me-1">Gem match</button>
+
+            </EditForm>
+        </section>
+    }
+}
+else
+{
+    <div class="alert @StatusClass">@Message</div>
+    <button type="button" class="btn btn-outline-primary ms-1" @onclick="@NavigateToOverview">Back to overview</button>
+}

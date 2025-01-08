@@ -1,0 +1,82 @@
+﻿@inherits ResultListBase
+@page "/match/{MatchId:int}/resultList"
+
+@using MSCaddie.Shared.Dtos
+
+@*<p>@message</p>
+*@
+@if (results == null)
+{
+    <Div Position="Position.Absolute.Top.Is50.Start.Is50.Translate.Middle"><DisplaySpinner /></Div>
+}
+else
+{
+    <Fields>
+        <Field>
+            <RadioGroup TValue="int" Name="colors" CheckedValueChanged="@OnDisplayListChanged">
+                <Radio Value="@(0)">Samlet</Radio>
+                <Radio Value="@(1)">A</Radio>
+                <Radio Value="@(2)">B</Radio>
+            </RadioGroup>
+        </Field>
+        <Field>
+            <Button Color="Color.Primary" Clicked="@OnCompleteMatch">Afslut matchen</Button>    
+        </Field>
+    </Fields>
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="text-center">Nr</th>
+                <th class="text-center"></th>
+                <th class="text-center">Navn</th>
+                <th class="text-center">Score</th>
+                <th class="text-center">Points</th>
+                <th class="text-center">Hcp</th>
+                <th class="text-center">Spar Nord Cup</th>
+                <th class="text-center">Spiser</th>
+                <th class="text-center">Puts</th>
+                <th class="text-center">Birdies</th>
+                @if (Match.Shootout)
+                {
+                    <th class="text-center">Shootout</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @{ int rn = 0;}
+            @foreach (var res in filteredResults)
+            {
+                <tr>
+                    <td>@{rn++;} @rn</td>
+                    <td>@res.VgcNo</td>
+                    <td>@res.Fullname</td>
+
+                    <td class="text-center">@res.ScoreText</td>
+                    <td class="text-center">@res.Points</td>
+                    <td class="text-center">@res.Hcp</td>
+                    <td class ="text-center">@res.DamstahlPoints</td>
+                    <td style="text-align: center">
+                    @if (res.Dining)
+                    {
+                        <Icon Name="@("fas fa-pizza-slice")" />
+                    }
+                    </td>
+                    <td class="text-center">@(res.Puts == 0 ? null : res.Puts.ToString())</td>
+                    <td class="text-center">@(res.Birdies == 0 ? null : res.Birdies.ToString())</td>
+                    @if (Match.Shootout)
+                    {
+                        <td class="text-center">@(res.Shootout == 0 ? null : res.Shootout.ToString())</td>
+                    }
+
+                </tr>
+                if (@res.DamstahlPoints == 8)
+                {
+                    <tr>
+                        <td class="divider"><hr /></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+

@@ -1,0 +1,99 @@
+﻿@inherits OtherResultsBase
+@page "/match/{MatchId:int}/otherresults"
+
+@using MSCaddie.Shared.Dtos
+
+@if (Birdies == null)
+{
+    <Div Position="Position.Absolute.Top.Is50.Start.Is50.Translate.Middle"><DisplaySpinner /></Div>
+}
+else
+{
+
+    <Fields>
+        <Field>
+            <FieldLabel>Birdies</FieldLabel>
+            <MemoEdit Rows="3" Text="@Birdies" Placeholder="Players with one or more birdies" ReadOnly />
+        </Field>
+    </Fields>
+    <br />
+}
+@if (competitions == null)
+{
+    <Div Position="Position.Absolute.Top.Is50.Start.Is50.Translate.Middle"><DisplaySpinner /></Div>
+}
+else
+{
+    <Fields Margin="Margin.Is2.FromTop">
+        <Field Horizontal ColumnSize="ColumnSize.Is6">
+            <FieldLabel ColumnSize="ColumnSize.Is2">Spiller</FieldLabel>
+            <FieldBody ColumnSize="ColumnSize.Is8">
+                <InputText id="field-sitewide-search"  
+                    class="form-control" type="text" name="q"
+                    placeholder="spiller navn" autoComplete="off" list="suggestions"
+                        @onclick=FetchOptions @bind-Value="SearchTerm"
+                        @oninput="SearchTermChanged"
+                        @onmouseover="() => SearchHover = true"
+                        @onmouseout="() => SearchHover = false"
+                        @onfocusin="() => SearchFocus = true"
+                        @onfocusout="() => SearchFocus = false" />
+
+@*                <Select TValue="int" hidden="true" id="suggestions">
+                    @foreach (var res in results ?? Enumerable.Empty<MatchResultDto>())
+                    {
+                        <SelectItem Value="@res.VgcNo">@res.Fullname</SelectItem>
+                    }
+                </Select>
+*@                <datalist id="suggestions">
+                    @foreach (var res in results ?? Enumerable.Empty<MatchResultDto>())
+                    {
+                        <option>@res.Fullname</option>
+                    }
+                </datalist>
+             </FieldBody>
+        </Field>
+@*         <Field Horizontal ColumnSize="ColumnSize.Is4">
+            <Select TValue="int" id="competitionId" @bind-SelectedValue="@competitionId" ColumnSize="ColumnSize.Is10">
+                @foreach (var item in competitions ?? Enumerable.Empty<ListItem>())
+                {
+                    <SelectItem Value="@item.KeyId">@item.KeyValue</SelectItem>
+                }
+            </Select>
+        </Field>
+        <Field Horizontal ColumnSize="ColumnSize.Is2">
+             <FieldBody ColumnSize="ColumnSize.Is8">
+           <Button Color="Color.Primary" ColumnSize="ColumnSize.Is2" Clicked="@OnCompetitionSave">Gem</Button>
+        </FieldBody>
+        </Field> *@
+    </Fields>
+}
+ 
+@if (compResults != null)
+{
+    <div class="container-md mt-10 col-md-10 offset-md-1">
+        <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th style="width:45%">Navn</th>
+                    <th style="width:45%">Tekst</th>
+                    <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var comp in compResults)
+            {
+                <tr>
+                        <td>@comp.Fullname</td>
+                        <td>@comp.CompetitionText</td>
+                    <td>
+                            <Button Color="Color.Primary" 
+                            @onclick="() => OnDeleteResultClicked(comp.CompetitionResultId)">
+                                X
+                            </Button>
+                    </td>
+            </tr> 
+            }
+        </tbody>
+        </table>
+    </div>
+}

@@ -1,0 +1,50 @@
+﻿@page "/MatchView/id:int"
+@using MSCaddie.Client.Utils
+@using MSCaddie.Shared
+@using MSCaddie.Shared.Dtos
+@inherits MatchViewBase
+
+@inject HttpClient Http
+
+<PageTitle>Matches</PageTitle>
+
+<h1>Matches</h1>
+
+@if (matches == null)
+{
+    <Div Position="Position.Absolute.Top.Is50.Start.Is50.Translate.Middle"><DisplaySpinner/></Div>
+}
+else
+{
+       <table class="table">
+        <thead>
+            <tr>
+                <th>Dato</th>
+                <th>Klub</th>
+                <th>Bane</th>
+                <th>Tee</th>
+                <th>Officiel</th>
+                <th>Shootout</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var match in matches)
+            {
+                <tr>
+                    <td>@match.MatchDate.ToString("dd. MMM, yyyy")</td>
+                    <td>@match.ClubName</td>
+                    <td>@match.CourseName</td>
+                    <td>@match.Official</td>
+                    <td>@match.Tee</td>
+                    <td>@match.Shootout</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+
+
+
+
