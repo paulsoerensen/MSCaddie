@@ -1,0 +1,94 @@
+﻿@page "/ClubView"
+@inherits ClubViewBase
+
+@rendermode InteractiveServer
+
+<PageTitle>Clubs</PageTitle>
+
+<h1>Klubber</h1>
+<p>@message</p>
+@if (clubs == null)
+{
+    <div Position="Position.Absolute.Top.Is50.Start.Is50.Translate.Middle"><DisplaySpinner/></div>
+}
+else
+{
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <DropdownComponent TItem="Club"
+                            Items="clubs"
+                            GetKey="GetClubId"
+                            GetValue="GetClubName"
+                            SelectedKey=clubId
+                            OnItemSelected="HandleClubSelected" />
+
+            <AuthorizeView>
+                <Authorized>
+                    <button class="btn btn-primary ms-auto" @onclick="() => OpenClub()">Opret ny klub</button>
+                </Authorized>
+            </AuthorizeView>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row py-5">
+            <Grid TItem="CourseInfo"
+                  Class="table table-hover border-top"
+                  Data="courses" 
+                  FixedHeader="true">
+               <GridColumns>
+                    <GridColumn TItem="CourseInfo" HeaderText="Bane">
+                        @context.CourseName
+                    </GridColumn>
+                    <GridColumn TItem="CourseInfo" HeaderText="Par" PropertyName="Par" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+                        @context.Par
+                    </GridColumn>
+                    <GridColumn TItem="CourseInfo" HeaderText="Tee" PropertyName="Tee" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+                        @context.Tee
+                    </GridColumn>
+                    <GridColumn TItem="CourseInfo" HeaderText="Slope" PropertyName="Slope" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+                        @context.Slope
+                    </GridColumn>
+                    <GridColumn TItem="CourseInfo" HeaderText="CourseRating" PropertyName="CourseRating" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+                        @context.CourseRating
+                    </GridColumn>
+                    <GridColumn TItem="CourseInfo" TextAlignment="Alignment.Center">
+                        @{
+                            var item = context as CourseInfo;
+                            <a href="@RouteUtils.Courses(item?.ClubId ?? 0)">
+                                <Icon Name="IconName.Pencil" Size="IconSize.x6" Color="IconColor.Primary" />
+                            </a>
+                        }
+                    </GridColumn>
+                </GridColumns>
+            </Grid>
+        </div>
+    </div>
+}
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Opret ny klub</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <InputText class="form-control" @bind-Value="NewClub" Placeholder="klub navn" />
+            </div>
+            <div class="modal-footer">
+                <p>@ModalMessage</p>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" @onclick="() => SaveClub()">Opret klub</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => CancelClub()">Luk</button>
+            </div>
+        </div>
+    </div>
+</div>
+

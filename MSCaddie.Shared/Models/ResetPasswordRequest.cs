@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MSCaddie.Shared.Models;
+namespace  MSCaddie.Shared.Models;
 
 public class ResetPasswordRequest
 {

@@ -1,0 +1,89 @@
+﻿@inherits PlayerResultBase
+@page "/match/{MatchId:int}/playerresult"
+
+@rendermode InteractiveServer
+
+@if (Match != null)
+{
+    <RadzenRow Gap="0.5rem" RowGap="0.5rem">
+    <RadzenColumn Size="12" class="rz-p-1">
+        <RadzenStack Orientation="Radzen.Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Start" class="rz-p-4 rz-border-radius-1" Style="border: var(--rz-grid-cell-border);">
+                <div class="rz-p-2 rz-text-align-center">
+                    <AutoComplete @bind-Value="Fullname"
+                                  TItem="MatchResult"
+                                  DataProvider="ResultDataProvider"
+                                  PropertyName="Fullname"
+                                  Placeholder="Vælg spiller..."
+                                  StringComparison="StringComparison.Ordinal"
+                                  OnChanged="(MatchResult res) => OnAutoCompleteChanged(res)" />
+                </div>
+        </RadzenStack>
+    </RadzenColumn>
+    </RadzenRow>
+}
+@if (result != null && Match != null)
+{
+    <RadzenCard class="rz-my-6">
+        <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Start" Wrap="FlexWrap.Wrap">
+            <RadzenStack Orientation="Radzen.Orientation.Vertical" Gap="4px">
+                <RadzenFormField Text="Antal tildelte" Variant="@variant">
+                    <RadzenNumeric @bind-Value="@result.Hcp" />
+                </RadzenFormField>
+            </RadzenStack>
+            <RadzenStack Orientation="Radzen.Orientation.Vertical" Gap="4px">
+                <RadzenFormField Text="Brutto" Variant="@variant" Visible="@Match.IsStrokePlay">
+                    <RadzenNumeric @bind-Value="@result.Brutto" />
+                </RadzenFormField>
+            </RadzenStack>
+            <RadzenStack Orientation="Radzen.Orientation.Vertical" Gap="4px">
+                <RadzenFormField Text="Netto" Variant="@variant" Visible="@Match.IsStrokePlay">
+                    <RadzenNumeric @bind-Value="@result.Netto" />
+                </RadzenFormField>
+            </RadzenStack>
+            <RadzenStack Orientation="Radzen.Orientation.Vertical" Gap="4px">
+                <RadzenFormField Text="Hallington" Variant="@variant" Visible="@Match.IsHallington">
+                    <RadzenNumeric @bind-Value="@result.Hallington" />
+                </RadzenFormField>
+            </RadzenStack>
+
+            <RadzenStack Orientation="Radzen.Orientation.Vertical" Gap="4px">
+                <RadzenFormField Text="Stableford" Variant="@variant">
+                    <RadzenNumeric @bind-Value="@result.Points" />
+                </RadzenFormField>
+            </RadzenStack>
+
+            <RadzenStack Orientation="Radzen.Orientation.Vertical" Gap="4px" Visible="@Match.Shootout">
+                <RadzenFormField Text="Shoot-out" Variant="@variant">
+                    <RadzenNumeric @bind-Value="@result.Shootout" />
+                </RadzenFormField>
+            </RadzenStack>
+        </RadzenStack>
+
+        <RadzenStack Orientation="Radzen.Orientation.Horizontal" Gap="1rem" class="rz-mt-1" Style="justify-content: flex-end;">
+            <RadzenStack Orientation="Radzen.Orientation.Vertical" Gap="4px">
+                <div class="rz-p-1 rz-text-align-left">
+                    <RadzenLabel Text="Med i birdies" Component="" class="rz-ms-2" />
+                    <RadzenCheckBox @bind-Value="@result.InBirdies" />
+                </div>
+            </RadzenStack>
+
+            <RadzenStack Orientation="Radzen.Orientation.Vertical" Gap="4px">
+                <div class="rz-p-1 rz-text-align-left">
+                    <RadzenLabel Text="Spiser med" Component="CheckBox1" class="rz-ms-2" />
+                    <RadzenCheckBox @bind-Value="@result.Dining" />
+                </div>
+            </RadzenStack>
+            </RadzenStack>
+
+        <RadzenStack Orientation="Radzen.Orientation.Horizontal" Gap="1rem" class="rz-mt-1" Style="justify-content: flex-end;">
+            <div class="rz-p-2 .rz-w-fit-content  rz-text-align-left">
+                <RadzenButton Click=@(args => OnDelete()) Text="Slet" Icon="check_circle" ButtonStyle="ButtonStyle.Danger" />
+            </div>
+            <div class="rz-p-2 .rz-w-fit-content  rz-text-align-left">
+                <RadzenButton Click=@(args => OnUpdate()) Text="Opdater" Icon="check_circle" ButtonStyle="ButtonStyle.Success" />
+            </div>
+        </RadzenStack>
+    </RadzenCard>
+}
+
+

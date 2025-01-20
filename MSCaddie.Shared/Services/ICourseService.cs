@@ -1,14 +1,12 @@
-﻿using MSCaddie.Shared.Dtos;
+﻿using MSCaddie.Shared.Models;
 
 namespace MSCaddie.Shared.Services
 {
     public interface ICourseService
     {
-        string Baseaddress { get; }
-
-        Task<IEnumerable<ClubDto>> GetClubs();
-        Task<bool> AddClub(ClubDto dto);
-        Task<IEnumerable<CourseDto>?> GetCourses();
-        Task<IEnumerable<CourseDto>?> GetCourses(int clubId);
+        Task<IEnumerable<Club>> GetClubs();
+        Task<bool> AddClub(Club model);
+        Task<IEnumerable<CourseInfo>?> GetCourses();
+        Task<IEnumerable<CourseInfo>?> GetCourses(int clubId);
     }
 }

@@ -1,51 +1,31 @@
-﻿using MSCaddie.Shared.Extensions;
-using System.Globalization;
+﻿using System.Globalization;
+using MSCaddie.Shared.Models;
 
-namespace MSCaddie.Shared.Dtos
+namespace MSCaddie.Shared.Dtos;
+
+public class PlayerDto
 {
-    public enum PlayerRole
-    { 
-        None,
-        User,
-        Presidium,
-        Admin
-    }
-
-    public class PlayerDto
+    public PlayerDto()
     {
-        public int PlayerId { get; set; }
-        public int VgcNo { get; set; }
-        public int MemberShipId { get; set; }
-        public bool IsMale { get; set; }
-        public string? Firstname { get; set; }
-        public string? Lastname { get; set; }
-        public string Fullname
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(Firstname))
-                    return this?.Lastname;
-                if (string.IsNullOrEmpty(Lastname))
-                    return this?.Firstname;
-
-                return string.Format(CultureInfo.InstalledUICulture, $"{Firstname?.Trim()} {Lastname?.Trim()}");
-            }
-            set {; }
-        }
-        public string Role { get; set; } = PlayerRole.None.ToString();
-        public string? ZipCode { get; set; }
-        public string? City { get; set; }
-        public string? Address { get; set; }
-        public string? Email { get; set; }
-        public bool Sponsor { get; set; }
-        public decimal HcpIndex { get; set; }
-        public DateTime HcpUpdated { get; set; }
-        public string? Phone { get; set; }
-        public int NameGroup { get; set; }
-        public int Season { get; set; }
-        public bool NearestFlag { get; set; }
-        public bool Dining { get; set; }
-        public bool Authorized => Role.GetEnum<PlayerRole>() != PlayerRole.None;
-        public DateTime LastUpdate { get; set; }
+        HcpUpdated = new DateTime(2000, 1, 1);
     }
+    public int PlayerId { get; set; }
+    public int VgcNo { get; set; }
+    public int MemberShipId { get; set; }
+    public bool IsMale { get; set; }
+    public string? Firstname { get; set; }
+    public string? Lastname { get; set; }
+    public string? ZipCode { get; set; }
+    public string? City { get; set; }
+    public string? Address { get; set; }
+    public string? Email { get; set; }
+    public bool Sponsor { get; set; }
+    public decimal HcpIndex { get; set; }
+    public DateTime HcpUpdated { get; set; }
+    public string? Phone { get; set; }
+    public int NameGroup { get; set; }
+    //public bool Auth { get; set; }
+    public int? Season { get; set; }
+    public DateTime LastUpdate { get; set; }
+
 }

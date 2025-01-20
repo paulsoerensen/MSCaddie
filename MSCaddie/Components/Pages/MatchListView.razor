@@ -1,0 +1,116 @@
+﻿@page "/MatchListView"
+@inherits MatchListViewBase
+
+@rendermode InteractiveServer
+
+<PageTitle>Matches</PageTitle>
+
+<h1>Matcher</h1>
+
+@if (matches == null)
+{
+    <div Position="Position.Absolute.Top.Is50.Start.Is50.Translate.Middle"><DisplaySpinner/></div>
+}
+else
+{
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <button Class="btn btn-warning" @onclick="ChangeMatchFilter">@matchFilter</button>
+            <AuthorizeView>
+                <Authorized>
+                    <a class="btn btn-primary ms-auto" href="@RouteUtils.MatchDetailView(-1)">New match</a>
+                </Authorized>
+            </AuthorizeView>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row py-5">
+            <Grid TItem="MatchModel"
+                  Class="table table-hover border-top"
+                  Data="matches" 
+                  FixedHeader="true">
+               <GridColumns>
+                    <GridColumn TItem="MatchModel" HeaderText="Dato" PropertyName="MatchDate">
+                        @context.MatchDate
+                    </GridColumn>
+                    <GridColumn TItem="MatchModel" HeaderText="Bane" PropertyName="CourseText" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+                        @context.CourseText
+                    </GridColumn>
+                    <GridColumn TItem="MatchModel" HeaderText="Tee" PropertyName="Tee" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+                        @context.Tee
+                    </GridColumn>
+                    <GridColumn TItem="MatchModel" HeaderText="Officiel" PropertyName="Official" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+                        @context.Official
+                    </GridColumn>
+                    <GridColumn TItem="MatchModel" HeaderText="Shootout" PropertyName="Shootout" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+                        @context.Shootout
+                    </GridColumn>
+                    <GridColumn TItem="MatchModel" TextAlignment="Alignment.Center">
+                        @{
+                            var item = context as MatchModel;
+                            <a href="@RouteUtils.MatchDetailView(@item.MatchId)" class="btn btn-primary table-btn">
+                                <Icon Name="IconName.Pencil" />
+                            </a>
+                        }
+                    </GridColumn>
+                </GridColumns>
+            </Grid>
+        </div>
+    </div>
+
+
+
+@*     <section>
+        <table class="table">
+           <thead>
+                <tr>
+                    <th>Dato</th>
+                    <th>Bane</th>
+                    <th>Tee</th>
+                    <th>Officiel</th>
+                    <th>Shootout</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var match in matches)
+                {
+                    <tr>
+                        <td>@match.MatchDate.ToString("dd. MMM, yyyy")</td>
+                        <td>@match.CourseText</td>
+                        <td>@match.Tee</td>
+                        <td style="text-align: center">
+                            @if (match.Official)
+                            {
+                                <Icon Name="IconName.Alipay" />
+                            }
+                        </td>
+                        <td style="text-align: center">
+                            @if (match.Shootout)
+                            {
+                                <Icon Name="IconName.Shuffle" />
+                            }
+                        </td>
+                        <AuthorizeView>
+                            <Authorized>
+                            <td>
+                                <a href="@RouteUtils.MatchDetailView(@match.MatchId)" class="btn btn-primary table-btn">
+                                        <Icon Name="IconName.Pencil" />
+                                </a>
+                            </td>
+                            </Authorized>
+                            <NotAuthorized>
+                                <td></td>
+                            </NotAuthorized>
+                        </AuthorizeView>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+ *@
+}
+
+

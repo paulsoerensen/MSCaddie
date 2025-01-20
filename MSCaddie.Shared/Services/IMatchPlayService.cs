@@ -1,4 +1,4 @@
-﻿using MSCaddie.Shared.Dtos;
+﻿using MSCaddie.Shared.Models;
 
 namespace MSCaddie.Shared.Services
 {

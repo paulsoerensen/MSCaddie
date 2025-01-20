@@ -1,12 +1,10 @@
-﻿using MSCaddie.Shared.Dtos;
+﻿using MSCaddie.Shared.Models;
 
-namespace MSCaddie.Shared.Services
+namespace MSCaddie.Shared.Services;
+
+public interface IPlayerService
 {
-    public interface IPlayerService
-    {
-        string Baseaddress { get; }
-        Task<PlayerDto?> GetPlayer(int vgcno);
-        Task<IEnumerable<PlayerDto>?> GetPlayers();
-        Task<PlayerDto> UpsertPlayer(PlayerDto match);
-    }
+    Task<Player?> GetPlayer(int vgcno);
+    Task<IEnumerable<Player>?> GetPlayers();
+    Task<Player> UpsertPlayer(Player model);
 }

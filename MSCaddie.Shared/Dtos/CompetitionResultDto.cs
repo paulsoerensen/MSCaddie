@@ -18,19 +18,7 @@ namespace MSCaddie.Shared.Dtos
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public string CompetitionText { get; set; }
-        public string Fullname
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(Firstname))
-                    return this?.Lastname;
-                if (string.IsNullOrEmpty(Lastname))
-                    return this?.Firstname;
 
-                return string.Format(CultureInfo.InstalledUICulture, $"{Firstname?.Trim()} {Lastname?.Trim()}");
-            }
-            set {; }
-        }
 
     }
 }

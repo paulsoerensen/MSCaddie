@@ -1,0 +1,29 @@
+﻿@typeparam TItem
+
+<select class="form-select w-50 form-select-sm" value="@SelectedKey"
+        aria-label=".form-select-sm example" @onchange="OnSelectChanged">
+    @foreach (var item in Items)
+    {
+        <option value="@GetKey(item)">@GetValue(item)</option>
+    }
+</select>
+
+@code {
+    [Parameter] required public IEnumerable<TItem> Items { get; set; }
+    [Parameter] required public Func<TItem, int> GetKey { get; set; }
+    [Parameter] required public Func<TItem, string> GetValue { get; set; }
+    [Parameter] public int SelectedKey { get; set; } = -1;
+    [Parameter] public EventCallback<int> OnItemSelected { get; set; }
+
+    private string SetSelected(TItem item)
+    {
+        // Check if the current index matches the SelectedKey
+        return GetKey(item) == SelectedKey ? "selected" : "";
+    }
+
+    private void OnSelectChanged(ChangeEventArgs e)
+    {
+        SelectedKey = Convert.ToInt32(e.Value.ToString());
+        OnItemSelected.InvokeAsync(SelectedKey);
+    }
+}

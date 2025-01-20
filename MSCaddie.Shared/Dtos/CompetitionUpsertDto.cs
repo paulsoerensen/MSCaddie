@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MSCaddie.Shared.Dtos
+﻿namespace MSCaddie.Shared.Dtos
 {
-    public class CompetitionUpsertDto
+    public class CompetitionUpsert
     {
         public int CompetitionResultId { get; set; }
         public int MatchId { get; set; }

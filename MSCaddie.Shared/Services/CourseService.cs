@@ -1,7 +1,6 @@
-﻿using MSCaddie.Shared.Dtos;
+﻿using MSCaddie.Shared.Interfaces;
+using MSCaddie.Shared.Models;
 using System.Net.Http.Json;
-using System.Security.Cryptography.X509Certificates;
-using System.Text.Json;
 
 namespace MSCaddie.Shared.Services;
 public class CourseService : ICourseService
@@ -9,31 +8,32 @@ public class CourseService : ICourseService
     private const string BaseAddress = "api/club";
     private const string BaseCourseAddress = "api/course";
 
-    private readonly HttpClient _client;
+    private readonly IClubRepository _repo;
 
-    public CourseService(HttpClient client)
+    public CourseService(IClubRepository repo)
     {
-        _client = client;
+        _repo = repo;
     }
-    public string Baseaddress => _client.BaseAddress?.ToString();
-
-    public async Task<IEnumerable<ClubDto>> GetClubs()
+    public async Task<IEnumerable<Club>> GetClubs()
     {
-        return await _client.GetFromJsonAsync<IEnumerable<ClubDto>>(BaseAddress);
+        return await _repo.GetClubs();
+        //return await _client.GetFromJsonAsync<IEnumerable<ClubDto>>(BaseAddress);
     }
 
-    public async Task<bool> AddClub(ClubDto dto)
+    public async Task<bool> AddClub(Club model)
     {
-        var response = await _client.PostAsJsonAsync<ClubDto>(BaseAddress, dto);
-        if (response.IsSuccessStatusCode)
-        {
-            return true;
-        }
-        else
-        {
-            string msg = await response.Content.ReadAsStringAsync();
-            return false;;
-        }
+        model =  await _repo.ClubUpsert(model);
+        return model != null;
+        //var response = await _client.PostAsJsonAsync<ClubDto>(BaseAddress, dto);
+        //if (response.IsSuccessStatusCode)
+        //{
+        //    return true;
+        //}
+        //else
+        //{
+        //    string msg = await response.Content.ReadAsStringAsync();
+        //    return false;;
+        //}
     }
 
     
@@ -44,14 +44,16 @@ public class CourseService : ICourseService
     //    return dis.Select(x => new ListItem { KeyId = x.ClubName, KeyValue = x.ClubName });
     //}
 
-    public async Task<IEnumerable<CourseDto>?> GetCourses()
+    public async Task<IEnumerable<CourseInfo>?> GetCourses()
     {
-        return await _client.GetFromJsonAsync<IEnumerable<CourseDto>>($"{BaseCourseAddress}");
+        return await _repo.GetCourses(null, null);
+        //return await _client.GetFromJsonAsync<IEnumerable<CourseDto>>($"{BaseCourseAddress}");
     }
 
-    public async Task<IEnumerable<CourseDto>?> GetCourses(int clubId)
+    public async Task<IEnumerable<CourseInfo>?> GetCourses(int clubId)
     {
-        return await _client.GetFromJsonAsync<IEnumerable<CourseDto>>($"{BaseAddress}/{clubId}/course");
+        return await _repo.GetCourses(clubId, null);
+        //return await _client.GetFromJsonAsync<IEnumerable<CourseDto>>($"{BaseAddress}/{clubId}/course");
     }
 }
 

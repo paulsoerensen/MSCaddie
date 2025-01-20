@@ -1,0 +1,57 @@
+﻿@page "/MemberListView"
+@inherits MemberListViewBase
+
+@* @attribute [AuthorizeRoles(Roles.Admin, Roles.Presidium)] *@
+
+<PageTitle>Medlemmer</PageTitle>
+
+
+@if (members == null)
+{
+    <div Position="Position.Absolute.Top.Is50.Start.Is50.Translate.Middle"><DisplaySpinner /></div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th width="50px">VGC nr.</th>
+                <th width="200px">Navn</th>
+                <th width="50px">Mobil</th>
+                <th width="70px">Mail</th>
+                <th width="70px">Aut.</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var member in members)
+            {
+                <tr>
+                    <td>@member.VgcNo</td>
+                    <td>@member.Fullname</td>
+                    <td>@member.Phone</td>
+                    <td>@member.Email</td>
+                    <td>@member.Authorized</td>
+                    <AuthorizeView>
+                        <Authorized>
+                        <td>
+                                <a href="@RouteUtils.MatchResultView(@member.VgcNo)" class="btn btn-primary table-btn">
+                                    <Icon Name="IconName.BadgeVrFill" />
+                            </a>
+                                <a href="@RouteUtils.MatchDetailView(@member.VgcNo)" class="btn btn-primary table-btn">
+                                <Icon Name="IconName.HddNetwork" />
+                            </a>
+                        </td>
+                        </Authorized>
+                        <NotAuthorized>
+                            <td></td>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+

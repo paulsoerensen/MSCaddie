@@ -1,14 +1,11 @@
-﻿using MSCaddie.Shared.Dtos;
+﻿using MSCaddie.Shared.Models;
 
-namespace MSCaddie.Shared.Services
+namespace MSCaddie.Shared.Services;
+
+public interface ICompetitionService
 {
-    public interface ICompetitionService
-    {
-        string Baseaddress { get; }
-
-        Task<IEnumerable<CompetitionResultDto>> GetMatchCompetitions(int matchId);
-        Task<IEnumerable<ListItem>?> GetCompetitions();
-        Task<bool> UpsertGetCompetitionResult(CompetitionUpsertDto dto);
-        Task DeleteCompetitionResult(int resultId);
-    }
+    Task<IEnumerable<CompetitionResult>> GetMatchCompetitions(int matchId);
+    Task<IEnumerable<ListEntry>?> GetCompetitions();
+    Task<bool> UpsertGetCompetitionResult(CompetitionUpsert dto);
+    Task<bool> DeleteCompetitionResult(int resultId);
 }

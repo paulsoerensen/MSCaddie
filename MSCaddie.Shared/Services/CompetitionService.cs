@@ -1,42 +1,42 @@
-﻿using MSCaddie.Shared.Containers;
-using MSCaddie.Shared.Dtos;
-using Microsoft.Extensions.Logging;
-using System.Net.Http.Json;
-using System.Text.Json;
+﻿using Microsoft.Extensions.Logging;
+using MSCaddie.Shared.Interfaces;
+using MSCaddie.Shared.Models;
 
 namespace MSCaddie.Shared.Services;
 public class CompetitionService : ICompetitionService
 {
-    private const string BaseAddress = "api/match";
-
-    private readonly HttpClient _client;
     ILogger<CompetitionService> _logger;
+    private readonly IMatchRepository _repo;
 
-    public CompetitionService(HttpClient client, ILogger<CompetitionService> logger)
+    public CompetitionService(IMatchRepository repo, ILogger<CompetitionService> logger)
     {
-        _client = client;
         _logger = logger;
+        _repo = repo;
     }
-    public string Baseaddress => _client.BaseAddress?.ToString();
+    public async Task<IEnumerable<CompetitionResult>> GetMatchCompetitions(int id)
+    {
+        return await _repo.GetCompetitionResults(id);
+        //return await _client.GetFromJsonAsync<IEnumerable<CompetitionResultDto>>($"api/competitionresult/{matchId}");
+    }
+    public async Task<IEnumerable<ListEntry>?> GetCompetitions()
+    {
+        return await _repo.GetCompetitions();
+        //var res = await _client.GetFromJsonAsync<IEnumerable<ListItem>>($"api/competition");
+        //return res;
+    }
 
-    public async Task<IEnumerable<CompetitionResultDto>> GetMatchCompetitions(int matchId)
+    public async Task<bool> UpsertGetCompetitionResult(CompetitionUpsert model)
     {
-        return await _client.GetFromJsonAsync<IEnumerable<CompetitionResultDto>>($"api/competitionresult/{matchId}");
+        int i = await _repo.UpsertCompetitionResult(model);
+        return i > 0;
+        //var res = await _client.PutAsJsonAsync<CompetitionUpsert>($"api/competitionresult", dto);
+        //return res.IsSuccessStatusCode;
     }
-    public async Task<IEnumerable<ListItem>?> GetCompetitions()
+    public async Task<bool> DeleteCompetitionResult(int id)
     {
-        var res = await _client.GetFromJsonAsync<IEnumerable<ListItem>>($"api/competition");
-        return res;
-    }
-
-    public async Task<bool> UpsertGetCompetitionResult(CompetitionUpsertDto dto)
-    {
-        var res = await _client.PutAsJsonAsync<CompetitionUpsertDto>($"api/competitionresult", dto);
-        return res.IsSuccessStatusCode;
-    }
-    public async Task DeleteCompetitionResult(int resultId)
-    {
-        await _client.DeleteAsync($"api/competitionresult/{resultId}");
+        int i = await _repo.DeleteCompetitionResult(id);
+        return i > 0;
+        //await _client.DeleteAsync($"api/competitionresult/{resultId}");
     }
 }
 

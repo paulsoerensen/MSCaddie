@@ -1,17 +1,12 @@
-﻿using MSCaddie.Shared.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MSCaddie.Shared.Models;
 
 namespace MSCaddie.Shared.Containers;
-    public class SearchStateContainerList : ContainerListBase<MatchResultDto>
+public class SearchStateContainerList : ContainerListBase<MatchResult>
 {
     private readonly MatchResultContainerList _MatchResultContainerList;
     private string _searchTerm = "";
 
-    private List<MatchResultDto>? FilteredMatchResults => _MatchResultContainerList.Content?
+    private List<MatchResult>? FilteredMatchResults => _MatchResultContainerList.Content?
         .Where(model => model.Fullname != null &&
                         model.Fullname.Contains(_searchTerm, StringComparison.InvariantCultureIgnoreCase))
         .ToList();
@@ -30,9 +25,9 @@ namespace MSCaddie.Shared.Containers;
         SetFilteredMatchResults();
     }
 
-    protected override Task<List<MatchResultDto>> FetchContent()
+    protected override Task<List<MatchResult>> FetchContent()
     {
-        return Task.FromResult(FilteredMatchResults ?? new List<MatchResultDto>());
+        return Task.FromResult(FilteredMatchResults ?? new List<MatchResult>());
     }
 
     private void SetFilteredMatchResults()

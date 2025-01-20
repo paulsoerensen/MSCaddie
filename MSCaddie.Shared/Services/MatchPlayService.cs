@@ -1,8 +1,8 @@
 ﻿using MSCaddie.Shared.Containers;
-using MSCaddie.Shared.Dtos;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
 using System.Text.Json;
+using MSCaddie.Shared.Models;
 
 namespace MSCaddie.Shared.Services;
 public class MatchPlayService : IMatchPlayService

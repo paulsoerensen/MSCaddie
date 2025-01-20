@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MSCaddie.Shared.Containers;
+﻿namespace MSCaddie.Shared.Containers;
 public abstract class ContainerBase<T>
 {
     protected bool IsInitialized;

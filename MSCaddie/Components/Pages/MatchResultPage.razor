@@ -1,0 +1,55 @@
+﻿@page "/MatchResult"
+@inherits MatchResultPageBase
+
+@rendermode InteractiveServer
+
+<CascadingValue Value="this">
+<PageTitle>Match Resultater</PageTitle>
+@if (matches == null)
+{
+    <div Position="Position.Absolute.Top.Is50.Start.Is50.Translate.Middle"><DisplaySpinner/></div>
+}
+else
+{
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <DropdownComponent TItem="MatchModel"
+                                Items="matches"
+                                GetKey="GetMatchId"
+                                GetValue="GetMatchText"
+                                SelectedKey=matchId
+                                OnItemSelected="HandleMatchSelected" />
+
+@*             <AuthorizeView>
+                <Authorized>
+                    <button class="btn btn-primary ms-auto" @onclick="() => OpenClub()">Opret ny klub</button>
+                </Authorized>
+            </AuthorizeView>
+ *@        </div>
+    </nav>
+}
+<RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.5rem" class="rz-p-4 rz-mb-6 rz-border-radius-1" Style="border: var(--rz-grid-cell-border);">
+        <RadzenLabel Text="Matchform:" Style="St" />
+        <RadzenLabel Text="@match?.Matchform" />
+        <RadzenLabel Text="Sponsor:" />
+        <RadzenLabel Text="@match?.Sponsor" />
+</RadzenStack>
+
+<RadzenTabs Change=@OnChange TabPosition="@tabPosition" RenderMode="TabRenderMode.Client" >
+    <Tabs>
+         <RadzenTabsItem Text="Registrering">
+           <PlayerResult Match="match"></PlayerResult>
+            </RadzenTabsItem>
+         <RadzenTabsItem Text="Øvrige resultater">
+            <OtherResults Match="match"></OtherResults>
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Resultater">
+           <ResultList Match="match"></ResultList>
+        </RadzenTabsItem> 
+    </Tabs>
+</RadzenTabs>
+
+@* @ChildContent
+ *@</CascadingValue>
+
+

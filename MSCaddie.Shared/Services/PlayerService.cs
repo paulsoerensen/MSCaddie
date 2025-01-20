@@ -1,4 +1,5 @@
-﻿using MSCaddie.Shared.Dtos;
+﻿using MSCaddie.Shared.Models;
+using MSCaddie.Shared.Interfaces;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -6,32 +7,31 @@ namespace MSCaddie.Shared.Services;
 
 public class PlayerService : IPlayerService
 {
-    private const string BaseAddress = "api/player";
+    private readonly IPlayerRepository _repo;
 
-    private readonly HttpClient _client;
-
-    public PlayerService(HttpClient client)
+    public PlayerService(IPlayerRepository repo)
     {
-        _client = client;
+        _repo = repo;
     }
-    public string Baseaddress => _client.BaseAddress?.ToString();
-
-    public async Task<PlayerDto?> GetPlayer(int vgcno)
+    public async Task<Player?> GetPlayer(int vgcno)
     {
-        return await _client.GetFromJsonAsync<PlayerDto>($"BaseAddress/{vgcno}");
+        return await _repo.GetPlayer(vgcno);
+        //return await _client.GetFromJsonAsync<PlayerDto>($"BaseAddress/{vgcno}");
     }
-    public async Task<IEnumerable<PlayerDto>?> GetPlayers()
+    public async Task<IEnumerable<Player>?> GetPlayers()
     {
-        return await _client.GetFromJsonAsync<IEnumerable<PlayerDto>>(BaseAddress);
+        return await _repo.GetPlayers(2024);
+        //return await _client.GetFromJsonAsync<IEnumerable<PlayerDto>>(BaseAddress);
     }
-    public async Task<PlayerDto> UpsertPlayer(PlayerDto dto)
+    public async Task<Player> UpsertPlayer(Player model)
     {
-        var response = await _client.PostAsJsonAsync<PlayerDto>($"{BaseAddress}", dto);
-        if (response.IsSuccessStatusCode)
-        {
-            return await JsonSerializer.DeserializeAsync<PlayerDto>(await response.Content.ReadAsStreamAsync());
-        }
-        return null;
+        return await _repo.PlayerUpsert(model);
+        //var response = await _client.PostAsJsonAsync<PlayerDto>($"{BaseAddress}", dto);
+        //if (response.IsSuccessStatusCode)
+        //{
+        //    return await JsonSerializer.DeserializeAsync<PlayerDto>(await response.Content.ReadAsStreamAsync());
+        //}
+        //return null;
     }
 }
 

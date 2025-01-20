@@ -1,4 +1,4 @@
-﻿namespace MSCaddie.Shared.Models;
+﻿namespace  MSCaddie.Shared.Models;
 public class RequestResult
 {
     public string Message { get; set; } = string.Empty;

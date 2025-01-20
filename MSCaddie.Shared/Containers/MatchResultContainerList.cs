@@ -1,11 +1,11 @@
-﻿using MSCaddie.Shared.Dtos;
+﻿using MSCaddie.Shared.Models;
 using MSCaddie.Shared.Services;
 using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace MSCaddie.Shared.Containers;
 
-public class MatchResultContainerList : ContainerListBase<MatchResultDto>
+public class MatchResultContainerList : ContainerListBase<MatchResult>
 {
     public int MatchId { get; set; }
     private readonly IMatchService _dataService;
@@ -21,7 +21,7 @@ public class MatchResultContainerList : ContainerListBase<MatchResultDto>
         //_spinnerService = spinnerService;
     }
 
-    protected override async Task<List<MatchResultDto>?>? FetchContent()
+    protected override async Task<List<MatchResult>?>? FetchContent()
     {
         _logger.LogInformation("FetchContent called");
         var lst = (await _dataService.MatchResultForRegistration(matchId: MatchId)).ToList();
