@@ -17,6 +17,8 @@
     <Import Project="$(NuGetPackageRoot)radzen.blazor\5.7.6\buildTransitive\Radzen.Blazor.props" Condition="Exists('$(NuGetPackageRoot)radzen.blazor\5.7.6\buildTransitive\Radzen.Blazor.props')" />
     <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore\8.0.10\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore\8.0.10\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props')" />
     <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore.design\8.0.10\build\net8.0\Microsoft.EntityFrameworkCore.Design.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore.design\8.0.10\build\net8.0\Microsoft.EntityFrameworkCore.Design.props')" />
+    <Import Project="$(NuGetPackageRoot)blazorstrap\5.2.103.250102\buildTransitive\BlazorStrap.props" Condition="Exists('$(NuGetPackageRoot)blazorstrap\5.2.103.250102\buildTransitive\BlazorStrap.props')" />
+    <Import Project="$(NuGetPackageRoot)blazorstrap.v5\5.2.103.122024\buildTransitive\BlazorStrap.V5.props" Condition="Exists('$(NuGetPackageRoot)blazorstrap.v5\5.2.103.122024\buildTransitive\BlazorStrap.V5.props')" />
     <Import Project="$(NuGetPackageRoot)blazor.bootstrap\3.2.0\buildTransitive\Blazor.Bootstrap.props" Condition="Exists('$(NuGetPackageRoot)blazor.bootstrap\3.2.0\buildTransitive\Blazor.Bootstrap.props')" />
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">

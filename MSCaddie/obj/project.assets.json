@@ -82,6 +82,15 @@
           "buildMultiTargeting/Blazor.Bootstrap.props": {}
         }
       },
+      "BlazorComponentUtilities/1.7.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/BlazorComponentUtilities.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/BlazorComponentUtilities.dll": {}
+        }
+      },
       "Blazored.SessionStorage/2.4.0": {
         "type": "package",
         "dependencies": {
@@ -92,6 +101,45 @@
         },
         "runtime": {
           "lib/net7.0/Blazored.SessionStorage.dll": {}
+        }
+      },
+      "BlazorStrap/5.2.103.250102": {
+        "type": "package",
+        "dependencies": {
+          "BlazorComponentUtilities": "1.7.1",
+          "Microsoft.AspNetCore.Components.Web": "8.0.11"
+        },
+        "compile": {
+          "lib/net8.0/BlazorStrap.dll": {}
+        },
+        "runtime": {
+          "lib/net8.0/BlazorStrap.dll": {}
+        },
+        "build": {
+          "buildTransitive/BlazorStrap.props": {}
+        },
+        "buildMultiTargeting": {
+          "buildMultiTargeting/BlazorStrap.props": {}
+        }
+      },
+      "BlazorStrap.V5/5.2.103.122024": {
+        "type": "package",
+        "dependencies": {
+          "BlazorComponentUtilities": "1.7.1",
+          "BlazorStrap": "5.2.103.122024",
+          "Microsoft.AspNetCore.Components.Web": "8.0.11"
+        },
+        "compile": {
+          "lib/net8.0/BlazorStrap.V5.dll": {}
+        },
+        "runtime": {
+          "lib/net8.0/BlazorStrap.V5.dll": {}
+        },
+        "build": {
+          "buildTransitive/BlazorStrap.V5.props": {}
+        },
+        "buildMultiTargeting": {
+          "buildMultiTargeting/BlazorStrap.V5.props": {}
         }
       },
       "Dapper/2.1.35": {
@@ -1858,6 +1906,20 @@
         "staticwebassets/pdfjs-4.0.379.worker.min.js"
       ]
     },
+    "BlazorComponentUtilities/1.7.1": {
+      "sha512": "m73xpJYtSd7tlOowMslyAvWDipW9bOTWJzGnCSQJK9tm4fz6xXQZbAbTDydmV9bxhTrzmJMMRGsAEnSVZjWVjg==",
+      "type": "package",
+      "path": "blazorcomponentutilities/1.7.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "blazor-glove-256.jpg",
+        "blazorcomponentutilities.1.7.1.nupkg.sha512",
+        "blazorcomponentutilities.nuspec",
+        "lib/netstandard2.0/BlazorComponentUtilities.dll"
+      ]
+    },
     "Blazored.SessionStorage/2.4.0": {
       "sha512": "e3XXH+zGGxDq1zC7YzLDD8mfvtoC6ESwTWOGD25H+FbPJlB7yQeL72hDY76tqkcrh98fh+y12r4BNhyQVV9YKw==",
       "type": "package",
@@ -1870,6 +1932,50 @@
         "icon.png",
         "lib/net6.0/Blazored.SessionStorage.dll",
         "lib/net7.0/Blazored.SessionStorage.dll"
+      ]
+    },
+    "BlazorStrap/5.2.103.250102": {
+      "sha512": "BN58SLlvX4C09jE5m/G/UFgVUBAEI9wsPbYxrpybRb4F98suQJ7BTSBejO7DEXegMAOzIwgGTz1L8Q6RTGz4AA==",
+      "type": "package",
+      "path": "blazorstrap/5.2.103.250102",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "blazorstrap.5.2.103.250102.nupkg.sha512",
+        "blazorstrap.nuspec",
+        "build/BlazorStrap.props",
+        "build/Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+        "build/Microsoft.AspNetCore.StaticWebAssets.props",
+        "buildMultiTargeting/BlazorStrap.props",
+        "buildTransitive/BlazorStrap.props",
+        "lib/net7.0/BlazorStrap.dll",
+        "lib/net8.0/BlazorStrap.dll",
+        "lib/net9.0/BlazorStrap.dll",
+        "staticwebassets/BlazorStrap.10v83wk5fb.bundle.scp.css",
+        "staticwebassets/blazorstrap.js",
+        "staticwebassets/blazorstrap.min.js",
+        "staticwebassets/blazorstrapinterop.js",
+        "staticwebassets/popper.min.js"
+      ]
+    },
+    "BlazorStrap.V5/5.2.103.122024": {
+      "sha512": "zL5dR0CbENHsyGnOwJ/fTdj16F2xiryaubNP7Emc9kTw8WjcZDcIvYLOTAJ+OVqMMm0/N7kh+8Qfq0ORH82FaA==",
+      "type": "package",
+      "path": "blazorstrap.v5/5.2.103.122024",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "blazorstrap.v5.5.2.103.122024.nupkg.sha512",
+        "blazorstrap.v5.nuspec",
+        "build/BlazorStrap.V5.props",
+        "build/Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+        "build/Microsoft.AspNetCore.StaticWebAssets.props",
+        "buildMultiTargeting/BlazorStrap.V5.props",
+        "buildTransitive/BlazorStrap.V5.props",
+        "lib/net7.0/BlazorStrap.V5.dll",
+        "lib/net8.0/BlazorStrap.V5.dll",
+        "lib/net9.0/BlazorStrap.V5.dll",
+        "staticwebassets/BlazorStrap.V5.soy3cwhzex.bundle.scp.css"
       ]
     },
     "Dapper/2.1.35": {
@@ -4701,6 +4807,8 @@
     "net8.0": [
       "AutoMapper >= 13.0.1",
       "Blazor.Bootstrap >= 3.2.0",
+      "BlazorStrap >= 5.2.103.250102",
+      "BlazorStrap.V5 >= 5.2.103.122024",
       "Dapper >= 2.1.35",
       "MSCaddie.Shared >= 1.0.0",
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 8.0.10",
@@ -4773,6 +4881,14 @@
           "Blazor.Bootstrap": {
             "target": "Package",
             "version": "[3.2.0, )"
+          },
+          "BlazorStrap": {
+            "target": "Package",
+            "version": "[5.2.103.250102, )"
+          },
+          "BlazorStrap.V5": {
+            "target": "Package",
+            "version": "[5.2.103.122024, )"
           },
           "Dapper": {
             "target": "Package",

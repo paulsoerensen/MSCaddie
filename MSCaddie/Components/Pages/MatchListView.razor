@@ -1,6 +1,7 @@
 ﻿@page "/MatchListView"
 @inherits MatchListViewBase
 
+
 @rendermode InteractiveServer
 
 <PageTitle>Matches</PageTitle>
@@ -27,26 +28,19 @@ else
 
     <div class="container">
         <div class="row py-5">
-            <Grid TItem="MatchModel"
-                  Class="table table-hover border-top"
-                  Data="matches" 
-                  FixedHeader="true">
-               <GridColumns>
-                    <GridColumn TItem="MatchModel" HeaderText="Dato" PropertyName="MatchDate">
-                        @context.MatchDate
-                    </GridColumn>
-                    <GridColumn TItem="MatchModel" HeaderText="Bane" PropertyName="CourseText" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
-                        @context.CourseText
-                    </GridColumn>
-                    <GridColumn TItem="MatchModel" HeaderText="Tee" PropertyName="Tee" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
-                        @context.Tee
-                    </GridColumn>
-                    <GridColumn TItem="MatchModel" HeaderText="Officiel" PropertyName="Official" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
-                        @context.Official
-                    </GridColumn>
-                    <GridColumn TItem="MatchModel" HeaderText="Shootout" PropertyName="Shootout" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
-                        @context.Shootout
-                    </GridColumn>
+        <RadzenDataGrid AllowFiltering="false" FilterMode=FilterMode.Simple AllowPaging="false" AllowSorting="true"
+                            Data="@matches" TItem="MatchModel" AllowVirtualization="true" AllowColumnResize="true">
+        <Columns>
+                    <RadzenDataGridColumn TItem="MatchModel" Property="MatchDate" Title="Dato" Width="6rem" />
+                    <RadzenDataGridColumn TItem="MatchModel" Property="CourseText" Title="Bane" Width="6rem" />
+                    <RadzenDataGridColumn TItem="MatchModel" Property="Tee" Title="Tee" Width="6rem" />
+                    <RadzenDataGridColumn TItem="MatchModel" Property="Officiel" Title="Officiel" Width="6rem" />
+                    <RadzenDataGridColumn TItem="MatchModel" Property="Shootout" Title="Shootout" Width="6rem" />
+
+
+                </Columns>
+            </RadzenDataGrid>
+@* 
                     <GridColumn TItem="MatchModel" TextAlignment="Alignment.Center">
                         @{
                             var item = context as MatchModel;
@@ -56,7 +50,7 @@ else
                         }
                     </GridColumn>
                 </GridColumns>
-            </Grid>
+            </Grid> *@
         </div>
     </div>
 

@@ -9,13 +9,13 @@
     <RadzenColumn Size="12" class="rz-p-1">
         <RadzenStack Orientation="Radzen.Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Start" class="rz-p-4 rz-border-radius-1" Style="border: var(--rz-grid-cell-border);">
                 <div class="rz-p-2 rz-text-align-center">
-                    <AutoComplete @bind-Value="Fullname"
-                                  TItem="MatchResult"
-                                  DataProvider="ResultDataProvider"
-                                  PropertyName="Fullname"
-                                  Placeholder="Vælg spiller..."
-                                  StringComparison="StringComparison.Ordinal"
-                                  OnChanged="(MatchResult res) => OnAutoCompleteChanged(res)" />
+                    <BlazorBootstrap.AutoComplete @bind-Value="Fullname"
+                        TItem="MatchResult"
+                        DataProvider="ResultDataProvider"
+                        PropertyName="Fullname"
+                        Placeholder="Vælg spiller..."
+                        StringComparison="StringComparison.Ordinal"
+                        OnChanged="(MatchResult res) => OnAutoCompleteChanged(res)" />
                 </div>
         </RadzenStack>
     </RadzenColumn>

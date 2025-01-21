@@ -1,19 +1,21 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    <div class="sidebar bg-primary">
-        <NavMenu />
-    </div>
+    <NavMenu2 />
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
+    <main class="pt-5">
+        <BSContainer class="content pb-5">
+            <RadzenCard>
+                @Body
+            </RadzenCard>
+        </BSContainer>
     </main>
+	<footer class="text-center text-lg-start bg-light text-muted footer">
+	    <div class="text-center">
+	        <span>&copy; Paul S. 2025</span>
+	    </div>
+	</footer>    
 </div>
+<RadzenNotification />
 <Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
 <RadzenComponents @rendermode="InteractiveServer" />
