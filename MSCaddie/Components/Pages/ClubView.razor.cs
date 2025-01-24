@@ -15,7 +15,7 @@ public partial class ClubViewBase : ComponentBase, IDisposable
     [Inject] public ICourseService service { get; set; } = default!;
 
     public int clubId { get; set; } = -1;
-    public IEnumerable<Club>? clubs;
+    public IEnumerable<ClubModel>? clubs;
     public IEnumerable<CourseInfo>? courses = default!;
     //public EventConsole? console;
     protected string? message;
@@ -53,8 +53,8 @@ public partial class ClubViewBase : ComponentBase, IDisposable
         courses = await service.GetCourses(clubId);
         logger.LogInformation($"club: {clubId} - #{courses.Count()}");
     }
-    protected int GetClubId(Club club) => club.ClubId;
-    protected string GetClubName(Club club) => club.ClubName;
+    protected int GetClubId(ClubModel club) => club.ClubId;
+    protected string GetClubName(ClubModel club) => club.ClubName;
     
     #region IDisposable Support
     private bool disposedValue = false; // To detect redundant calls
@@ -92,7 +92,7 @@ public partial class ClubViewBase : ComponentBase, IDisposable
     {
             try
             {
-                Club model = new() { ClubName = NewClub };
+                ClubModel model = new() { ClubName = NewClub };
                 bool res = await service.AddClub(model);
                 if (res)
                     ModalMessage = "Klub oprettet";

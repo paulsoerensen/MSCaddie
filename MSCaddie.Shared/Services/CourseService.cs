@@ -14,13 +14,13 @@ public class CourseService : ICourseService
     {
         _repo = repo;
     }
-    public async Task<IEnumerable<Club>> GetClubs()
+    public async Task<IEnumerable<ClubModel>> GetClubs()
     {
         return await _repo.GetClubs();
         //return await _client.GetFromJsonAsync<IEnumerable<ClubDto>>(BaseAddress);
     }
 
-    public async Task<bool> AddClub(Club model)
+    public async Task<bool> AddClub(ClubModel model)
     {
         model =  await _repo.ClubUpsert(model);
         return model != null;

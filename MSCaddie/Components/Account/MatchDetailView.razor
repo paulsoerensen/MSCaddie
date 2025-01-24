@@ -3,19 +3,48 @@
 
 @rendermode InteractiveServer
 
-<PageTitle>Match administration</PageTitle>
-
-@if (!Saved)
+@if (match != null)
 {
-    if (match != null)
-    {
-        <section class="employee-edit">
-            <h1 class="page-title">Match @match?.MatchDate.ToString("dd MMM, yyyy")</h1>
-            <InputFile OnChange="@OnInputFileChange" class="form-control" accept=".csv" 
-                title="Indlæs spillere">Indlæs spillere</InputFile>
-            <p>@Message</p>
+    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.End" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.Wrap" Gap="1rem">
+        <RadzenRow>
+            <RadzenColumn Size="12" SizeMD="6" SizeLG="3">
+                <RadzenFormField Text="Outlined/Default" Style="width: 100%;">
+                    <RadzenDatePicker TValue="DateTime" Value=@match.MatchDate Change="@(args => match.MatchDate = args!.Value)" Name="RadzenDatePickerChangeEvent" />
+                </RadzenFormField>
+            </RadzenColumn>
+            <RadzenColumn Size="12" SizeMD="6" SizeLG="3">
+                <RadzenFormField Text="Filled" Variant="Variant.Filled" Style="width: 100%;">
+                    <RadzenDropDown @bind-Value=@clubId Data=@clubs TextProperty="@nameof(ClubModel.ClubName)" ValueProperty="@nameof(ClubModel.ClubId)" Style="width: 100%; max-width: 400px;" Name="DropDownTextValueProperties" />
+                </RadzenFormField>
+            </RadzenColumn>
+            <RadzenColumn Size="12" SizeMD="6" SizeLG="3">
+                <RadzenFormField Text="Filled" Variant="Variant.Filled" Style="width: 100%;">
+                    <RadzenDropDown @bind-Value=@match.CourseDetailId Data=@clubCourses TextProperty="@nameof(CourseInfo.CourseText)" ValueProperty="@nameof(CourseInfo.CourseDetailId)" Style="width: 100%; max-width: 400px;" Name="DropDownTextValueProperties" />
+                </RadzenFormField>
+            </RadzenColumn>
+@* 
+            <RadzenFormField class="rz-p-4 rz-border-radius-1" Style="border: var(--rz-grid-cell-border)">
+                <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Gap="0.5rem" class="rz-p-12">
+                    <RadzenLabel Text="Match Date" Component="RadzenDatePickerChangeEvent" />
+                    <RadzenDatePicker TValue="DateTime" Value=@match.MatchDate Change="@(args => match.MatchDate = args!.Value)" Name="RadzenDatePickerChangeEvent" />
+                </RadzenStack>
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Gap="0.5rem" class="rz-p-sm-12">
+                    <RadzenLabel Text="Klub" Component="DropDownChangeEvent" />
+                    <RadzenDropDown @bind-Value=@clubId Data=@clubs TextProperty="@nameof(ClubModel.ClubName)" ValueProperty="@nameof(ClubModel.ClubId)" Style="width: 100%; max-width: 400px;" Name="DropDownTextValueProperties" />
+                </RadzenStack>
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Gap="0.5rem" class="rz-p-sm-12">
+                    <RadzenLabel Text="Klub" Component="DropDownChangeEvent" />
+                    <RadzenDropDown @bind-Value=@match.CourseDetailId Data=@clubCourses TextProperty="@nameof(CourseInfo.CourseText)" ValueProperty="@nameof(CourseInfo.CourseDetailId)" Style="width: 100%; max-width: 400px;" Name="DropDownTextValueProperties" />
+                </RadzenStack>
+            </RadzenFormField> *@
 
-            <EditForm Model="@match" OnValidSubmit="@HandleValidSubmit"
+            <RadzenColumn Size="12" SizeMD="6" class="rz-p-4 rz-border-radius-1" Style="border: var(--rz-grid-cell-border)">
+            </RadzenColumn>
+        </RadzenRow>
+
+        <RadzenRow>
+
+@*             <EditForm Model="@match" OnValidSubmit="@HandleValidSubmit"
                   OnInvalidSubmit="@HandleInValidSubmit">
 
                 <div class="row mb-3">
@@ -93,11 +122,6 @@
                 <button type="submit" class="btn btn-primary me-1">Gem match</button>
 
             </EditForm>
-        </section>
-    }
-}
-else
-{
-    <div class="alert @StatusClass">@Message</div>
-    <button type="button" class="btn btn-outline-primary ms-1" @onclick="@NavigateToOverview">Back to overview</button>
+ *@        </RadzenRow>
+    </RadzenStack>
 }

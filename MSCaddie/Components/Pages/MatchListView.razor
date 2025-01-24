@@ -28,83 +28,56 @@ else
 
     <div class="container">
         <div class="row py-5">
-        <RadzenDataGrid AllowFiltering="false" FilterMode=FilterMode.Simple AllowPaging="false" AllowSorting="true"
+            <RadzenDataGrid @ref="matchGrid" AllowFiltering="false" FilterMode=FilterMode.Simple AllowPaging="false" AllowSorting="true"
                             Data="@matches" TItem="MatchModel" AllowVirtualization="true" AllowColumnResize="true">
-        <Columns>
-                    <RadzenDataGridColumn TItem="MatchModel" Property="MatchDate" Title="Dato" Width="6rem" />
-                    <RadzenDataGridColumn TItem="MatchModel" Property="CourseText" Title="Bane" Width="6rem" />
-                    <RadzenDataGridColumn TItem="MatchModel" Property="Tee" Title="Tee" Width="6rem" />
-                    <RadzenDataGridColumn TItem="MatchModel" Property="Officiel" Title="Officiel" Width="6rem" />
-                    <RadzenDataGridColumn TItem="MatchModel" Property="Shootout" Title="Shootout" Width="6rem" />
+            <HeaderTemplate>
+                <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle" Text="Ny match" Click="@InsertRow" Disabled="@(matchModel != null)" />
+            </HeaderTemplate>
 
-
-                </Columns>
-            </RadzenDataGrid>
-@* 
-                    <GridColumn TItem="MatchModel" TextAlignment="Alignment.Center">
-                        @{
-                            var item = context as MatchModel;
-                            <a href="@RouteUtils.MatchDetailView(@item.MatchId)" class="btn btn-primary table-btn">
-                                <Icon Name="IconName.Pencil" />
-                            </a>
+            <Columns>
+                <RadzenDataGridColumn TItem="MatchModel" Property="MatchDate" Title="Dato" Width="8rem">
+                    <Template Context="data">
+                        @(data.MatchDateDisplay)
+                    </Template>
+                </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="MatchModel" Property="CourseText" Title="Bane" Width="12rem" />
+                    <RadzenDataGridColumn TItem="MatchModel" Property="Matchform" Title="Match form" Width="12rem" />
+                    <RadzenDataGridColumn TItem="MatchModel" Property="Tee" Title="Tee" Width="10rem" TextAlign="TextAlign.Center" />
+                    <RadzenDataGridColumn TItem="MatchModel" Property="Official" Title="Officiel" Width="10rem" TextAlign="TextAlign.Center">
+                    <Template Context="data">
+                        @if (data.Official)
+                        {
+                            <div>
+                                    <RadzenIcon Icon="check_circle" />
+                            </div>
                         }
-                    </GridColumn>
-                </GridColumns>
-            </Grid> *@
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="MatchModel" Property="Shootout" Title="Shootout" Width="10rem" TextAlign="TextAlign.Center">
+                    <Template Context="data">
+                        @if (data.Shootout)
+                        {
+                            <div>
+                                    <RadzenIcon Icon="ads_click" />
+                            </div>
+                        }
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn Context="match" Filterable="false" Sortable="false" TextAlign="TextAlign.Right">
+                    <Template Context="match">
+                            <RadzenButton Icon="edit" Click="@(args => OpenMatch(match!.MatchId))" ButtonStyle="ButtonStyle.Success" />
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
         </div>
     </div>
-
-
-
-@*     <section>
-        <table class="table">
-           <thead>
-                <tr>
-                    <th>Dato</th>
-                    <th>Bane</th>
-                    <th>Tee</th>
-                    <th>Officiel</th>
-                    <th>Shootout</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var match in matches)
-                {
-                    <tr>
-                        <td>@match.MatchDate.ToString("dd. MMM, yyyy")</td>
-                        <td>@match.CourseText</td>
-                        <td>@match.Tee</td>
-                        <td style="text-align: center">
-                            @if (match.Official)
-                            {
-                                <Icon Name="IconName.Alipay" />
-                            }
-                        </td>
-                        <td style="text-align: center">
-                            @if (match.Shootout)
-                            {
-                                <Icon Name="IconName.Shuffle" />
-                            }
-                        </td>
-                        <AuthorizeView>
-                            <Authorized>
-                            <td>
-                                <a href="@RouteUtils.MatchDetailView(@match.MatchId)" class="btn btn-primary table-btn">
-                                        <Icon Name="IconName.Pencil" />
-                                </a>
-                            </td>
-                            </Authorized>
-                            <NotAuthorized>
-                                <td></td>
-                            </NotAuthorized>
-                        </AuthorizeView>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </section>
- *@
 }
 
-
+@* 
+<RadzenDialog @ref="editDialog" Width="600px" Height="400px">
+    <Content>
+        <!-- Your Dialog Content Here -->
+        <MatchDetailView MatchId="@matchModel.MatchId" />
+    </Content>
+</RadzenDialog> *@

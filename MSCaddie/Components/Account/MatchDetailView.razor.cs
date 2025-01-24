@@ -2,22 +2,23 @@
 using Microsoft.AspNetCore.Components.Forms;
 using MSCaddie.Shared.Models;
 using MSCaddie.Shared.Services;
+using Radzen;
 
-namespace MSCaddie.Components.Pages;
+namespace MSCaddie.Components.Account;
 
 public partial class MatchDetailViewBase : ComponentBase
 {
-    [Parameter] 
+    [Parameter]
     public int matchId { get; set; }
 
     [Inject] protected NavigationManager NavigationManager { get; set; } = default!;
     [Inject] public ILogger<MatchDetailViewBase> _logger { get; set; } = default!;
     [Inject] public IMatchService matchSvc { get; set; } = default!;
     [Inject] public ICourseService courseSvc { get; set; } = default!;
-
+    [Inject] public Radzen.DialogService dialogService { get; set; } = default!;
 
     public MatchModel? match { get; set; } = new MatchModel();
-    public List<Club> clubs { get; set; } = new List<Club>();
+    public List<ClubModel> clubs { get; set; } = new List<ClubModel>();
     public List<CourseInfo> courses { get; set; } = new List<CourseInfo>();
     public List<CourseInfo> clubCourses { get; set; } = new List<CourseInfo>();
     public List<ListEntry> matchForms { get; set; } = new List<ListEntry>();
@@ -26,6 +27,8 @@ public partial class MatchDetailViewBase : ComponentBase
     protected string Message = string.Empty;
     protected string StatusClass = string.Empty;
     protected bool Saved;
+    protected int clubId = -1;
+
 
     public string? FilePath { get; set; }
 
@@ -34,11 +37,11 @@ public partial class MatchDetailViewBase : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         matchForms = (await matchSvc.GetMatchforms()).ToList();
-        //clubs = (await courseSvc.GetClubs()).ToList();
+        clubs = (await courseSvc.GetClubs()).ToList();
         courses = (await courseSvc.GetCourses()).ToList();
         clubs = courses.GroupBy(x => x.ClubId)
             .Select(y => y.First()).Distinct()
-            .Select(z => new Club() { ClubId = z.ClubId, ClubName = z.ClubName })
+            .Select(z => new ClubModel() { ClubId = z.ClubId, ClubName = z.ClubName })
             .ToList();
 
         if (matchId < 0)

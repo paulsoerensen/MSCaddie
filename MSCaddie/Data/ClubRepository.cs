@@ -16,24 +16,24 @@ namespace MSCaddie.Data
         }
 
         #region Club
-        public async Task<Club?> GetClub(int id)
+        public async Task<ClubModel?> GetClub(int id)
         {
             string sql = @"SELECT ClubId, ClubName "
                 + "from ms.Club where ClubId = @id";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
-            return (Club?)(await db.QueryAsync<Club>(sql, new { id })).FirstOrDefault();
+            return (ClubModel?)(await db.QueryAsync<ClubModel>(sql, new { id })).FirstOrDefault();
         }
 
-        public async Task<IEnumerable<Club>> GetClubs()
+        public async Task<IEnumerable<ClubModel>> GetClubs()
         {
             string sql = @"SELECT ClubId, ClubName FROM "
                 + "ms.Club ORDER BY ClubName";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
-            return (IEnumerable<Club>)(await db.QueryAsync<Club>(sql));
+            return (IEnumerable<ClubModel>)(await db.QueryAsync<ClubModel>(sql));
         }
-        public async Task<Club> ClubUpsert(Club model)
+        public async Task<ClubModel> ClubUpsert(ClubModel model)
         {
             using var con = new SqlConnection(ConnectionString);
 

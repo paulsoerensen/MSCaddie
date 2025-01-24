@@ -6,9 +6,9 @@ public interface IClubRepository
 {
 
     #region Club
-    Task<Club?> GetClub(int id);
-    Task<IEnumerable<Club>> GetClubs();
-    Task<Club> ClubUpsert(Club model);
+    Task<ClubModel?> GetClub(int id);
+    Task<IEnumerable<ClubModel>> GetClubs();
+    Task<ClubModel> ClubUpsert(ClubModel model);
     #endregion
 
     #region Course
