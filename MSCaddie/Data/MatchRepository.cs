@@ -346,10 +346,10 @@ namespace MSCaddie.Data
         #region Matchform
         public async Task<IEnumerable<ListEntry>> GetMatchforms()
         {
-            string sql = "SELECT [MatchformId] as KeyId,[MatchForm] as KeyValue FROM [ms].[Matchform]";
+            string sql = "SELECT [MatchformId] as [Key],[MatchForm] as [Value] FROM [ms].[Matchform]";
 
             using (IDbConnection db = new SqlConnection(ConnectionString))
-                return (IEnumerable<ListEntry>)(await db.QueryAsync<ListEntry>(sql));
+                return (await db.QueryAsync<ListEntry>(sql));
         }
 
         #endregion

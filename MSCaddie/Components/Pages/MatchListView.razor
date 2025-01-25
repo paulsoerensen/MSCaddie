@@ -18,11 +18,11 @@ else
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <button Class="btn btn-warning" @onclick="ChangeMatchFilter">@matchFilter</button>
-            <AuthorizeView>
+@*             <AuthorizeView>
                 <Authorized>
                     <a class="btn btn-primary ms-auto" href="@RouteUtils.MatchDetailView(-1)">New match</a>
                 </Authorized>
-            </AuthorizeView>
+            </AuthorizeView> *@
         </div>
     </nav>
 
@@ -31,7 +31,7 @@ else
             <RadzenDataGrid @ref="matchGrid" AllowFiltering="false" FilterMode=FilterMode.Simple AllowPaging="false" AllowSorting="true"
                             Data="@matches" TItem="MatchModel" AllowVirtualization="true" AllowColumnResize="true">
             <HeaderTemplate>
-                <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle" Text="Ny match" Click="@InsertRow" Disabled="@(matchModel != null)" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle" Text="Ny match" Click="@(args => OpenMatch(-1))" />
             </HeaderTemplate>
 
             <Columns>
@@ -63,7 +63,7 @@ else
                         }
                     </Template>
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn Context="match" Filterable="false" Sortable="false" TextAlign="TextAlign.Right">
+                <RadzenDataGridColumn Context="match" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Frozen="true">
                     <Template Context="match">
                             <RadzenButton Icon="edit" Click="@(args => OpenMatch(match!.MatchId))" ButtonStyle="ButtonStyle.Success" />
                     </Template>

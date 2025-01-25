@@ -46,17 +46,23 @@ public partial class MatchListViewBase : ComponentBase
 
     protected RadzenDataGrid<MatchModel> matchGrid;
 
-    //IEnumerable<CourseModel> matchs;
-    //IEnumerable<Customer> customers;
-    //IEnumerable<Employee> employees;
-
-
     // Method to open the dialog and pass the matchId
     public async Task OpenMatch(int matchId)
     {
         await LoadStateAsync();
 
-        await DialogService.OpenAsync<MatchDetailView>($"Match {matchId}",
+        string txt;
+        if (matchId > 0)
+        {
+            matchModel = await matchSvc.GetMatch(matchId);
+            txt = matchModel!.MatchText;
+        }
+        else
+        {
+            txt = "Ny match";
+        }
+
+        var result = await DialogService.OpenAsync<MatchDetailView>(txt,
                new Dictionary<string, object>() { { "MatchId", matchId } },
                new DialogOptions()
                {
@@ -69,6 +75,19 @@ public partial class MatchListViewBase : ComponentBase
                    Left = Settings != null ? Settings.Left : null,
                    Top = Settings != null ? Settings.Top : null
                });
+
+        if (result == null)
+        {
+            // CancelEditDetail(orderDetail);
+        }
+        else if (result)
+        {
+            allMatches = await matchSvc.GetMatches();
+        }
+        else
+        {
+            // CancelEditDetail(orderDetail);
+        }
 
         await SaveStateAsync();
     }

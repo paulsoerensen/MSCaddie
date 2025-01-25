@@ -5,123 +5,91 @@
 
 @if (match != null)
 {
-    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.End" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.Wrap" Gap="1rem">
-        <RadzenRow>
-            <RadzenColumn Size="12" SizeMD="6" SizeLG="3">
-                <RadzenFormField Text="Outlined/Default" Style="width: 100%;">
-                    <RadzenDatePicker TValue="DateTime" Value=@match.MatchDate Change="@(args => match.MatchDate = args!.Value)" Name="RadzenDatePickerChangeEvent" />
+    <RadzenTemplateForm Data="@match" Submit="@((MatchModel args) => { Submit(args); })">
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" JustifyContent="JustifyContent.Start" Wrap="FlexWrap.Wrap" Gap="1rem">
+        <RadzenRow AlignItems="AlignItems.Start">
+            <RadzenColumn Size="12" >
+                <RadzenFormField Text="Dato" Variant="Variant.Outlined">
+                    <RadzenDatePicker TValue="DateTime" Value=@match.MatchDate 
+                        Change="@(args => match.MatchDate = args!.Value)" 
+                        Name="RadzenDatePickerChangeEvent"
+                        DateFormat="yyyy-MM-dd" />
                 </RadzenFormField>
-            </RadzenColumn>
-            <RadzenColumn Size="12" SizeMD="6" SizeLG="3">
-                <RadzenFormField Text="Filled" Variant="Variant.Filled" Style="width: 100%;">
-                    <RadzenDropDown @bind-Value=@clubId Data=@clubs TextProperty="@nameof(ClubModel.ClubName)" ValueProperty="@nameof(ClubModel.ClubId)" Style="width: 100%; max-width: 400px;" Name="DropDownTextValueProperties" />
-                </RadzenFormField>
-            </RadzenColumn>
-            <RadzenColumn Size="12" SizeMD="6" SizeLG="3">
-                <RadzenFormField Text="Filled" Variant="Variant.Filled" Style="width: 100%;">
-                    <RadzenDropDown @bind-Value=@match.CourseDetailId Data=@clubCourses TextProperty="@nameof(CourseInfo.CourseText)" ValueProperty="@nameof(CourseInfo.CourseDetailId)" Style="width: 100%; max-width: 400px;" Name="DropDownTextValueProperties" />
-                </RadzenFormField>
-            </RadzenColumn>
-@* 
-            <RadzenFormField class="rz-p-4 rz-border-radius-1" Style="border: var(--rz-grid-cell-border)">
-                <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Gap="0.5rem" class="rz-p-12">
-                    <RadzenLabel Text="Match Date" Component="RadzenDatePickerChangeEvent" />
-                    <RadzenDatePicker TValue="DateTime" Value=@match.MatchDate Change="@(args => match.MatchDate = args!.Value)" Name="RadzenDatePickerChangeEvent" />
-                </RadzenStack>
-                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Gap="0.5rem" class="rz-p-sm-12">
-                    <RadzenLabel Text="Klub" Component="DropDownChangeEvent" />
-                    <RadzenDropDown @bind-Value=@clubId Data=@clubs TextProperty="@nameof(ClubModel.ClubName)" ValueProperty="@nameof(ClubModel.ClubId)" Style="width: 100%; max-width: 400px;" Name="DropDownTextValueProperties" />
-                </RadzenStack>
-                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Gap="0.5rem" class="rz-p-sm-12">
-                    <RadzenLabel Text="Klub" Component="DropDownChangeEvent" />
-                    <RadzenDropDown @bind-Value=@match.CourseDetailId Data=@clubCourses TextProperty="@nameof(CourseInfo.CourseText)" ValueProperty="@nameof(CourseInfo.CourseDetailId)" Style="width: 100%; max-width: 400px;" Name="DropDownTextValueProperties" />
-                </RadzenStack>
-            </RadzenFormField> *@
-
-            <RadzenColumn Size="12" SizeMD="6" class="rz-p-4 rz-border-radius-1" Style="border: var(--rz-grid-cell-border)">
             </RadzenColumn>
         </RadzenRow>
+         <RadzenRow>
+            <RadzenColumn Size="12">
+                <RadzenFormField Text="Tekst" Variant="Variant.Outlined" Style="width: 100%;">
+                    <RadzenDropDown @bind-Value=@match.MatchText Data=@matchTexts Style="width: 100%; max-width: 400px;" Name="DropDownEdit1">
+                        <ValueTemplate Context="MatchModel">
+                            <RadzenTextBox @bind-Value=@match.MatchText Style="width:120%; height:120%; margin:-15px" aria-labelledby="DropDownEdit1" />
+                        </ValueTemplate>
+                    </RadzenDropDown>
+                </RadzenFormField>
+            </RadzenColumn>
 
-        <RadzenRow>
+            <RadzenColumn Size="12" SizeMD="6">
+                <RadzenFormField Text="Klub" Variant="Variant.Outlined" Style="width: 100%;">
+                    <RadzenDropDown @bind-Value=@match.ClubId Data=@clubs
+                                    TValue="int"
+                                    TextProperty="@nameof(ClubModel.ClubName)" 
+                                    ValueProperty="@nameof(ClubModel.ClubId)"
+                                        Change="@(args => OnClubChanged((int)args))"
+                                    Style="width: 100%; max-width: 400px;" 
+                                    Name="DropDownTextValueProperties" />
+                </RadzenFormField>
+            </RadzenColumn>
+            <RadzenColumn Size="12" SizeMD="6">
+                <RadzenFormField Text="Bane" Variant="Variant.Outlined" Style="width: 100%;">
+                    <RadzenDropDown @bind-Value=@match.CourseDetailId Data=@clubCourses TextProperty="@nameof(CourseInfo.CourseText)" ValueProperty="@nameof(CourseInfo.CourseDetailId)" Style="width: 100%; max-width: 400px;" Name="DropDownTextValueProperties" />
+                </RadzenFormField>
+            </RadzenColumn>
+            <RadzenColumn Size="12" SizeMD="6">
+                <RadzenFormField Text="Match form" Variant="Variant.Outlined" Style="width: 100%;">
+                    <RadzenDropDown @bind-Value=@match.MatchformId Data=@matchForms
+                                    TextProperty="@nameof(ListEntry.Value)" ValueProperty="@nameof(ListEntry.Key)"
+                                    Style="width: 100%; max-width: 400px;" Name="DropDownTextValueProperties" />
+                </RadzenFormField>
+            </RadzenColumn >
+            <RadzenColumn Size="12" SizeMD="6">
+                <RadzenRow>
+                    <div class="rz-my-2">
+                        <RadzenLabel Text="Tællende" Component="CheckBox1" class="rz-mx-2" />
+                        <RadzenCheckBox @bind-Value=@match.Official Name="CheckBox1" />
+                    </div>
+                    <div class="rz-my-auto">
+                        <RadzenLabel Text="Shoot out" Component="CheckBox1" class="rz-mx-2" />
+                        <RadzenCheckBox @bind-Value=@match.Shootout Name="CheckBox1" />
+                    </div>
+                </RadzenRow>
+            </RadzenColumn>
 
-@*             <EditForm Model="@match" OnValidSubmit="@HandleValidSubmit"
-                  OnInvalidSubmit="@HandleInValidSubmit">
+            <RadzenColumn Size="12">
+                <RadzenFormField Text="Sponsor" Variant="Variant.Outlined" Style="width: 100%;">
+                    <RadzenDropDown @bind-Value=@match.Sponsor Data=@sponsorNames Style="width: 100%; max-width: 400px;" Name="DropDownEdit1">
+                        <ValueTemplate Context="MatchModel">
+                            <RadzenTextBox @bind-Value=@match.Sponsor Style="width:120%; height:120%; margin:-15px" aria-labelledby="DropDownEdit1" />
+                        </ValueTemplate>
+                    </RadzenDropDown>
+                </RadzenFormField>
+            </RadzenColumn>
 
-                <div class="row mb-3">
-                    <label for="matchDate" class="col-form-label col-md-3">Match dato: </label>
-                    <div class="col-md-8">
-                        <InputDate id="lastName" @bind-Value="@match.MatchDate" 
-                            class="form-control col-md-8" placeholder="Match dato"></InputDate>
-                    </div>
-                    <ValidationMessage class="offset-md-3 col-md-8" For="@(() => match.MatchDate)" />
-                </div>
-                <div class="row mb-3">
-                    <label for="Name" class="col-form-label col-md-3">Tekst: </label>
-                    <div class="col-md-8">
-                        <InputText id="lastName" @bind-Value="@match.MatchText"
-                               class="form-control col-md-8" placeholder="Tekst"></InputText>
-                    </div>
-                    <ValidationMessage class="offset-md-3 col-md-8" For="@(() => match.MatchText)" />
-                </div>
-                <div class="row mb-3">
-                    <label for="Sponsor" class="col-form-label col-md-3">Sponsor</label>
-                    <div class="col-md-8">
-                        <InputText id="Sponsor" @bind-Value="@match.Sponsor"
-                               class="form-control col-md-8" placeholder="Sponsor"></InputText>
-                    </div>
-                    <ValidationMessage class="offset-md-3 col-md-8" For="@(() => match.MatchText)" />
-                </div>
-                <div class="row mb-3">
-                    <label for="matchform" class="col-form-label col-md-3">Matchform:</label>
-                    <div class="col-md-8">
-                        <InputSelect id="matchform" class="form-select col-md-8" @bind-Value="@match.MatchformId">
-                            @foreach (var item in matchForms)
-                            {
-                                <option value="@item.Key">@item.Value</option>
-                            }
-                        </InputSelect>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <label for="club" class="col-form-label col-md-3">Klub:</label>
-                    <div class="col-md-8">
-                        <InputSelect id="course" class="form-select col-md-8"
-                             Value="@match.ClubId"
-                             ValueExpression="@(()=>match.ClubId)"
-                             ValueChanged="@((int value) => OnClubChanged(value))">
-                            @foreach (var item in clubs)
-                            {
-                                <option value="@item.ClubId">@item.ClubName</option>
-                            }
-                        </InputSelect>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <label for="course" class="col-form-label col-md-3">Bane:</label>
-                    <div class="col-md-8">
-                        <InputSelect id="course" class="form-select col-md-8" @bind-Value="@match.CourseDetailId">
-                            @foreach (var item in clubCourses)
-                            {
-                                <option value="@item.CourseDetailId">@item.CourseText</option>
-                            }
-                        </InputSelect>
-                    </div>
-                </div>
-            <div class="row mb-3">
-                <label for="Official" class="col-form-label col-md-3">Tællende</label>
-                <div class="col-md-3">
-                    <InputCheckbox id="Official" @bind-Value="@match.Official"
-                            class="form-check-input" placeholder="Sponsor"></InputCheckbox>
-                </div>
-                <label for="Shootout" class="col-form-label col-md-3">Shoot out</label>
-                <div class="col-md-3">
-                    <InputCheckbox id="Shootout" @bind-Value="@match.Shootout"
-                            class="form-check-input"></InputCheckbox>
-                </div>
-            </div>
-                <button type="submit" class="btn btn-primary me-1">Gem match</button>
-
-            </EditForm>
- *@        </RadzenRow>
+        </RadzenRow>
     </RadzenStack>
+
+    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="1rem" class="rz-mt-8 rz-mb-4">
+        <RadzenButton ButtonType="ButtonType.Submit" Size="ButtonSize.Medium" Icon="save" Text="Opdater" ButtonStyle="ButtonStyle.Success" />
+        <RadzenButton Click="@((args) => dialogService.Close(false))" Text="Fortryd" ButtonStyle="ButtonStyle.Base" Style="width: 120px" />
+    </RadzenStack>
+    </RadzenTemplateForm>
+}
+
+@if (Message != null)
+{
+    <RadzenBody>
+        <div class="rz-p-4">
+            @Message
+        </div>
+    </RadzenBody>
+
 }
