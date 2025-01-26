@@ -5,7 +5,7 @@
 
 @if (match != null)
 {
-    <RadzenTemplateForm Data="@match" Submit="@((MatchModel args) => { Submit(args); })">
+    <RadzenTemplateForm Data="@match" TItem=MatchModel Submit="@OnSubmit">
         <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" JustifyContent="JustifyContent.Start" Wrap="FlexWrap.Wrap" Gap="1rem">
         <RadzenRow AlignItems="AlignItems.Start">
             <RadzenColumn Size="12" >

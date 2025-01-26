@@ -2,6 +2,7 @@
 using MSCaddie.Shared.Models;
 using MSCaddie.Shared.Services;
 using Radzen;
+using Radzen.Blazor.Rendering;
 
 namespace MSCaddie.Components;
 
@@ -31,6 +32,11 @@ public partial class MemberDetailViewBase : ComponentBase
         }
     }
 
+    protected async Task OnPlayerChanged(int i)
+    {
+        player = await playerSvc.GetPlayer(i);
+        StateHasChanged();
+    }
     protected async Task OnSubmit(PlayerModel player)
     {
         try
@@ -43,6 +49,5 @@ public partial class MemberDetailViewBase : ComponentBase
         {
             Message = e.ToString();
         }
-
     }
 }

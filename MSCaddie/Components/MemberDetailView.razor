@@ -3,23 +3,21 @@
 
 @rendermode InteractiveServer
 
-@if (playerId < 0)
-{
-}
-
 @if (player != null)
 {
     <RadzenTemplateForm Data="@player" TItem=PlayerModel Submit="@OnSubmit">
         <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" JustifyContent="JustifyContent.Start" Wrap="FlexWrap.Wrap" Gap="1rem">
 
-         <RadzenFieldset Text="Nyt medlem" Visible="@(NonMembers != null)">
+         <RadzenFieldset Text="Nyt medlem" Visible="@(playerId < 0)">
             <RadzenStack  Gap="1rem">
-                <RadzenRow AlignItems="AlignItems.Center">
+                <RadzenRow AlignItems="AlignItems.End">
                     <RadzenColumn Size="12" SizeMD="4">
-                        <RadzenLabel Text="Credit Card" Component="CardId" />
+                        <RadzenLabel Text="Credit Card" />
                     </RadzenColumn>
                     <RadzenColumn Size="12" SizeMD="8">
-                        <RadzenDropDown @bind-Value="player.PlayerId" AllowClear="true" Placeholder="Select something" Data="@NonMembers" Style="width: 100%;" TextProperty="CardNr" ValueProperty="CardId" Name="CardId"></RadzenDropDown>
+                        <RadzenDropDown @bind-Value="player.VgcNo" AllowClear="true" Placeholder="Vælg medlem" 
+                            Data="@NonMembers" Style="width: 100%;" 
+                            TextProperty="Fullname" ValueProperty="VgcNo" ></RadzenDropDown>
                     </RadzenColumn>
                 </RadzenRow>
             </RadzenStack>

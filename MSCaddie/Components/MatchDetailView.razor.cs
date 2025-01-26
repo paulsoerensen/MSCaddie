@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
 using MSCaddie.Shared.Models;
 using MSCaddie.Shared.Services;
 using Radzen;
@@ -72,7 +71,7 @@ public partial class MatchDetailViewBase : ComponentBase
         StateHasChanged();
     }
 
-    protected async Task Submit(MatchModel match)
+    protected async Task OnSubmit(MatchModel match)
     {
         try
         {
