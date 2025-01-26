@@ -52,7 +52,7 @@ namespace MSCaddie.Data
 
             using var cmd = con.CreateCommand();
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.CommandText = "[dbo].[PlayerUpsert]";
+            cmd.CommandText = "[ms].[PlayerUpsert]";
             cmd.Parameters.AddWithValue("vgcNo", model.@VgcNo);
             cmd.Parameters.AddWithValue("Firstname", model.Firstname);
             cmd.Parameters.AddWithValue("Lastname", model.Lastname);

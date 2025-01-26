@@ -21,9 +21,11 @@ public class PlayerService : IPlayerService
         return await _repo.GetPlayer(vgcno);
         //return await _client.GetFromJsonAsync<PlayerDto>($"BaseAddress/{vgcno}");
     }
-    public async Task<IEnumerable<PlayerModel?>> GetPlayers()
+    public async Task<IEnumerable<PlayerModel?>?> GetPlayers()
     {
-        return await _repo.GetPlayers(season);
+        var res =  await _repo.GetPlayers(season);
+        return res?.Where(player => player?.Season == season);
+
         //return await _client.GetFromJsonAsync<IEnumerable<PlayerDto>>(BaseAddress);
     }
     public async Task<IEnumerable<PlayerModel?>?> GetNonMembers()

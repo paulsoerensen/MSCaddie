@@ -15,9 +15,10 @@
                         <RadzenLabel Text="Credit Card" />
                     </RadzenColumn>
                     <RadzenColumn Size="12" SizeMD="8">
-                        <RadzenDropDown @bind-Value="player.VgcNo" AllowClear="true" Placeholder="Vælg medlem" 
-                            Data="@NonMembers" Style="width: 100%;" 
-                            TextProperty="Fullname" ValueProperty="VgcNo" ></RadzenDropDown>
+                        <RadzenDropDown @bind-Value="player.VgcNo" AllowClear="true" Placeholder="Vælg medlem"
+                                            Data="@NonMembers" Style="width: 100%;" TValue="int"
+                                Change="@(args => OnPlayerChanged((int)args))"
+                                TextProperty="Fullname" ValueProperty="VgcNo" ></RadzenDropDown>
                     </RadzenColumn>
                 </RadzenRow>
             </RadzenStack>

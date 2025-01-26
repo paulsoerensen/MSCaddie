@@ -42,6 +42,7 @@ public partial class MemberDetailViewBase : ComponentBase
         try
         {
             Message = string.Empty;
+            player.Season = player.Season;
             player = await playerSvc.UpsertPlayer(player);
             dialogService.Close(true);
         }
