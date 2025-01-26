@@ -16,14 +16,13 @@ namespace MSCaddie.Data
         }
 
         #region Player
-        public async Task<IEnumerable<Player?>> GetPlayers(int season)
+        public async Task<IEnumerable<PlayerModel?>> GetPlayers(int season)
         {
             try
             {
                 string sql = "exec [ms].[PlayerSelectAll] @Season";
                 using IDbConnection db = new SqlConnection(ConnectionString);
-                var res = await db.QueryAsync<Player>(sql, new { Season=season });
-                return res.ToList();
+                return await db.QueryAsync<PlayerModel>(sql, new { Season=season });
             }
             catch (Exception e)
             {
@@ -31,7 +30,12 @@ namespace MSCaddie.Data
                 return null;
             }
         }
-        public async Task<Player?> GetPlayer(int vgcNo)
+        public async Task<IEnumerable<PlayerModel?>?> GetNonMembers(int season)
+        {
+            var res = await GetPlayers(season);
+            return res?.Where(player => player?.Season == 0);
+        }
+        public async Task<PlayerModel?> GetPlayer(int vgcNo)
         {
             string sql = @"SELECT Top(1) [VgcNo],[FirstName],[LastName],[ZipCode],[City],[Address],[Email]," +
                 "[Sponsor],[Phone],[CellPhone],[HcpIndex],[HcpUpdated]," +
@@ -39,10 +43,10 @@ namespace MSCaddie.Data
                 "FROM ms.Player where [vgcNo]=@vgcNo";
 
             using (IDbConnection db = new SqlConnection(ConnectionString))
-                return (Player?)(await db.QueryAsync<Player>(sql, new { vgcNo })).FirstOrDefault();
+                return (PlayerModel?)(await db.QueryAsync<PlayerModel>(sql, new { vgcNo })).FirstOrDefault();
         }
 
-        public async Task<Player> PlayerUpsert(Player model)
+        public async Task<PlayerModel> PlayerUpsert(PlayerModel model)
         {
             using var con = new SqlConnection(ConnectionString);
 

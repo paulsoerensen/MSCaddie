@@ -6,51 +6,35 @@
 <PageTitle>Medlemmer</PageTitle>
 
 
-@if (members == null)
+@if (players == null)
 {
     <div Position="Position.Absolute.Top.Is50.Start.Is50.Translate.Middle"><DisplaySpinner /></div>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th width="50px">VGC nr.</th>
-                <th width="200px">Navn</th>
-                <th width="50px">Mobil</th>
-                <th width="70px">Mail</th>
-                <th width="70px">Aut.</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var member in members)
-            {
-                <tr>
-                    <td>@member.VgcNo</td>
-                    <td>@member.Fullname</td>
-                    <td>@member.Phone</td>
-                    <td>@member.Email</td>
-                    <td>@member.Authorized</td>
-                    <AuthorizeView>
-                        <Authorized>
-                        <td>
-                                <a href="@RouteUtils.MatchResultView(@member.VgcNo)" class="btn btn-primary table-btn">
-                                    <Icon Name="IconName.BadgeVrFill" />
-                            </a>
-                                <a href="@RouteUtils.MatchDetailView(@member.VgcNo)" class="btn btn-primary table-btn">
-                                <Icon Name="IconName.HddNetwork" />
-                            </a>
-                        </td>
-                        </Authorized>
-                        <NotAuthorized>
-                            <td></td>
-                        </NotAuthorized>
-                    </AuthorizeView>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="container">
+        <div class="row py-5">
+            <RadzenDataGrid @ref="playerGrid" AllowFiltering="false" FilterMode=FilterMode.Simple AllowPaging="false" AllowSorting="true"
+                            Data="@players" TItem="PlayerModel" AllowVirtualization="true" AllowColumnResize="true">
+                <HeaderTemplate>
+                    <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle" Text="Nyt medlem" Click="@(args => OpenPlayer(-1))" />
+                </HeaderTemplate>
+
+                <Columns>
+                    <RadzenDataGridColumn TItem="PlayerModel" Property="VgcNo" Title="VGC Nr." Width="6rem" />
+                    <RadzenDataGridColumn TItem="PlayerModel" Property="Fullname" Title="Navn" Width="12rem" />
+                    <RadzenDataGridColumn TItem="PlayerModel" Property="Email" Title="Email"  />
+                    <RadzenDataGridColumn TItem="PlayerModel" Property="Phone" Title="Mobil" Width="10rem" TextAlign="TextAlign.Center" />
+                    <RadzenDataGridColumn TItem="PlayerModel" Property="HcpIndex" Title="Hcp" Width="5rem" TextAlign="TextAlign.Center"/>
+                    <RadzenDataGridColumn Context="player" TextAlign="TextAlign.Right">
+                        <Template Context="player">
+                            <RadzenButton Icon="edit" Click="@(args => OpenPlayer(player!.VgcNo))" ButtonStyle="ButtonStyle.Success" />
+                        </Template>
+                    </RadzenDataGridColumn>
+                </Columns>
+            </RadzenDataGrid>
+        </div>
+    </div>
 }
 
 

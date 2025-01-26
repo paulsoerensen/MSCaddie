@@ -40,10 +40,10 @@ else
                         @(data.MatchDateDisplay)
                     </Template>
                 </RadzenDataGridColumn>
-                    <RadzenDataGridColumn TItem="MatchModel" Property="CourseText" Title="Bane" Width="12rem" />
-                    <RadzenDataGridColumn TItem="MatchModel" Property="Matchform" Title="Match form" Width="12rem" />
-                    <RadzenDataGridColumn TItem="MatchModel" Property="Tee" Title="Tee" Width="10rem" TextAlign="TextAlign.Center" />
-                    <RadzenDataGridColumn TItem="MatchModel" Property="Official" Title="Officiel" Width="10rem" TextAlign="TextAlign.Center">
+                <RadzenDataGridColumn TItem="MatchModel" Property="CourseText" Title="Bane" Width="12rem" />
+                <RadzenDataGridColumn TItem="MatchModel" Property="Matchform" Title="Match form" Width="12rem" />
+                <RadzenDataGridColumn TItem="MatchModel" Property="Tee" Title="Tee" Width="10rem" TextAlign="TextAlign.Center" />
+                <RadzenDataGridColumn TItem="MatchModel" Property="Official" Title="Officiel" Width="10rem" TextAlign="TextAlign.Center">
                     <Template Context="data">
                         @if (data.Official)
                         {

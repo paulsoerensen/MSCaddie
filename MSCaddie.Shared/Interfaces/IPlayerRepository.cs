@@ -6,9 +6,11 @@ namespace  MSCaddie.Shared.Interfaces;
 public interface IPlayerRepository
 {
     #region Player
-    Task<IEnumerable<Player?>> GetPlayers(int season);
-    Task<Player?> GetPlayer(int playerId);
-    Task<Player> PlayerUpsert(Player model);
+    Task<IEnumerable<PlayerModel?>> GetPlayers(int season);
+    Task<IEnumerable<PlayerModel?>?> GetNonMembers(int season);
+
+    Task<PlayerModel?> GetPlayer(int playerId);
+    Task<PlayerModel> PlayerUpsert(PlayerModel model);
     #endregion
 
 }

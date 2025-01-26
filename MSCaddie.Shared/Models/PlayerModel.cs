@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace MSCaddie.Shared.Models;
 
-public class Player
+public class PlayerModel
 {
     public int PlayerId { get; set; }
     public int VgcNo { get; set; }

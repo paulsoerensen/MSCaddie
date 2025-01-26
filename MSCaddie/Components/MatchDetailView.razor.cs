@@ -4,7 +4,7 @@ using MSCaddie.Shared.Models;
 using MSCaddie.Shared.Services;
 using Radzen;
 
-namespace MSCaddie.Components.Account;
+namespace MSCaddie.Components;
 
 public partial class MatchDetailViewBase : ComponentBase
 {
@@ -22,7 +22,7 @@ public partial class MatchDetailViewBase : ComponentBase
     public List<CourseInfo> clubCourses { get; set; } = new List<CourseInfo>();
     public List<ListEntry> matchForms { get; set; } = new List<ListEntry>();
     public CourseInfo course { get; set; } = new CourseInfo();
-    protected IEnumerable<string> matchTexts 
+    protected IEnumerable<string> matchTexts
         = ["Torsdagsmatch", "ÅbningsMatch", "Afslutningsmatch"];
 
     protected IEnumerable<string> sponsorNames

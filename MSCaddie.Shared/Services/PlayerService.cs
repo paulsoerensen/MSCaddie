@@ -8,22 +8,30 @@ namespace MSCaddie.Shared.Services;
 public class PlayerService : IPlayerService
 {
     private readonly IPlayerRepository _repo;
+    private readonly IAdminRepository _repoAdmin;
+    private readonly int season;
 
     public PlayerService(IPlayerRepository repo)
     {
         _repo = repo;
+        season = _repoAdmin?.Season ?? DateTime.Now.Year;
     }
-    public async Task<Player?> GetPlayer(int vgcno)
+    public async Task<PlayerModel?> GetPlayer(int vgcno)
     {
         return await _repo.GetPlayer(vgcno);
         //return await _client.GetFromJsonAsync<PlayerDto>($"BaseAddress/{vgcno}");
     }
-    public async Task<IEnumerable<Player>?> GetPlayers()
+    public async Task<IEnumerable<PlayerModel?>> GetPlayers()
     {
-        return await _repo.GetPlayers(2024);
+        return await _repo.GetPlayers(season);
         //return await _client.GetFromJsonAsync<IEnumerable<PlayerDto>>(BaseAddress);
     }
-    public async Task<Player> UpsertPlayer(Player model)
+    public async Task<IEnumerable<PlayerModel?>?> GetNonMembers()
+    {
+        return await _repo.GetNonMembers(season);
+        //return await _client.GetFromJsonAsync<IEnumerable<PlayerDto>>(BaseAddress);
+    }
+    public async Task<PlayerModel> UpsertPlayer(PlayerModel model)
     {
         return await _repo.PlayerUpsert(model);
         //var response = await _client.PostAsJsonAsync<PlayerDto>($"{BaseAddress}", dto);
