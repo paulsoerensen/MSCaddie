@@ -14,19 +14,21 @@ else
 {
     <div class="container">
         <div class="row py-5">
-            <RadzenDataGrid @ref="playerGrid" AllowFiltering="false" FilterMode=FilterMode.Simple AllowPaging="false" AllowSorting="true"
-                            Data="@players" TItem="PlayerModel" AllowVirtualization="true" AllowColumnResize="true">
+            <RadzenDataGrid @ref="playerGrid" AllowFiltering="true" FilterMode=FilterMode.Advanced AllowPaging="false" AllowSorting="true"
+                            Data="@players" TItem="PlayerModel" AllowVirtualization="true" AllowColumnResize="true"
+                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterCleared=@FilterCleared
+                            LogicalFilterOperator="LogicalFilterOperator.Or" FilterPopupRenderMode="PopupRenderMode.OnDemand">
                 <HeaderTemplate>
                     <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle" Text="Nyt medlem" Click="@(args => OpenPlayer(-1))" />
                 </HeaderTemplate>
 
                 <Columns>
-                    <RadzenDataGridColumn TItem="PlayerModel" Property="VgcNo" Title="VGC Nr." Width="6rem" />
+                    <RadzenDataGridColumn TItem="PlayerModel" Property="VgcNo" Title="VGC Nr." Width="9rem" />
                     <RadzenDataGridColumn TItem="PlayerModel" Property="Fullname" Title="Navn" Width="12rem" />
                     <RadzenDataGridColumn TItem="PlayerModel" Property="Email" Title="Email"  />
                     <RadzenDataGridColumn TItem="PlayerModel" Property="Phone" Title="Mobil" Width="10rem" TextAlign="TextAlign.Center" />
-                    <RadzenDataGridColumn TItem="PlayerModel" Property="HcpIndex" Title="Hcp" Width="5rem" TextAlign="TextAlign.Center"/>
-                    <RadzenDataGridColumn Context="player" TextAlign="TextAlign.Right">
+                    <RadzenDataGridColumn TItem="PlayerModel" Property="HcpIndex" Title="Hcp index" Width="10rem" TextAlign="TextAlign.Center"/>
+                    <RadzenDataGridColumn Context="player" TextAlign="TextAlign.Right" Filterable="false">
                         <Template Context="player">
                             <RadzenButton Icon="edit" Click="@(args => OpenPlayer(player!.VgcNo))" ButtonStyle="ButtonStyle.Success" />
                         </Template>

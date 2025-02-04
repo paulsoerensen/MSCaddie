@@ -2,6 +2,7 @@
 using MSCaddie.Shared.Interfaces;
 using System.Net.Http.Json;
 using System.Text.Json;
+using System.Numerics;
 
 namespace MSCaddie.Shared.Services;
 
@@ -35,13 +36,14 @@ public class PlayerService : IPlayerService
     }
     public async Task<PlayerModel> UpsertPlayer(PlayerModel model)
     {
-        return await _repo.PlayerUpsert(model);
-        //var response = await _client.PostAsJsonAsync<PlayerDto>($"{BaseAddress}", dto);
-        //if (response.IsSuccessStatusCode)
-        //{
-        //    return await JsonSerializer.DeserializeAsync<PlayerDto>(await response.Content.ReadAsStreamAsync());
-        //}
-        //return null;
+        await _repo.PlayerUpsert(model);
+        model.Season = season;
+
+        var dto = await _repo.MembershipUpsert(model);
+        model.MemberShipId = dto.MembershipId;
+        model.Season = dto.Season;
+
+        return model;
     }
 }
 

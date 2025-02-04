@@ -1,0 +1,48 @@
+﻿
+<Container>
+    @if (Players != null && Players.Any())
+    {
+        <Select TValue="int" Margin="Margin.Is3" SelectedValue="@playerId" SelectedValueChanged="@OnSelectedPlayerChanged">
+            @foreach (var player in Players)
+            {
+                <SelectItem Value="player.PlayerId">@player.PlayerName</SelectItem>
+            }
+        </Select>
+    }
+    else
+    {
+        <div class="spinner"></div>
+    }
+</Container>
+
+
+@code {
+    [Inject]
+    private IPlayerService? PlayerService { get; set; }
+
+    [Parameter]
+    public IEnumerable<PlayerModel> Players { get; set; }
+
+    [Parameter]
+    public EventCallback<int> SelectedItemChanged { get; set; }
+
+    public int playerId { get; set; } = -1;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (playerId < 0)
+        {
+            PlayerModel? player = Players?.FirstOrDefault();
+            if (player is not null)
+            {
+                await OnSelectedPlayerChanged(player.PlayerId);
+            }
+        }
+    }
+
+    protected async Task OnSelectedPlayerChanged(int value)
+    {
+        playerId = value;
+        await SelectedItemChanged.InvokeAsync(value);
+    }
+}

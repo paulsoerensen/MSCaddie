@@ -4,7 +4,7 @@ namespace MSCaddie.Shared.Services
 {
     public interface IMatchPlayService
     {
-        string Baseaddress { get; }
+        //string Baseaddress { get; }
 
 
         Task<LeagueMatch?> GetMatchplay(int matchId);

@@ -1,3 +1,4 @@
+using MSCaddie.Shared.Dtos;
 using  MSCaddie.Shared.Models;
 
 
@@ -11,6 +12,10 @@ public interface IPlayerRepository
 
     Task<PlayerModel?> GetPlayer(int playerId);
     Task<PlayerModel> PlayerUpsert(PlayerModel model);
+    #endregion
+
+    #region MemberShip
+    Task<MembershipDto> MembershipUpsert(PlayerModel model);
     #endregion
 
 }

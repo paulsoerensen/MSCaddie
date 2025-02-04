@@ -1,14 +1,14 @@
-using MSCaddie.Shared.Models;
+using MSCaddie.Shared.Dtos;
 
-namespace  MSCaddie.Shared.Interfaces;
+namespace MSCaddie.Shared.Interfaces;
 
 public interface IMatchPlayRepository
 {
 
     #region MatchPlay
-    Task<IEnumerable<LeagueTeam>> MatchPlayTeamList();
-    Task<IEnumerable<LeagueMatch>> GetMatchplays();
-    Task<LeagueMatch> GetMatchplay(int matchId);
+    Task<IEnumerable<MatchPlayTeamDto>> MatchPlayTeamList();
+    Task<IEnumerable<MatchPlayTeamDto>> GetMatchplays();
+    Task<MatchPlayTeamDto> GetMatchplay(int matchId);
 
     //Task<IEnumerable<ListEntry>?> GetCompetitions();
     //Task<IEnumerable<CompetitionResult>> GetCompetitionResults(int matchId);

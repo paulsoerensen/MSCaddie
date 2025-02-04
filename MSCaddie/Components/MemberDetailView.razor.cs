@@ -2,7 +2,6 @@
 using MSCaddie.Shared.Models;
 using MSCaddie.Shared.Services;
 using Radzen;
-using Radzen.Blazor.Rendering;
 
 namespace MSCaddie.Components;
 
@@ -44,6 +43,7 @@ public partial class MemberDetailViewBase : ComponentBase
             Message = string.Empty;
             player.Season = player.Season;
             player = await playerSvc.UpsertPlayer(player);
+
             dialogService.Close(true);
         }
         catch (Exception e)

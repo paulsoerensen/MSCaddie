@@ -1,10 +1,9 @@
-﻿using MSCaddie.Shared.Models;
-using Microsoft.AspNetCore.Components;
-using MSCaddie.Shared.Services;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using MSCaddie.Components.Account;
-using Radzen.Blazor;
+using MSCaddie.Shared.Models;
+using MSCaddie.Shared.Services;
 using Radzen;
+using Radzen.Blazor;
 using System.Text.Json;
 
 namespace MSCaddie.Components.Pages;
@@ -50,7 +49,7 @@ public partial class MemberListViewBase : ComponentBase, IDisposable
                    Resize = OnResize,
                    Drag = OnDrag,
                    Width = Settings != null ? Settings.Width : "700px",
-                   Height = Settings != null ? Settings.Height : "612px",
+                   Height = Settings != null ? Settings.Height : "312px",
                    Left = Settings != null ? Settings.Left : null,
                    Top = Settings != null ? Settings.Top : null
                });
@@ -99,6 +98,11 @@ public partial class MemberListViewBase : ComponentBase, IDisposable
         Settings.Height = $"{size.Height}px";
 
         InvokeAsync(SaveStateAsync);
+    }
+
+    protected async Task FilterCleared() 
+    {
+        await playerGrid.FirstPage();
     }
 
     DialogSettings _settings;

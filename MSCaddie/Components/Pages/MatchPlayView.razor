@@ -1,0 +1,78 @@
+﻿@using System.Linq;
+@page "/MatchPlayView"
+@inherits MatchPlayViewBase
+
+
+@rendermode InteractiveServer
+
+<Card Border="Border.Rounded" Background="Background.Info" Padding="Padding.Is1" Margin="Margin.Is3" Flex="Flex.Grow.Is1">
+    <CardBody>
+        <CardTitle>
+            Oversigt over de matcher, den enkelte spiller er sat på.
+        </CardTitle>
+        <CardText>
+            Kun spillere, der er sat på til en match, vises i listen. <b>Bekræftet</b> betyder at du har sagt ja til matchen 
+        </CardText>
+    </CardBody>
+</Card>
+
+<PlayerSelect SelectedItemChanged="OnSelectedPlayerChanged" Players="@players" />
+
+@if (matches is not null)
+{
+    <DataGrid TItems="Player" Data="@matches" Responsive>
+        <DataGridColumn Field="@nameof(PlayerModel.SerieName)" Caption="Række"/>
+        <DataGridNumericColumn Field="@nameof(Player.MatchDate)" Caption="Dato">
+                <DisplayTemplate>
+                    @{
+                    var date = (context as Dto.MatchPlayer)?.MatchDate;
+
+                        if (date != null)
+                        {
+                            @($"{date.Value.ToString("dddd dd MMM, yyyy")}")
+                        }
+                    }
+                </DisplayTemplate>
+        </DataGridNumericColumn>
+        <DataGridColumn Field="@nameof(Dto.MatchPlayer.Course)" Caption="Bane" />
+        <DataGridColumn Field="@nameof(Dto.MatchPlayer.Opponent)" Caption="Modstander" />
+        <DataGridNumericColumn Field="@nameof(Dto.MatchPlayer.LastUpdate)" Caption="Opdateret">
+            <DisplayTemplate>
+                @{
+                    var date = (context as Dto.MatchPlayer)?.LastUpdate;
+
+                    if (date != null)
+                    {
+                        @($"{date.Value.ToString("dddd dd MMM, yyyy")}")
+                    }
+                }
+            </DisplayTemplate>
+        </DataGridNumericColumn>
+        <DataGridCheckColumn Field="@nameof(Dto.MatchPlayer.Confirmed)" 
+            TextAlignment="TextAlignment.Center" Caption="Bekræftet" />
+    </DataGrid> 
+}
+
+
+
+@code {
+    public int _playerId { get; set; }
+    protected IEnumerable<PlayerModel>? players;
+    //protected IEnumerable<MatchPlayer>? matches;
+    [Inject] public IMatchService matchPlaySvc { get; set; } = default!;
+    [Inject] public IPlayerService playerSvc { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        players = await matchPlaySvc.PlayersWithMatch();
+    }
+
+    protected async Task OnSelectedPlayerChanged(int playerId)
+    {
+        if (_playerId != playerId)
+        {
+            _playerId = playerId;
+            players = await playerSvc.PlayersMatches(_playerId);
+        }
+    }
+}

@@ -26,4 +26,10 @@
     <ProjectReference Include="..\MSCaddie.Shared\MSCaddie.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Components\Pages\MatchPlayView.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+  </ItemGroup>
+
 </Project>

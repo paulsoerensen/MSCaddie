@@ -4821,23 +4821,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\pauls\\.nuget\\packages\\": {},
+    "C:\\Users\\PaulSoerensen\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie\\MSCaddie.csproj",
+      "projectUniqueName": "C:\\source\\privat\\MSCaddie\\MSCaddie\\MSCaddie.csproj",
       "projectName": "MSCaddie",
-      "projectPath": "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie\\MSCaddie.csproj",
-      "packagesPath": "C:\\Users\\pauls\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie\\obj\\",
+      "projectPath": "C:\\source\\privat\\MSCaddie\\MSCaddie\\MSCaddie.csproj",
+      "packagesPath": "C:\\Users\\PaulSoerensen\\.nuget\\packages\\",
+      "outputPath": "C:\\source\\privat\\MSCaddie\\MSCaddie\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\pauls\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\PaulSoerensen\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -4853,8 +4853,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie.Shared\\MSCaddie.Shared.csproj": {
-              "projectPath": "D:\\Projects\\MensSection\\MSCaddie\\MSCaddie.Shared\\MSCaddie.Shared.csproj"
+            "C:\\source\\privat\\MSCaddie\\MSCaddie.Shared\\MSCaddie.Shared.csproj": {
+              "projectPath": "C:\\source\\privat\\MSCaddie\\MSCaddie.Shared\\MSCaddie.Shared.csproj"
             }
           }
         }
@@ -4868,7 +4868,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "all"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -4934,28 +4935,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.11, 8.0.11]"
-          },
-          {
-            "name": "Microsoft.Net.Sdk.Compilers.Toolset",
-            "version": "[9.0.100, 9.0.100]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[8.0.11, 8.0.11]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.11, 8.0.11]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[8.0.11, 8.0.11]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"

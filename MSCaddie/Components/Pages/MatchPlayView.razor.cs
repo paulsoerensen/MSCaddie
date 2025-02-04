@@ -1,0 +1,167 @@
+﻿using Microsoft.AspNetCore.Components;
+using MSCaddie.Shared.Models;
+using MSCaddie.Shared.Services;
+using Radzen.Blazor;
+using Radzen;
+using MSCaddie.Components.Account;
+using Microsoft.JSInterop;
+using System.Text.Json;
+
+
+namespace MSCaddie.Components.Pages;
+
+public partial class MatchPlayViewBase : ComponentBase
+{
+    [Inject] protected NavigationManager NavigationManager { get; set; } = default!;
+    [Inject] public ILogger<MatchPlayViewBase> _logger { get; set; } = default!;
+    [Inject] public IMatchService matchSvc { get; set; } = default!;
+    [Inject] public ICourseService courseSvc { get; set; } = default!;
+
+    [Inject] public DialogService DialogService { get; set; }
+    [Inject] public IJSRuntime JSRuntime { get; set; }
+
+    public IEnumerable<MatchModel>? matches => allMatches?.Where(x => x.MatchDate > DateTime.Now.AddDays(-7) || allSeason == true);
+    public IEnumerable<MatchModel> allMatches { get; set; } = default!;
+    public string? Message { get; set; }
+
+    protected bool allSeason { get; set; } = true;
+    protected string matchFilter { get; set; } = "Alle matcher";
+    protected MatchModel? matchModel;
+
+    protected override async Task OnInitializedAsync()
+
+    {
+        allMatches = (await matchSvc.GetMatches()).ToList();
+        //matchForms = (await matchSvc.GetMatchforms()).ToList();
+        Message = $"* {allSeason}, {DateTime.Now.Second}";
+    }
+
+    //protected void ChangeMatchFilter()
+    //{
+    //    allSeason = !allSeason;
+    //    Message = $"{allSeason}, {DateTime.Now.Second}";
+    //    matchFilter = allSeason ? "Alle matcher" : "Kun aktuelle matcher";
+    //    StateHasChanged();
+    //}
+
+    //protected RadzenDataGrid<MatchModel> matchGrid;
+
+    //// Method to open the dialog and pass the matchId
+    //public async Task OpenMatch(int matchId)
+    //{
+    //    await LoadStateAsync();
+
+    //    string txt;
+    //    if (matchId > 0)
+    //    {
+    //        matchModel = await matchSvc.GetMatch(matchId);
+    //        txt = matchModel!.MatchText;
+    //    }
+    //    else
+    //    {
+    //        txt = "Ny match";
+    //    }
+
+    //    var result = await DialogService.OpenAsync<MatchDetailView>(txt,
+    //           new Dictionary<string, object>() { { "MatchId", matchId } },
+    //           new DialogOptions()
+    //           {
+    //               Resizable = true,
+    //               Draggable = true,
+    //               Resize = OnResize,
+    //               Drag = OnDrag,
+    //               Width = Settings != null ? Settings.Width : "700px",
+    //               Height = Settings != null ? Settings.Height : "612px",
+    //               Left = Settings != null ? Settings.Left : null,
+    //               Top = Settings != null ? Settings.Top : null
+    //           });
+
+    //    if (result == null)
+    //    {
+    //        // CancelEditDetail(orderDetail);
+    //    }
+    //    else if (result)
+    //    {
+    //        allMatches = await matchSvc.GetMatches();
+    //    }
+    //    else
+    //    {
+    //        // CancelEditDetail(orderDetail);
+    //    }
+
+    //    await SaveStateAsync();
+    //}
+
+    //void OnDrag(System.Drawing.Point point)
+    //{
+    //    JSRuntime.InvokeVoidAsync("eval", $"console.log('Dialog drag. Left:{point.X}, Top:{point.Y}')");
+
+    //    if (Settings == null)
+    //    {
+    //        Settings = new DialogSettings();
+    //    }
+
+    //    Settings.Left = $"{point.X}px";
+    //    Settings.Top = $"{point.Y}px";
+
+    //    InvokeAsync(SaveStateAsync);
+    //}
+
+    //void OnResize(System.Drawing.Size size)
+    //{
+    //    JSRuntime.InvokeVoidAsync("eval", $"console.log('Dialog resize. Width:{size.Width}, Height:{size.Height}')");
+
+    //    if (Settings == null)
+    //    {
+    //        Settings = new DialogSettings();
+    //    }
+
+    //    Settings.Width = $"{size.Width}px";
+    //    Settings.Height = $"{size.Height}px";
+
+    //    InvokeAsync(SaveStateAsync);
+    //}
+
+    //DialogSettings _settings;
+    //public DialogSettings Settings
+    //{
+    //    get
+    //    {
+    //        return _settings;
+    //    }
+    //    set
+    //    {
+    //        if (_settings != value)
+    //        {
+    //            _settings = value;
+    //            InvokeAsync(SaveStateAsync);
+    //        }
+    //    }
+    //}
+
+    //private async Task LoadStateAsync()
+    //{
+    //    await Task.CompletedTask;
+
+    //    var result = await JSRuntime.InvokeAsync<string>("window.localStorage.getItem", "DialogSettings");
+    //    if (!string.IsNullOrEmpty(result))
+    //    {
+    //        _settings = JsonSerializer.Deserialize<DialogSettings>(result);
+    //    }
+    //}
+
+    //private async Task SaveStateAsync()
+    //{
+    //    await Task.CompletedTask;
+
+    //    await JSRuntime.InvokeVoidAsync("window.localStorage.setItem", "DialogSettings", JsonSerializer.Serialize<DialogSettings>(Settings));
+    //}
+
+    //public class DialogSettings
+    //{
+    //    public string Left { get; set; }
+    //    public string Top { get; set; }
+    //    public string Width { get; set; }
+    //    public string Height { get; set; }
+    //}
+}

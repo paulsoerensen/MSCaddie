@@ -8,28 +8,31 @@
     <RadzenTemplateForm Data="@player" TItem=PlayerModel Submit="@OnSubmit">
         <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" JustifyContent="JustifyContent.Start" Wrap="FlexWrap.Wrap" Gap="1rem">
 
-         <RadzenFieldset Text="Nyt medlem" Visible="@(playerId < 0)">
-            <RadzenStack  Gap="1rem">
-                <RadzenRow AlignItems="AlignItems.End">
-                    <RadzenColumn Size="12" SizeMD="4">
-                        <RadzenLabel Text="Credit Card" />
-                    </RadzenColumn>
-                    <RadzenColumn Size="12" SizeMD="8">
-                        <RadzenDropDown @bind-Value="player.VgcNo" AllowClear="true" Placeholder="Vælg medlem"
-                                            Data="@NonMembers" Style="width: 100%;" TValue="int"
-                                Change="@(args => OnPlayerChanged((int)args))"
-                                TextProperty="Fullname" ValueProperty="VgcNo" ></RadzenDropDown>
-                    </RadzenColumn>
-                </RadzenRow>
-            </RadzenStack>
-         </RadzenFieldset>
+@*          <RadzenFieldset Text="Nyt medlem" Visible="@(playerId < 0)">
+            <RadzenStack  Gap="1rem"> *@
+            <RadzenRow AlignItems="AlignItems.End" Visible="@(playerId < 0)">
+
+                <RadzenColumn Size="12">
+                    <RadzenDropDown @bind-Value="player.VgcNo" AllowClear="true" Placeholder="Vælg tidligere medlem"
+                                        Data="@NonMembers" Style="width: 100%;" TValue="int"
+                            Change="@(args => OnPlayerChanged((int)args))"
+                            TextProperty="Fullname" ValueProperty="VgcNo" >
+                    </RadzenDropDown>
+                </RadzenColumn>
+            </RadzenRow>
 
          <RadzenRow>
-            <RadzenColumn Size="6">
-                <RadzenFormField Text="VGC Nr." Variant="Variant.Outlined" Style="width: 100%;">
-                    <RadzenNumeric @bind-Value=@player.VgcNo InputAttributes="@(new Dictionary<string, object>() { { "aria-label", "enter value" } })" />
-                </RadzenFormField>
-            </RadzenColumn>
+                <RadzenColumn Size="12" SizeMD="6">
+                    <RadzenFormField Text="VGC Nr." Variant="Variant.Outlined" Style="width: 100%;">
+                        <RadzenNumeric @bind-Value=@player.VgcNo InputAttributes="@(new Dictionary<string, object>() { { "aria-label", "enter value" } })" />
+                    </RadzenFormField>
+                </RadzenColumn>
+
+                <RadzenColumn Size="12" SizeMD="6">
+                    <RadzenFormField Text="Hcp" Variant="Variant.Outlined" Style="width: 100%;">
+                        <RadzenNumeric @bind-Value=@player.HcpIndex />
+                    </RadzenFormField>
+                </RadzenColumn>
          </RadzenRow>
 
          <RadzenRow>
@@ -39,27 +42,19 @@
                 </RadzenFormField>
             </RadzenColumn>
 
-                <RadzenColumn Size="12" SizeMD="6">
+            <RadzenColumn Size="12" SizeMD="6">
                 <RadzenFormField Text="Efternavn" Variant="Variant.Outlined" Style="width: 100%;">
-                        <RadzenTextBox @bind-Value=@player.Lastname />
+                    <RadzenTextBox @bind-Value=@player.Lastname />
                 </RadzenFormField>
             </RadzenColumn>
          </RadzenRow>
 
-         <RadzenRow AlignItems="AlignItems.Start">
+         <RadzenRow >
             <RadzenColumn Size="12" SizeMD="6">
-                <RadzenFormField Text="Email" Variant="Variant.Outlined" Style="width: 100%;">
-                        <RadzenTextBox Name="Email" @bind-Value=@player.Email Style="width: 100%" />
-                    <RadzenEmailValidator Component="Email" Text="Provide a valid email address"  />
-                </RadzenFormField>
-            </RadzenColumn>
-         </RadzenRow>
-
-         <RadzenRow>
-            <RadzenColumn Size="12" SizeMD="6">
-                <RadzenFormField Text="Hcp" Variant="Variant.Outlined" Style="width: 100%;">
-                    <RadzenNumeric @bind-Value=@player.HcpIndex />
-                </RadzenFormField>
+                    <RadzenFormField Text="Email" Variant="Variant.Outlined" Style="width: 100%">
+                        <RadzenTextBox Name="Email" @bind-Value=@player.Email />
+@*                     <RadzenEmailValidator Component="Email" Text="Provide a valid email address"  />
+ *@                </RadzenFormField>
             </RadzenColumn>
 
             <RadzenColumn Size="12" SizeMD="6">
@@ -79,10 +74,7 @@
 
 @if (Message != null)
 {
-    <RadzenBody>
         <div class="rz-p-2">
             @Message
         </div>
-    </RadzenBody>
-
 }
