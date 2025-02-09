@@ -1,11 +1,12 @@
-﻿
+﻿@using MSCaddie.Shared.Services
+
 <Container>
     @if (Players != null && Players.Any())
     {
         <Select TValue="int" Margin="Margin.Is3" SelectedValue="@playerId" SelectedValueChanged="@OnSelectedPlayerChanged">
             @foreach (var player in Players)
             {
-                <SelectItem Value="player.PlayerId">@player.PlayerName</SelectItem>
+                <SelectItem Value="player.PlayerId">@player.Fullname</SelectItem>
             }
         </Select>
     }

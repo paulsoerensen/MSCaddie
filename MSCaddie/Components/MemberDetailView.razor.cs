@@ -43,7 +43,6 @@ public partial class MemberDetailViewBase : ComponentBase
             Message = string.Empty;
             player.Season = player.Season;
             player = await playerSvc.UpsertPlayer(player);
-
             dialogService.Close(true);
         }
         catch (Exception e)

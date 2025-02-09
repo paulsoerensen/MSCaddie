@@ -1,22 +1,27 @@
-﻿using MSCaddie.Shared.Models;
+﻿using MSCaddie.Shared.Dtos;
+using MSCaddie.Shared.Models;
 
-namespace MSCaddie.Shared.Services
+namespace MSCaddie.Shared.Services;
+
+public interface IMatchPlayService
 {
-    public interface IMatchPlayService
-    {
-        //string Baseaddress { get; }
+    //string Baseaddress { get; }
 
 
-        Task<LeagueMatch?> GetMatchplay(int matchId);
-        Task<IEnumerable<LeagueMatch>?> GetMatchplays();
-        Task<IEnumerable<LeagueTeam>?> GetMatchPlayTeams();
-        //Task<MatchDto> UpsertMatch(MatchDto match);
-        //Task<IEnumerable<MatchBirdieResultDto>> GetMatchBirdies(int matchId);
-        //Task<IEnumerable<MatchResultDto>?> MatchResultForRegistration(int matchId);
-        //Task<bool> UpsertResultMatch(MatchResultDto dto);
-        //Task<bool> MatchSettlement(int matchId);
-        //Task<bool> DeleteResultMatch(int matchResultId);
-        //Task<string> MatchRegistration(int matchResultId, string regFile);
-        //Task<IEnumerable<ListItem>?> GetMatchforms();
-    }
+    Task<IEnumerable<PlayerForMatchPlayModel>> GetPlayersForMatchPlay();
+    Task<IEnumerable<PlayerModel>> GetPlayersForMatchPlayPar();
+    Task MatchPlayTeamUpsert(PlayerForMatchPlayModel model);
+    Task DeleteMatchPlayPar(PlayerForMatchPlayModel model);
+
+    Task<LeagueMatch?> GetMatchplay(int matchId);
+    Task<IEnumerable<LeagueMatch>?> GetMatchplays();
+    Task<IEnumerable<LeagueTeam>?> GetMatchPlayTeams();
+    //Task<MatchDto> UpsertMatch(MatchDto match);
+    //Task<IEnumerable<MatchBirdieResultDto>> GetMatchBirdies(int matchId);
+    //Task<IEnumerable<MatchResultDto>?> MatchResultForRegistration(int matchId);
+    //Task<bool> UpsertResultMatch(MatchResultDto dto);
+    //Task<bool> MatchSettlement(int matchId);
+    //Task<bool> DeleteResultMatch(int matchResultId);
+    //Task<string> MatchRegistration(int matchResultId, string regFile);
+    //Task<IEnumerable<ListItem>?> GetMatchforms();
 }

@@ -38,29 +38,6 @@ else
             <RadzenDataGridColumn TItem="CourseInfo" Property="Tee" Title="Tee" Width="6rem" />
             <RadzenDataGridColumn TItem="CourseInfo" Property="Slope" Title="Slope" Width="6rem" />
             <RadzenDataGridColumn TItem="CourseInfo" Property="CourseRating" Title="CourseRating" Width="6rem" />
-@*             <RadzenDataGridColumn Width="150px" TextAlign="TextAlign.Center" TItem="CourseInfo" Filterable="false" Sortable="false">
-                <Template Context="data">
-                    <AuthorizeView>
-                        <Authorized Context="auth">
-                            <RadzenButton title="Aggregate energy on location" ButtonStyle="ButtonStyle.Info" Icon="model_training" Click=@(async () =>{
-                                      await PreconditionContainer.UpdateConnectionPointEnergyAggregation(data.PreconditionId);
-                                      notificationService.Notify(new NotificationMessage
-                                      {
-                                      Severity = NotificationSeverity.Success,
-                                      Summary = "ConnectionPoint energy aggregation updated",
-                                      Duration = 4000
-                                      });
-                                      }
-                                      ) />
-                            <RadzenButton Style="margin-left:7.5px" title="Edit" ButtonStyle="ButtonStyle.Secondary" Icon="edit" Click=@(() => NavigationManager.NavigateTo(RouteUtils.PreconditionDetails(data.PreconditionId))) />
-                        </Authorized>
-                        <NotAuthorized>
-                            <RadzenButton title="Edit" ButtonStyle="ButtonStyle.Secondary" Icon="edit" Click=@(() => NavigationManager.NavigateTo(RouteUtils.PreconditionDetails(data.PreconditionId))) />
-                        </NotAuthorized>
-                    </AuthorizeView>
-
-                </Template>
-            </RadzenDataGridColumn> *@
 
         </Columns>
     </RadzenDataGrid>

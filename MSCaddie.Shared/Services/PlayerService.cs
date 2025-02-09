@@ -3,6 +3,7 @@ using MSCaddie.Shared.Interfaces;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Numerics;
+using MSCaddie.Shared.Dtos;
 
 namespace MSCaddie.Shared.Services;
 
@@ -45,5 +46,6 @@ public class PlayerService : IPlayerService
 
         return model;
     }
+
 }
 

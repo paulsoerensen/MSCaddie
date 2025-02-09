@@ -57,11 +57,7 @@ public class PlayerRepository : RepositoryBase, IPlayerRepository
         cmd.Parameters.AddWithValue("vgcNo", model.@VgcNo);
         cmd.Parameters.AddWithValue("Firstname", model.Firstname);
         cmd.Parameters.AddWithValue("Lastname", model.Lastname);
-        //cmd.Parameters.AddWithValue("ZipCode", model.ZipCode);
-        //cmd.Parameters.AddWithValue("City", model.City);
-        //cmd.Parameters.AddWithValue("Address", model.Address);
         cmd.Parameters.AddWithValue("Email", model.Email);
-        cmd.Parameters.AddWithValue("Sponsor", model.Sponsor);
         cmd.Parameters.AddWithValue("Phone", model.Phone);
         cmd.Parameters.AddWithValue("HcpIndex", model.HcpIndex);
 

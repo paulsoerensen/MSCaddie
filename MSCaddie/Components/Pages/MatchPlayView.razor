@@ -1,26 +1,62 @@
 ﻿@using System.Linq;
-@page "/MatchPlayView"
+@using MSCaddie.Shared.Services
+@page "/MatchPlay"
 @inherits MatchPlayViewBase
 
 
 @rendermode InteractiveServer
+<h1>Hulspil</h1>
 
-<Card Border="Border.Rounded" Background="Background.Info" Padding="Padding.Is1" Margin="Margin.Is3" Flex="Flex.Grow.Is1">
-    <CardBody>
-        <CardTitle>
-            Oversigt over de matcher, den enkelte spiller er sat på.
-        </CardTitle>
-        <CardText>
-            Kun spillere, der er sat på til en match, vises i listen. <b>Bekræftet</b> betyder at du har sagt ja til matchen 
-        </CardText>
-    </CardBody>
-</Card>
-
-<PlayerSelect SelectedItemChanged="OnSelectedPlayerChanged" Players="@players" />
-
-@if (matches is not null)
+@if (players is not null)
 {
-    <DataGrid TItems="Player" Data="@matches" Responsive>
+    <div class="container">
+        <div class="row py-5">
+            <RadzenDataGrid @ref="playerGrid" AllowFiltering="false" FilterMode=FilterMode.Simple AllowPaging="false" AllowSorting="true"
+                            Data="@teams" TItem="PlayerForMatchPlayModel" AllowVirtualization="true" AllowColumnResize="true">
+
+                <Columns>
+                    <RadzenDataGridColumn TItem="PlayerForMatchPlayModel" Property="Fullname" Title="Spiller" Width="12rem"/>
+                    <RadzenDataGridColumn TItem="PlayerForMatchPlayModel" Property="League" Title="Single" Width="20rem" TextAlign="TextAlign.Center">
+                        <EditTemplate Context="data">
+                            <RadzenRadioButtonList @bind-Value=data.LeagueId TValue="int">
+                                <Items>
+                                    <RadzenRadioButtonListItem Text="A" Value="1" TValue="int" />
+                                    <RadzenRadioButtonListItem Text="B" Value="2" TValue="int" />
+                                    <RadzenRadioButtonListItem Text="Deltager ikke" Value="0" TValue="int" />
+                                </Items>
+                            </RadzenRadioButtonList>
+                        </EditTemplate>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="PlayerForMatchPlayModel" Property="Fullname2" Title="Makker" Width="20rem" >
+                        <EditTemplate Context="data">
+                            <RadzenDropDown @bind-Value="data.VgcNoPartner" Data="@players" 
+                                TextProperty="@nameof(PlayerModel.Fullname)" 
+                                ValueProperty="@nameof(PlayerModel.VgcNo)" 
+                                Style="width:100%; display: block;"
+                                InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "Vælg makker" }})" />
+                        </EditTemplate>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn Context="data" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" FrozenPosition="FrozenColumnPosition.Right">
+                        <Template Context="data">
+@*                             <RadzenButton Icon="add_circle" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Shade="Shade.Lighter" Click="@(() => InsertAfterRow(data))" title="Add new row after this row" />
+ *@                            <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="rz-my-1 rz-ms-1" Click="@(args => EditRow(data))" @onclick:stopPropagation="true" />
+                            <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" Size="ButtonSize.Medium" Shade="Shade.Lighter" class="rz-my-1 rz-ms-1" Click="@(args => DeleteRow(data))" @onclick:stopPropagation="true" />
+                        </Template>
+                        <EditTemplate Context="data">
+                            <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@((args) => SaveRow(data))" aria-label="Save" />
+                            <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="rz-my-1 rz-ms-1" Click="@((args) => CancelEdit(data))" aria-label="Cancel" />
+                            <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" Size="ButtonSize.Medium" Shade="Shade.Lighter" class="rz-my-1 rz-ms-1" Click="@(args => DeleteRow(data))" aria-label="Delete" />
+                        </EditTemplate>
+                    </RadzenDataGridColumn>
+               
+                </Columns>
+            </RadzenDataGrid>
+        </div>
+    </div>
+
+
+
+@*     <DataGrid TItems="Player" Data="@matches" Responsive>
         <DataGridColumn Field="@nameof(PlayerModel.SerieName)" Caption="Række"/>
         <DataGridNumericColumn Field="@nameof(Player.MatchDate)" Caption="Dato">
                 <DisplayTemplate>
@@ -51,28 +87,7 @@
         <DataGridCheckColumn Field="@nameof(Dto.MatchPlayer.Confirmed)" 
             TextAlignment="TextAlignment.Center" Caption="Bekræftet" />
     </DataGrid> 
-}
+ *@}
 
 
 
-@code {
-    public int _playerId { get; set; }
-    protected IEnumerable<PlayerModel>? players;
-    //protected IEnumerable<MatchPlayer>? matches;
-    [Inject] public IMatchService matchPlaySvc { get; set; } = default!;
-    [Inject] public IPlayerService playerSvc { get; set; } = default!;
-
-    protected override async Task OnInitializedAsync()
-    {
-        players = await matchPlaySvc.PlayersWithMatch();
-    }
-
-    protected async Task OnSelectedPlayerChanged(int playerId)
-    {
-        if (_playerId != playerId)
-        {
-            _playerId = playerId;
-            players = await playerSvc.PlayersMatches(_playerId);
-        }
-    }
-}
