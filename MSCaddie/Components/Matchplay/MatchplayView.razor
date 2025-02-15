@@ -1,0 +1,22 @@
+﻿@using System.Linq;
+@using MSCaddie.Shared.Services
+@page "/Matchplay"
+@inherits MatchplayViewBase
+
+@rendermode InteractiveServer
+<h1>Hulspil</h1>
+
+<RadzenTabs TabPosition="TabPosition.Top" RenderMode="TabRenderMode.Client">
+    <Tabs>
+        <RadzenTabsItem Text="Resultater">
+            <MatchplayResult />
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Matcher">
+            <MatchplayGame />
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Deltagere">
+            <MatchplayTeam/>
+        </RadzenTabsItem>
+    </Tabs>
+</RadzenTabs>
+

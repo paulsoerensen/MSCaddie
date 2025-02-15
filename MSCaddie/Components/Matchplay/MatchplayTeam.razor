@@ -1,41 +1,38 @@
-﻿@using System.Linq;
+﻿@inherits MatchplayTeamBase
+
+@using System.Linq;
 @using MSCaddie.Shared.Services
-@page "/MatchPlay"
-@inherits MatchPlayViewBase
 
 
 @rendermode InteractiveServer
-<h1>Hulspil</h1>
 
-@if (players is not null)
+@if (teams is null)
 {
+    <DisplaySpinner/>
+}
+else {
     <div class="container">
         <div class="row py-5">
-            <RadzenDataGrid @ref="playerGrid" AllowFiltering="false" FilterMode=FilterMode.Simple AllowPaging="false" AllowSorting="true"
-                            Data="@teams" TItem="PlayerForMatchPlayModel" AllowVirtualization="true" AllowColumnResize="true">
+            <RadzenDataGrid @ref="teamsGrid" AllowFiltering="false" FilterMode=FilterMode.Simple AllowPaging="false" AllowSorting="true"
+                            Data="@teams" TItem="TeamSingleModel" AllowVirtualization="true" AllowColumnResize="true">
 
                 <Columns>
-                    <RadzenDataGridColumn TItem="PlayerForMatchPlayModel" Property="Fullname" Title="Spiller" Width="12rem"/>
-                    <RadzenDataGridColumn TItem="PlayerForMatchPlayModel" Property="League" Title="Single" Width="20rem" TextAlign="TextAlign.Center">
+                    <RadzenDataGridColumn TItem="TeamSingleModel" Property="VgcNo" Title="VGC no." Width="6rem" />
+                    <RadzenDataGridColumn TItem="TeamSingleModel" Property="TeamName" Title="Spiller" Width="12rem" />
+                    <RadzenDataGridColumn TItem="TeamSingleModel" Property="LeagueInt" Title="Single" Width="20rem" TextAlign="TextAlign.Center">
+                        <Template Context="data">
+                            @data.LeagueDisplay
+                        </Template>
                         <EditTemplate Context="data">
-                            <RadzenRadioButtonList @bind-Value=data.LeagueId TValue="int">
+                            <RadzenRadioButtonList @bind-Value="data.LeagueInt" TValue="int?">
                                 <Items>
-                                    <RadzenRadioButtonListItem Text="A" Value="1" TValue="int" />
-                                    <RadzenRadioButtonListItem Text="B" Value="2" TValue="int" />
-                                    <RadzenRadioButtonListItem Text="Deltager ikke" Value="0" TValue="int" />
+                                    <RadzenRadioButtonListItem Text="A" Value="1" TValue="int?" />
+                                    <RadzenRadioButtonListItem Text="B" Value="2" TValue="int?" />
                                 </Items>
                             </RadzenRadioButtonList>
                         </EditTemplate>
                     </RadzenDataGridColumn>
-                    <RadzenDataGridColumn TItem="PlayerForMatchPlayModel" Property="Fullname2" Title="Makker" Width="20rem" >
-                        <EditTemplate Context="data">
-                            <RadzenDropDown @bind-Value="data.VgcNoPartner" Data="@players" 
-                                TextProperty="@nameof(PlayerModel.Fullname)" 
-                                ValueProperty="@nameof(PlayerModel.VgcNo)" 
-                                Style="width:100%; display: block;"
-                                InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "Vælg makker" }})" />
-                        </EditTemplate>
-                    </RadzenDataGridColumn>
+
                     <RadzenDataGridColumn Context="data" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" FrozenPosition="FrozenColumnPosition.Right">
                         <Template Context="data">
 @*                             <RadzenButton Icon="add_circle" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Shade="Shade.Lighter" Click="@(() => InsertAfterRow(data))" title="Add new row after this row" />
@@ -61,7 +58,7 @@
         <DataGridNumericColumn Field="@nameof(Player.MatchDate)" Caption="Dato">
                 <DisplayTemplate>
                     @{
-                    var date = (context as Dto.MatchPlayer)?.MatchDate;
+                    var date = (context as Dto.Matchplayer)?.MatchDate;
 
                         if (date != null)
                         {
@@ -70,12 +67,12 @@
                     }
                 </DisplayTemplate>
         </DataGridNumericColumn>
-        <DataGridColumn Field="@nameof(Dto.MatchPlayer.Course)" Caption="Bane" />
-        <DataGridColumn Field="@nameof(Dto.MatchPlayer.Opponent)" Caption="Modstander" />
-        <DataGridNumericColumn Field="@nameof(Dto.MatchPlayer.LastUpdate)" Caption="Opdateret">
+        <DataGridColumn Field="@nameof(Dto.Matchplayer.Course)" Caption="Bane" />
+        <DataGridColumn Field="@nameof(Dto.Matchplayer.Opponent)" Caption="Modstander" />
+        <DataGridNumericColumn Field="@nameof(Dto.Matchplayer.LastUpdate)" Caption="Opdateret">
             <DisplayTemplate>
                 @{
-                    var date = (context as Dto.MatchPlayer)?.LastUpdate;
+                    var date = (context as Dto.Matchplayer)?.LastUpdate;
 
                     if (date != null)
                     {
@@ -84,7 +81,7 @@
                 }
             </DisplayTemplate>
         </DataGridNumericColumn>
-        <DataGridCheckColumn Field="@nameof(Dto.MatchPlayer.Confirmed)" 
+        <DataGridCheckColumn Field="@nameof(Dto.Matchplayer.Confirmed)" 
             TextAlignment="TextAlignment.Center" Caption="Bekræftet" />
     </DataGrid> 
  *@}

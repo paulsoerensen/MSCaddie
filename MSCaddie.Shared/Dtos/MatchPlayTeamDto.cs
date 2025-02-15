@@ -1,7 +1,7 @@
 ﻿
 namespace MSCaddie.Shared.Dtos;
 
-public class MatchPlayTeamDto
+public class MatchplayTeamDto
 {
     public int LeagueTeamId { get; set; }
     public int LeagueId { get; set; }

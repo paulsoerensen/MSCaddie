@@ -2,7 +2,7 @@
 
 namespace MSCaddie.Shared.Models;
 
-public class PlayerForMatchPlayModel
+public class PlayerForMatchplayModel
 {
     public int LeagueTeamId { get; set; }
     public int VgcNo { get; set; }

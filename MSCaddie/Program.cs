@@ -31,12 +31,12 @@ builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<IClubRepository, ClubRepository>();
 builder.Services.AddScoped<IMatchRepository, MatchRepository>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
-builder.Services.AddScoped<IMatchPlayRepository, MatchPlayRepository>();
+builder.Services.AddScoped<IMatchplayRepository, MatchplayRepository>();
 
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ICompetitionService, CompetitionService>();
 builder.Services.AddScoped<IMatchService, MatchService>();
-builder.Services.AddScoped<IMatchPlayService, MatchPlayService>();
+builder.Services.AddScoped<IMatchplayService, MatchplayService>();
 builder.Services.AddScoped<IPlayerService, PlayerService>();
 builder.Services.AddScoped<SearchStateContainerList>();
 builder.Services.AddScoped<MatchResultContainerList>();

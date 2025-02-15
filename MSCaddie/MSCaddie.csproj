@@ -27,7 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Components\Pages\MatchPlayView.razor">
+    <Content Update="Components\Matchplay\MatchplayTeam.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Components\Matchplay\MatchplayView.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>

@@ -3,19 +3,24 @@ using MSCaddie.Shared.Models;
 
 namespace MSCaddie.Shared.Services;
 
-public interface IMatchPlayService
+public interface IMatchplayService
 {
-    //string Baseaddress { get; }
+    Task<IEnumerable<TeamSingleModel>> GetMatchplayTeams();
+    Task <int> MatchplayTeamUpsert(TeamSingleModel model);
+    Task<int> MatchplayTeamDelete(int id);
 
 
-    Task<IEnumerable<PlayerForMatchPlayModel>> GetPlayersForMatchPlay();
-    Task<IEnumerable<PlayerModel>> GetPlayersForMatchPlayPar();
-    Task MatchPlayTeamUpsert(PlayerForMatchPlayModel model);
-    Task DeleteMatchPlayPar(PlayerForMatchPlayModel model);
+    Task<IEnumerable<PlayerForMatchplayModel>> GetPlayersForMatchplay();
+    Task<IEnumerable<PlayerModel>> GetPlayersForMatchplayPar();
+
+    Task DeleteMatchplayPar(PlayerForMatchplayModel model);
 
     Task<LeagueMatch?> GetMatchplay(int matchId);
     Task<IEnumerable<LeagueMatch>?> GetMatchplays();
-    Task<IEnumerable<LeagueTeam>?> GetMatchPlayTeams();
+    Task<IEnumerable<MatchTeamModel>?> GetTeamsForMatchplay(int leagueId);
+    Task<IEnumerable<MatchTeamModel>> GetMatchTeams(int leagueId);
+
+
     //Task<MatchDto> UpsertMatch(MatchDto match);
     //Task<IEnumerable<MatchBirdieResultDto>> GetMatchBirdies(int matchId);
     //Task<IEnumerable<MatchResultDto>?> MatchResultForRegistration(int matchId);

@@ -3,20 +3,27 @@ using MSCaddie.Shared.Models;
 
 namespace MSCaddie.Shared.Interfaces;
 
-public interface IMatchPlayRepository
+public interface IMatchplayRepository
 {
 
-    #region MatchPlay
-    Task<IEnumerable<PlayerForMatchPlayDto>> GetPlayersForMatchPlay();
-    Task<IEnumerable<PlayerDto>> GetPlayersForMatchPlayPar();
+    #region Matchplay
 
-    Task<IEnumerable<MatchPlayTeamDto>> MatchPlayTeamList(int leagueId);
-    Task<IEnumerable<MatchPlayTeamDto>> GetMatchplays();
-    Task<MatchPlayTeamDto> LeagueTeamUpsert(MatchPlayTeamDto model);
+    Task<IEnumerable<TeamSingleDto>> GetMatchplayTeams();
+    Task<int> MatchplayTeamUpsert(TeamSingleDto model);
+    Task<int> MatchplayTeamDelete(int id);
+
+
+    Task<IEnumerable<PlayerForMatchplayDto>> GetPlayersForMatchplay();
+    Task<IEnumerable<PlayerDto>> GetPlayersForMatchplayPar();
+
+    Task<IEnumerable<MatchplayTeamDto>> MatchplayTeamList(int leagueId);
+    Task<IEnumerable<MatchplayTeamDto>> GetMatchplays();
     Task DeleteMatchplayPar(int id);
+    //Task<IEnumerable<MatchplayTeamDto>> GetMatchplayTeams(int leagueId);
+    Task<IEnumerable<MatchTeamDto>> GetMatchTeams(int leagueId);
 
 
-    //Task<MatchPlayTeamDto> GetMatchplay(int matchId);
+    //Task<MatchplayTeamDto> GetMatchplay(int matchId);
     //Task<IEnumerable<ListEntry>?> GetCompetitions();
     //Task<IEnumerable<CompetitionResult>> GetCompetitionResults(int matchId);
     //Task<int> UpsertCompetitionResult(CompetitionUpsertDto dto);
