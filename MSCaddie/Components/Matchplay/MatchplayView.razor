@@ -1,6 +1,4 @@
-﻿@using System.Linq;
-@using MSCaddie.Shared.Services
-@page "/Matchplay"
+﻿@page "/Matchplay"
 @inherits MatchplayViewBase
 
 @rendermode InteractiveServer
@@ -12,10 +10,32 @@
             <MatchplayResult />
         </RadzenTabsItem>
         <RadzenTabsItem Text="Matcher">
-            <MatchplayGame />
+            <RadzenTabs TabPosition="TabPosition.Top" RenderMode="TabRenderMode.Client">
+                <Tabs>
+                    <RadzenTabsItem Text="Single, A">
+                        <MatchplayGameA/>
+                    </RadzenTabsItem>
+                    <RadzenTabsItem Text="Single, B">
+                        <MatchplayGameB/>
+                    </RadzenTabsItem>
+                    <RadzenTabsItem Text="Par">
+                        <MatchplayGamePar/>
+                    </RadzenTabsItem>
+                </Tabs>
+            </RadzenTabs>
+
         </RadzenTabsItem>
         <RadzenTabsItem Text="Deltagere">
-            <MatchplayTeam/>
+            <RadzenTabs TabPosition="TabPosition.Top" RenderMode="TabRenderMode.Client">
+                <Tabs>
+                    <RadzenTabsItem Text="Single">
+                        <MatchplayTeam/>
+                    </RadzenTabsItem>
+                    <RadzenTabsItem Text="Par">
+                        <MatchplayTeamPar/>
+                    </RadzenTabsItem>
+                </Tabs>
+            </RadzenTabs>
         </RadzenTabsItem>
     </Tabs>
 </RadzenTabs>

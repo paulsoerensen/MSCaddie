@@ -1,4 +1,4 @@
-﻿@inherits MatchplayTeamBase
+﻿@inherits MatchplayTeamParBase
 
 @using System.Linq;
 @using MSCaddie.Shared.Services
@@ -11,28 +11,41 @@
     <DisplaySpinner/>
 }
 else {
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <DropdownComponent TItem="PlayerModel"
+                            Items="players"
+                               GetKey="GetVgcNo"
+                               GetValue="GetFullName"
+                            SelectedKey=vgcNo1
+                            OnItemSelected="HandlePlayer1Selected" />
+
+        </div>
+        <div class="container-fluid">
+             <button class="btn btn-primary ms-auto" @onclick="() => CreateTeam()" >Opret par</button>
+        </div>
+        <div class="container-fluid">
+            <DropdownComponent TItem="PlayerModel"
+                               Items="players"
+                               GetKey="GetVgcNo"
+                               GetValue="GetFullName"
+                               SelectedKey=vgcNo2
+                               OnItemSelected="HandlePlayer2Selected" />
+
+        </div>
+
+    </nav>
+
     <div class="container">
         <div class="row py-5">
             <RadzenDataGrid @ref="teamsGrid" AllowFiltering="false" FilterMode=FilterMode.Simple AllowPaging="false" AllowSorting="true"
-                            Data="@teams" TItem="TeamSingleModel" AllowVirtualization="true" AllowColumnResize="true">
+                            Data="@teams" TItem="TeamParModel" AllowVirtualization="true" AllowColumnResize="true">
 
                 <Columns>
-                    <RadzenDataGridColumn TItem="TeamSingleModel" Property="VgcNo" Title="VGC no." Width="6rem" />
-                    <RadzenDataGridColumn TItem="TeamSingleModel" Property="TeamName" Title="Spiller" Width="12rem" />
-                    <RadzenDataGridColumn TItem="TeamSingleModel" Property="LeagueInt" Title="Single" Width="20rem" TextAlign="TextAlign.Center">
-                        <Template Context="data">
-                            @data.League
-                        </Template>
-                        <EditTemplate Context="data">
-                            <RadzenRadioButtonList @bind-Value="data.LeagueInt" TValue="int?">
-                                <Items>
-                                    <RadzenRadioButtonListItem Text="A" Value="1" TValue="int?" />
-                                    <RadzenRadioButtonListItem Text="B" Value="2" TValue="int?" />
-                                </Items>
-                            </RadzenRadioButtonList>
-                        </EditTemplate>
-                    </RadzenDataGridColumn>
-
+                    <RadzenDataGridColumn TItem="TeamParModel" Property="VgcNo" Title="VGC no." Width="6rem" />
+                    <RadzenDataGridColumn TItem="TeamParModel" Property="VgcNoPartner" Title="VGC no." Width="6rem" />
+                    <RadzenDataGridColumn TItem="TeamParModel" Property="TeamName" Title="Spiller" Width="20rem" />
                     <RadzenDataGridColumn Context="data" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" FrozenPosition="FrozenColumnPosition.Right">
                         <Template Context="data">
 @*                             <RadzenButton Icon="add_circle" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Shade="Shade.Lighter" Click="@(() => InsertAfterRow(data))" title="Add new row after this row" />
@@ -51,3 +64,6 @@ else {
         </div>
     </div>
 }
+
+
+

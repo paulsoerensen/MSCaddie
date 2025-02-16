@@ -33,6 +33,7 @@ builder.Services.AddScoped<IMatchRepository, MatchRepository>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<IMatchplayRepository, MatchplayRepository>();
 
+builder.Services.AddScoped<IAdminService, AdminService>(); 
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ICompetitionService, CompetitionService>();
 builder.Services.AddScoped<IMatchService, MatchService>();

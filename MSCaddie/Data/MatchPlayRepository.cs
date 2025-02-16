@@ -1,11 +1,9 @@
 using AutoMapper;
 using Dapper;
-using MSCaddie.Shared.Interfaces;
-using System.Data;
 using Microsoft.Data.SqlClient;
 using MSCaddie.Shared.Dtos;
-using MSCaddie.Shared.Models;
-using System;
+using MSCaddie.Shared.Interfaces;
+using System.Data;
 
 
 namespace MSCaddie.Data;
@@ -13,19 +11,21 @@ namespace MSCaddie.Data;
 public class MatchplayRepository : RepositoryBase, IMatchplayRepository
 {
     private int season;
-    public MatchplayRepository(IConfiguration config,
+    IPlayerRepository playerRepo;
+   public MatchplayRepository(IConfiguration config,
         IAdminRepository adminRepo,
+        IPlayerRepository plRepo,
         ILogger<MatchplayRepository> logger,
         IMapper mapper) : base(config, logger, mapper)
     {
         season = adminRepo.Season;
+        playerRepo = plRepo;
     }
 
     #region Matchplay teams, single
     /// <summary>
     /// Teams and potential single teams
     /// </summary>
-    /// <param name="leagueId"></param>
     /// <returns></returns>
     public async Task<IEnumerable<TeamSingleDto>> GetMatchplayTeams()
     {
@@ -65,8 +65,138 @@ public class MatchplayRepository : RepositoryBase, IMatchplayRepository
     }
     #endregion
 
-    #region
+    #region Matchplay teams, par
 
+    /// <summary>
+    /// Players without a partner
+    /// </summary>
+    /// <returns></returns>
+    public async Task<IEnumerable<PlayerDto>> GetTeamPartners()
+    {
+        string sql = @"SELECT [PlayerId],[VgcNo],[Firstname],[Lastname],[Season] 
+                    from ms.vTeamPartner
+                    WHERE [season] = @season";
+
+        using (IDbConnection db = new SqlConnection(ConnectionString))
+            return await db.QueryAsync<PlayerDto>(sql, new { season });
+    }
+
+    /// <summary>
+    /// Get par Teams
+    /// </summary>
+    /// <returns>Par Teams</returns>
+    public async Task<IEnumerable<TeamParDto>> GetMatchplayTeamPars()
+    {
+        string sql = @"select Season, VgcNo, VgcNoPartner, TeamParId, TeamName
+                    FROM ms.TeamPar
+                    WHERE [season] = @season";
+
+        using (IDbConnection db = new SqlConnection(ConnectionString))
+            return await db.QueryAsync<TeamParDto>(sql, new { season });
+    }
+
+    public async Task<int> MatchplayTeamParUpsert(TeamParDto model)
+    {
+        model.Season = model.Season < 2024 ? season : model.Season;
+        using var con = new SqlConnection(ConnectionString);
+        using var cmd = con.CreateCommand();
+        cmd.CommandType = CommandType.StoredProcedure;
+        cmd.CommandText = "[ms].[TeamParUpsert]";
+        cmd.Parameters.AddWithValue("TeamParId", model.TeamParId);
+        cmd.Parameters.AddWithValue("Season", model.Season);
+        cmd.Parameters.AddWithValue("TeamName", model.TeamName);
+        cmd.Parameters.AddWithValue("VgcNo", model.VgcNo);
+        cmd.Parameters.AddWithValue("VgcNoPartner", model.VgcNoPartner);
+
+        cmd.CommandTimeout = 240;
+        con.Open();
+        return await cmd.ExecuteNonQueryAsync();
+    }
+
+    public async Task<int> MatchplayTeamParDelete(int id)
+    {
+        string sql = @"delete ms.TeamPar where TeamParId = @id";
+
+        using IDbConnection db = new SqlConnection(ConnectionString);
+        var res = await db.ExecuteScalarAsync(sql, new { id });
+        return Convert.ToInt32(res ?? 0);
+    }
+    #endregion
+
+    #region Match fixing
+    /// <summary>
+    /// Teams for match fixing
+    /// </summary>
+    /// <param name="leagueId"></param>
+    /// <returns></returns>
+    public async Task<IEnumerable<MatchplayTeamDto>> GetMatchplayTeams(char league)
+    {
+        string sql;
+        if (league.Equals('A') || league.Equals('B'))
+        {
+            sql = @"select Season, TeamSingleId as TeamId, TeamName, League 
+                    FROM ms.TeamSingle
+                    WHERE [season] = @season AND League = @league";
+            using (IDbConnection db = new SqlConnection(ConnectionString))
+                return await db.QueryAsync<MatchplayTeamDto>(sql, new { season, league });
+        }
+        else
+        {
+            sql = @"select Season, TeamParId as TeamId, TeamName, League 
+                    FROM ms.TeamPar
+                    WHERE [season] = @season";
+            using (IDbConnection db = new SqlConnection(ConnectionString))
+                return await db.QueryAsync<MatchplayTeamDto>(sql, new { season });
+        }
+
+    }
+
+    public async Task<IEnumerable<MatchplayGameDto>> GetMatchplayGames(char league)
+    {
+        string sql = @"SELECT MatchplayGameId, MatchResult, ResultText, League, 
+                        PlayRound, TeamId1, TeamName1, TeamId2, TeamName2, LastUpdate
+                        FROM [ms].[vMatchplayGame]
+                        WHERE League = @league and Season = @season
+                        order by PlayRound desc, LastUpdate desc";
+        using (IDbConnection db = new SqlConnection(ConnectionString))
+            return await db.QueryAsync<MatchplayGameDto>(sql, new { league, season });
+    }
+
+    public async Task<int> MatchplayGameUpsert(MatchplayGameDto model)
+    {
+        using var con = new SqlConnection(ConnectionString);
+        using var cmd = con.CreateCommand();
+        cmd.CommandType = CommandType.StoredProcedure;
+        cmd.CommandText = "[ms].[MatchplayGameUpsert]";
+        cmd.Parameters.AddWithValue("@MatchplayGameId", model.MatchplayGameId);
+        cmd.Parameters.AddWithValue("MatchResult", model.MatchResult);
+        cmd.Parameters.AddWithValue("ResultText", model.ResultText);
+        cmd.Parameters.AddWithValue("Season", season);
+        cmd.Parameters.AddWithValue("League", model.League);
+        cmd.Parameters.AddWithValue("PlayRound", model.PlayRound);
+        cmd.Parameters.AddWithValue("TeamId1", model.TeamId1);
+        cmd.Parameters.AddWithValue("TeamId2", model.TeamId2);
+
+        cmd.CommandTimeout = 240;
+        con.Open();
+        return await cmd.ExecuteNonQueryAsync();
+    }
+
+    
+    public async Task<int> MatchplayGameDelete(int id)
+    {
+        string sql = @"delete ms.MatchplayGame where MatchplayGameDeleteId = @id";
+
+        using IDbConnection db = new SqlConnection(ConnectionString);
+        var res = await db.ExecuteScalarAsync(sql, new { id });
+        return Convert.ToInt32(res ?? 0);
+    }
+
+
+    #endregion
+
+
+    #region
 
 
     public async Task<IEnumerable<MatchplayTeamDto?>?> MatchplayTeamList(int leagueId)
@@ -135,25 +265,25 @@ public class MatchplayRepository : RepositoryBase, IMatchplayRepository
             return await db.QueryFirstOrDefaultAsync<MatchplayTeamDto>(sql, new { LeagueTeamId = leagueTeamId });
     }
 
-    public async Task<MatchplayTeamDto> LeagueTeamUpsert(MatchplayTeamDto model)
-    {
-        model.Season = model.Season < 2024 ? season : model.Season;
-        using var con = new SqlConnection(ConnectionString);
-        using var cmd = con.CreateCommand();
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.CommandText = "[ms].[LeagueTeamUpsert]";
-        cmd.Parameters.AddWithValue("LeagueId", model.LeagueId);
-        cmd.Parameters.AddWithValue("Season", model.Season);
-        cmd.Parameters.AddWithValue("TeamName", model.TeamName);
-        cmd.Parameters.AddWithValue("VgcNo", model.VgcNo1);
-        cmd.Parameters.AddWithValue("VgcNoPartner", model.VgcNo2);  // Handle NULL VgcNoPartner
+    //public async Task<MatchplayTeamDto> LeagueTeamUpsert(MatchplayTeamDto model)
+    //{
+    //    model.Season = model.Season < 2024 ? season : model.Season;
+    //    using var con = new SqlConnection(ConnectionString);
+    //    using var cmd = con.CreateCommand();
+    //    cmd.CommandType = CommandType.StoredProcedure;
+    //    cmd.CommandText = "[ms].[LeagueTeamUpsert]";
+    //    cmd.Parameters.AddWithValue("LeagueId", model.LeagueId);
+    //    cmd.Parameters.AddWithValue("Season", model.Season);
+    //    cmd.Parameters.AddWithValue("TeamName", model.TeamName);
+    //    cmd.Parameters.AddWithValue("VgcNo", model.VgcNo1);
+    //    cmd.Parameters.AddWithValue("VgcNoPartner", model.VgcNo2);  // Handle NULL VgcNoPartner
 
-        cmd.CommandTimeout = 240;
-        con.Open();
-        await cmd.ExecuteNonQueryAsync();
+    //    cmd.CommandTimeout = 240;
+    //    con.Open();
+    //    await cmd.ExecuteNonQueryAsync();
 
-        return model;
-    }
+    //    return model;
+    //}
 
     public async Task<bool> DeleteLeagueTeam(int leagueTeamId)
     {

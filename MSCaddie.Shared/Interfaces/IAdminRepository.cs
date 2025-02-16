@@ -1,3 +1,4 @@
+using MSCaddie.Shared.Dtos;
 using  MSCaddie.Shared.Models;
 
 
@@ -10,16 +11,21 @@ public interface IAdminRepository
     string Connectionstring { get; set; }
 
     #region Settings
-    public List<string> GetPropertyList();
-    public TValue? GetPropertyValue<TValue>(string key);
+    List<string> GetPropertyList();
+    TValue? GetPropertyValue<TValue>(string key);
+    Task<int> PropertyValueUpsert<TValue>(string key, TValue value);
 
-    public string? WsAccount { get; }
-    public string? WsUsername { get; }
-    public string? WsPassword { get; }
-    public string? WsGroupGuid { get; }
-    public DateTime SeasonStart { get; }
-    public int Season { get; }
-    public DateTime SeasonEnd { get; }
+    Task<SettingsDto> GetSettings();
+    Task<int> SettingsUpsert(SettingsDto model);
+
+
+    string? WsAccount { get; }
+    string? WsUsername { get; }
+    string? WsPassword { get; }
+    string? WsGroupGuid { get; }
+    DateTime SeasonStart { get; }
+    int Season { get; }
+    DateTime SeasonEnd { get; }
 
     #endregion
     #region User

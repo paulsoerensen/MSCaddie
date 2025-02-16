@@ -1,0 +1,13 @@
+﻿
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace MSCaddie.Shared.Models;
+
+public class TeamParModel
+{
+    public int VgcNo { get; set; }
+    public int VgcNoPartner { get; set; }
+    public int Season { get; set; }
+    public string? TeamName { get; set; }
+    public int? TeamParId { get; set; }
+}

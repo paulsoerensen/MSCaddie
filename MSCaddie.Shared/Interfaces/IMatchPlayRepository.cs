@@ -13,6 +13,20 @@ public interface IMatchplayRepository
     Task<int> MatchplayTeamDelete(int id);
 
 
+    Task<IEnumerable<PlayerDto>> GetTeamPartners();
+    Task<IEnumerable<TeamParDto>> GetMatchplayTeamPars();
+    Task<int> MatchplayTeamParUpsert(TeamParDto model);
+    Task<int> MatchplayTeamParDelete(int id);
+
+
+    Task<IEnumerable<MatchplayTeamDto>> GetMatchplayTeams(char league);
+
+    // games
+    Task<IEnumerable<MatchplayGameDto>> GetMatchplayGames(char league);
+    Task<int> MatchplayGameUpsert(MatchplayGameDto model);
+    Task<int> MatchplayGameDelete(int id);
+
+
     Task<IEnumerable<PlayerForMatchplayDto>> GetPlayersForMatchplay();
     Task<IEnumerable<PlayerDto>> GetPlayersForMatchplayPar();
 

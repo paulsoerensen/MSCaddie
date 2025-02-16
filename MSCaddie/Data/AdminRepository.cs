@@ -5,6 +5,7 @@ using MSCaddie.Shared.Interfaces;
 using MSCaddie.Shared.Dtos;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 
 
@@ -26,23 +27,66 @@ namespace MSCaddie.Data
             Dictionary<string, string> dict = new()
             {
                 { "Database", ConnectionString }
-                //{ "Database", con.Database }
-                //,
-                //{ "Server", con.DataSource }
             };
-
             return dict;
         }
 
         #region Settings
         public async Task<PropertyDto?> GetSetting(int id)
         {
-            var sql = @"SELECT [PropertyId],[DataValue],[SystemType] FROM [ms].[Property] " +
-                    "where PropertyId = PropertyId";
+            var sql = @"SELECT [PropertyId],[DataValue],[SystemType] FROM [ms].[Property] 
+                    where PropertyId = PropertyId";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
             return (PropertyDto?)(await db.QueryAsync<PropertyDto>(sql, new { id })).FirstOrDefault();
         }
+        public async Task<SettingsDto?> GetSettings()
+        {
+            string sql = @"SELECT [SettingsId],[Season],[SeasonStart],[SeasonEnd],
+                                [MensSectionLogoUrl],[MensSectionShort],[NoOfRoundsRankings],[RyderCupSponsor],
+                                [MaxHcpA],[MaxHcpB],[GBAccount],[GBUsername],[GBPassword],[GBGuid]
+                            FROM [vgcms].[ms].[Settings]";
+
+            using (IDbConnection db = new SqlConnection(ConnectionString))
+            return await db.QueryFirstOrDefaultAsync<SettingsDto>(sql);
+        }
+
+
+
+        public async Task<int> SettingsUpsert(SettingsDto model)
+        {
+            try
+            { 
+                string sql = @"UPDATE [ms].[Settings]
+                               SET [Season] = @Season
+                                  ,[SeasonStart] = @SeasonStart
+                                  ,[SeasonEnd] = @SeasonEnd
+                                  ,[MensSectionLogoUrl] = @MensSectionLogoUrl
+                                  ,[MensSectionShort] = @MensSectionShort
+                                  ,[NoOfRoundsRankings] = @NoOfRoundsRankings
+                                  ,[RyderCupSponsor] = @RyderCupSponsor
+                                  ,[MaxHcpA] = @MaxHcpA
+                                  ,[MaxHcpB] = @MaxHcpB
+                                  ,[GBAccount] = @GBAccount
+                                  ,[GBUsername] = @GBUsername
+                                  ,[GBPassword] = @GBPassword
+                                  ,[GBGuid] = @GBGuid 
+                             WHERE SettingsId = @SettingsId";
+
+
+                using (IDbConnection db = new SqlConnection(ConnectionString))
+                return await db.ExecuteAsync(sql, new{ model.Season, model.SeasonStart, model.SeasonEnd, model.MensSectionLogoUrl
+                        , model.MensSectionShort, model.NoOfRoundsRankings, model.RyderCupSponsor, model.MaxHcpA, model.MaxHcpB
+                        , model.GBAccount, model.GBUsername, model.GBPassword, model.GBGuid, model.SettingsId,
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                return 0;
+            }
+        }
+
         public IEnumerable<PropertyDto> GetSettings(DateTime dt)
         {
             string sql = ";with cte as ( " +
@@ -65,25 +109,25 @@ namespace MSCaddie.Data
             return Enum.GetNames(typeof(PropertyKey)).ToList();
         }
 
-        protected enum PropertyKey
+        public enum PropertyKey
         {
-            Season,
-            DSeasonStart,
-            DSeasonEnd,
-            ShowNumberOfEvents,
-            ReadMoreEventUrl,
-            ReadMoreResultUrl,
-            MemberAdminUrl,
-            MensSectionLogoUrl,
-            MensSection,
-            MinRoundsPlayed,
-            MensSectionSponsor,
-            GroupAUpperBound,
-            GroupBUpperBound,
-            WsAccount,
-            WsUsername,
-            WsPassword,
-            WsGroupGuid
+            Season = 0,
+            DSeasonStart = 1,
+            DSeasonEnd = 2,
+            ShowNumberOfEvents = 3,
+            ReadMoreEventUrl = 4,
+            ReadMoreResultUrl = 5,
+            MemberAdminUrl = 6,
+            MensSectionLogoUrl = 7,
+            MensSection = 8,
+            MinRoundsPlayed = 9,
+            MensSectionSponsor = 10,
+            GroupAUpperBound = 11,
+            GroupBUpperBound = 12,
+            WsAccount = 13,
+            WsUsername = 14,
+            WsPassword = 15,
+            WsGroupGuid = 16
         }
 
         public string? WsAccount
@@ -125,6 +169,29 @@ namespace MSCaddie.Data
             PropertyKey kx;
             Enum.TryParse(key, true, out kx);
             return GetPropertyValue<TValue>(kx);
+        }
+
+        public async Task<int> PropertyValueUpsert<TValue>(string key, TValue value)
+        {
+            PropertyKey kx;
+            Enum.TryParse(key, true, out kx);
+            int id = (int)kx;
+            string sql = @"update ms.Property set DataValue = @value where PropertyId = @id";
+
+            using IDbConnection db = new SqlConnection(ConnectionString);
+            var res = await db.ExecuteScalarAsync(sql, new { value, id  });
+            return Convert.ToInt32(res ?? 0);
+
+            //if (property != null)
+            //{
+            //    // Record exists, perform an update only for the DataValue
+            //    property.DataValue = value.ToString();  // Update the DataValue field
+            //    //_propertyRepository.UpdateProperty(property);  // Save changes to the repository
+            //}
+            //else
+            //{
+            //    throw new InvalidOperationException($"Property with key {key} not found.");
+            //}
         }
 
         protected TValue? GetPropertyValue<TValue>(PropertyKey key)

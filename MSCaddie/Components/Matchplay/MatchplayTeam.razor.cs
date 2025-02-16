@@ -20,7 +20,14 @@ public partial class MatchplayTeamBase : ComponentBase
 
     protected async Task LoadData()
     {
-        teams = await matchPlaySvc.GetMatchplayTeams();
+        try
+        {
+            teams = await matchPlaySvc.GetMatchplayTeams();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+        }
     }
 
     protected async Task DeleteRow(TeamSingleModel model)

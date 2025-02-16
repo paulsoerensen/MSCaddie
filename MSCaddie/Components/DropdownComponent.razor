@@ -26,4 +26,10 @@
         SelectedKey = Convert.ToInt32(e.Value.ToString());
         OnItemSelected.InvokeAsync(SelectedKey);
     }
+
+    public TItem GetSelectedItem()
+    {
+        return Items.FirstOrDefault(item => GetKey(item) == SelectedKey);
+    }
+
 }

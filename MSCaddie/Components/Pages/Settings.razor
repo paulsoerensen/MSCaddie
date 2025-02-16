@@ -1,0 +1,176 @@
+﻿@page "/settings"
+
+<PageTitle>Indstillinger</PageTitle>
+
+@if (settings == null)
+{
+    <DisplaySpinner />
+}
+else
+{
+    @if (settings == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <RadzenTemplateForm Data="@settings" Submit="@((SettingsModel args) => { Submit(args); })">
+            <RadzenRow Gap="2rem" class="rz-p-0 rz-p-lg-4">
+                <RadzenColumn Size="12" SizeMD="6">
+                    <RadzenStack>
+                        <RadzenFieldset Text="Sæson">
+                            <RadzenStack Gap="1rem">
+                                <RadzenRow AlignItems="AlignItems.Center">
+                                    <RadzenColumn Size="12" SizeMD="4">
+                                        <RadzenLabel Text="Sæson" Component="Season" />
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="12" SizeMD="8">
+                                        <RadzenNumeric Placeholder="300" Style="width: 100%;" 
+                                            Name="Season" @bind-Value="settings.Season" />
+                                    </RadzenColumn>
+                                </RadzenRow>
+                                <RadzenRow AlignItems="AlignItems.Center">
+                                    <RadzenColumn Size="12" SizeMD="4">
+                                        <RadzenLabel Text="Sæson start" Component="SeasonStart" />
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="12" SizeMD="8">
+                                        <RadzenDatePicker ShowTime="false" Style="width: 100%;" DateFormat="yyyy-MM-dd" 
+                                            Name="SeasonStart" @bind-Value="settings.SeasonStart" />
+                                    </RadzenColumn>
+                                </RadzenRow>
+                                <RadzenRow AlignItems="AlignItems.Center">
+                                    <RadzenColumn Size="12" SizeMD="4">
+                                        <RadzenLabel Text="Sæson slut" Component="SeasonEnd" />
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="12" SizeMD="8">
+                                        <RadzenDatePicker ShowTime="false" Style="width: 100%;" DateFormat="yyyy-MM-dd" 
+                                            Name="SeasonEnd" @bind-Value="settings.SeasonEnd" />
+                                    </RadzenColumn>
+                                </RadzenRow>
+                            </RadzenStack>
+                        </RadzenFieldset>
+                        <RadzenFieldset Text="Golfbox">
+                            <RadzenStack Gap="1rem">
+                                <RadzenStack>
+                                    <RadzenRow AlignItems="AlignItems.Center">
+                                        <RadzenColumn Size="12" SizeMD="4">
+                                            <RadzenLabel Text="Konto" Component="GBAccount" />
+                                        </RadzenColumn>
+                                        <RadzenColumn Size="12" SizeMD="8">
+                                            <RadzenTextBox Disabled="true" Style="width: 100%;" Name="GBAccount" @bind-Value="settings.GBAccount" />
+                                        </RadzenColumn>
+                                    </RadzenRow>
+                                    <RadzenRow AlignItems="AlignItems.Center">
+                                        <RadzenColumn Size="12" SizeMD="4">
+                                            <RadzenLabel Text="Bruger" Component="GBUser" />
+                                        </RadzenColumn>
+                                        <RadzenColumn Size="12" SizeMD="8">
+                                            <RadzenTextBox Disabled="true" Style="width: 100%;" Name="GBUser" @bind-Value="settings.GBUsername" />
+                                        </RadzenColumn>
+                                    </RadzenRow>
+                                    <RadzenRow AlignItems="AlignItems.Center">
+                                        <RadzenColumn Size="12" SizeMD="4">
+                                            <RadzenLabel Text="Address Line 2" Component="GBpwd" />
+                                        </RadzenColumn>
+                                        <RadzenColumn Size="12" SizeMD="8">
+                                            <RadzenTextBox Disabled="true" Style="width: 100%;" Name="GBpwd" @bind-Value="settings.GBPassword" />
+                                        </RadzenColumn>
+                                    </RadzenRow>
+                                    <RadzenRow AlignItems="AlignItems.Center">
+                                        <RadzenColumn Size="12" SizeMD="4">
+                                            <RadzenLabel Text="GUID" Component="guid" />
+                                        </RadzenColumn>
+                                        <RadzenColumn Size="12" SizeMD="8">
+                                            <RadzenTextBox Disabled="true" Style="width: 100%;" Name="guid" @bind-Value="settings.GBGuid" />
+                                        </RadzenColumn>
+                                    </RadzenRow>
+                                </RadzenStack>
+                            </RadzenStack>
+                        </RadzenFieldset>
+                    </RadzenStack>
+                </RadzenColumn>
+                <RadzenColumn Size="12" SizeMD="6">
+                    <RadzenStack>
+                        <RadzenFieldset Text="Tekster">
+                            <RadzenStack Gap="1rem">
+                                <RadzenRow AlignItems="AlignItems.Center">
+                                    <RadzenColumn Size="12" SizeMD="4">
+                                        <RadzenLabel Text="Gennemgående" Component="Damstahl" />
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="12" SizeMD="8">
+                                        <RadzenTextBox Style="width: 100%;" Name="Damstahl" @bind-Value="settings.RyderCupSponsor" />
+                                    </RadzenColumn>
+                                </RadzenRow>
+                                <RadzenRow AlignItems="AlignItems.Center">
+                                    <RadzenColumn Size="12" SizeMD="4">
+                                        <RadzenLabel Text="MS kort" Component="MSShort" />
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="12" SizeMD="8">
+                                        <RadzenTextBox Style="width: 100%;" Name="MSShort" @bind-Value="settings.MensSectionShort" />
+                                    </RadzenColumn>
+                                </RadzenRow>
+                            </RadzenStack>
+                        </RadzenFieldset>
+                        <RadzenFieldset Text="Spil">
+                            <RadzenStack Gap="1rem">
+                                <RadzenRow AlignItems="AlignItems.Center">
+                                    <RadzenColumn Size="12" SizeMD="4">
+                                        <RadzenLabel Text="# runder for ranking" Component="NoOfRoundsToRank" />
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="12" SizeMD="8">
+                                        <RadzenNumeric Placeholder="300" Style="width: 100%;" Name="NoOfRoundsToRank" @bind-Value="settings.NoOfRoundsRankings" />
+                                    </RadzenColumn>
+                                </RadzenRow>
+                                <RadzenRow AlignItems="AlignItems.Center">
+                                    <RadzenColumn Size="12" SizeSM="4" SizeMD="3">
+                                        <RadzenLabel Text="Hcp. grænse A" Component="HcpA" />
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="12" SizeSM="8" SizeMD="3">
+                                        <RadzenNumeric Style="width: 100%;" Name="Amount" @bind-Value="settings.MaxHcpA" />
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="12" SizeSM="4" SizeMD="3" class="rz-text-align-md-end">
+                                        <RadzenLabel Text=" - grænse B" Component="HcpB" />
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="12" SizeSM="8" SizeMD="3">
+                                        <RadzenNumeric Style="width: 100%;" Name="HcpB" @bind-Value="settings.MaxHcpB" />
+                                    </RadzenColumn>
+                                </RadzenRow>
+                            </RadzenStack>
+                        </RadzenFieldset>
+                    </RadzenStack>
+                </RadzenColumn>
+            </RadzenRow>
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="1rem" class="rz-mt-8 rz-mb-4">
+                <RadzenButton ButtonType="ButtonType.Submit" Size="ButtonSize.Large" Icon="save" Text="Save" />
+                <RadzenButton ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Large" Icon="cancel" Text="Cancel" Click="@Cancel" />
+            </RadzenStack>
+        </RadzenTemplateForm>
+    }
+}
+
+@code {
+    SettingsModel? settings;
+    [Inject] public IAdminService adminSvc { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    protected async Task LoadData()
+    {
+        settings = await adminSvc.GetSettings();
+    }
+
+    protected async Task Submit(SettingsModel arg)
+    {
+        await adminSvc.SettingsUpsert(arg);
+        await LoadData();
+    }
+
+    protected async Task Cancel()
+    {
+        await LoadData();
+    }
+
+}

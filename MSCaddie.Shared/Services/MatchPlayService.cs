@@ -32,14 +32,20 @@ public class MatchplayService : IMatchplayService
                     opt.MapFrom(src => src.Lastname == null ? src.Firstname : $"{src.Firstname} {src.Lastname}"))
                 .ForMember(dest => dest.LeagueInt, opt => opt.MapFrom(src => MapCharToInt(src.League)));
 
+            cfg.CreateMap<TeamParModel, TeamParDto>().ReverseMap();
 
-        cfg.CreateMap<PlayerDto, PlayerModel>();
+            // Match fixing
+            cfg.CreateMap<MatchplayTeamDto, MatchplayTeamModel>().ReverseMap();
+            cfg.CreateMap<MatchplayGameDto, MatchplayGameModel>().ReverseMap();
+            
+
+            cfg.CreateMap<PlayerDto, PlayerModel>();
             cfg.CreateMap<PlayerForMatchplayDto, PlayerForMatchplayModel>();
-            cfg.CreateMap<PlayerForMatchplayModel, MatchplayTeamDto>()
-                .ForMember(dest => dest.TeamName,
-                        opts => opts.MapFrom(src => src.Fullname))
-                .ForMember(dest => dest.TeamName2,
-                        opts => opts.MapFrom(src => $"{src.Fullname}, {src.Fullname2}"));
+            //cfg.CreateMap<PlayerForMatchplayModel, MatchplayTeamDto>()
+            //    .ForMember(dest => dest.TeamName,
+            //            opts => opts.MapFrom(src => src.Fullname))
+            //    .ForMember(dest => dest.TeamName2,
+            //            opts => opts.MapFrom(src => $"{src.Fullname}, {src.Fullname2}"));
             cfg.CreateMap<PlayerForMatchplayModel, MatchTeamDto>().ReverseMap();
             cfg.CreateMap<MatchTeamModel, MatchTeamDto>().ReverseMap(); 
         })
@@ -53,6 +59,7 @@ public class MatchplayService : IMatchplayService
         {
             1 => 'A',
             2 => 'B',
+            3 => 'X',
             _ => null
         };
     }
@@ -62,6 +69,7 @@ public class MatchplayService : IMatchplayService
         {
             'A' => 1,
             'B' => 2,
+            'X' => 3,
             _ => null
         };
     }
@@ -90,6 +98,67 @@ public class MatchplayService : IMatchplayService
 
     #endregion
 
+    #region Matchplay teams par
+
+    public async Task<IEnumerable<PlayerModel>> GetTeamPartners()
+    {
+        _logger.LogInformation($"Called GetMatchplayTeams()");
+        IEnumerable<PlayerDto> dtos = await _matchRepository.GetTeamPartners();
+        return mapper.Map<IEnumerable<PlayerModel>>(dtos);
+    }
+
+    public async Task<IEnumerable<TeamParModel>> GetMatchplayTeamPars()
+    {
+        _logger.LogInformation($"Called GetMatchplayTeams()");
+        IEnumerable<TeamParDto> dtos = await _matchRepository.GetMatchplayTeamPars();
+        return mapper.Map<IEnumerable<TeamParModel>>(dtos);
+    }
+
+    public async Task<int> MatchplayTeamParUpsert(TeamParModel model)
+    {
+        _logger.LogInformation($"Called MatchplayTeamUpsert()");
+        TeamParDto dto = mapper.Map<TeamParDto>(model);
+
+        return await _matchRepository.MatchplayTeamParUpsert(dto);
+    }
+    public async Task<int> MatchplayTeamParDelete(int id)
+    {
+        _logger.LogInformation($"Called MatchplayTeamParDelete()");
+        return await _matchRepository.MatchplayTeamParDelete(id);
+    }
+
+    #endregion
+    
+    #region Match fixing
+
+    public async Task<IEnumerable<MatchplayTeamModel>> GetMatchplayTeams(char league)
+    {
+        _logger.LogInformation($"Called GetMatchplayTeams()");
+        IEnumerable<MatchplayTeamDto> dtos = await _matchRepository.GetMatchplayTeams(league);
+        return mapper.Map<IEnumerable<MatchplayTeamModel>>(dtos);
+    }
+
+    public async Task<IEnumerable<MatchplayGameModel>> GetMatchplayGames(char league)
+    {
+        _logger.LogInformation($"Called GetMatchplayTeams()");
+        IEnumerable<MatchplayGameDto> dtos = await _matchRepository.GetMatchplayGames(league);
+        return mapper.Map<IEnumerable<MatchplayGameModel>>(dtos);
+    }
+
+    public async Task<int> MatchplayGameUpsert(MatchplayGameModel model)
+    {
+        _logger.LogInformation($"Called MatchplayTeamUpsert()");
+        MatchplayGameDto dto = mapper.Map<MatchplayGameDto>(model);
+
+        return await _matchRepository.MatchplayGameUpsert(dto);
+    }
+    public async Task<int> MatchplayGameDelete(int id)
+    {
+        _logger.LogInformation($"Called MatchplayGameDelete()");
+        return await _matchRepository.MatchplayGameDelete(id);
+    }
+
+    #endregion
 
     public async Task<IEnumerable<PlayerForMatchplayModel>> GetPlayersForMatchplay()
     {
