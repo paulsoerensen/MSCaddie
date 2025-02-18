@@ -12,12 +12,12 @@
     <link rel="stylesheet" href="app.css" />
     <link rel="stylesheet" href="MSCaddie.styles.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
-    <RadzenTheme Theme="material" @rendermode="InteractiveServer" />
-    <HeadOutlet />
+    <RadzenTheme Theme="material" />
+    <HeadOutlet @rendermode="@RenderModeForPage" />
 </head>
 
 <body>
-    <Routes @rendermode="@InteractiveServer" />
+    <Routes @rendermode="@RenderModeForPage" />
     <script src="_framework/blazor.web.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <!-- Add chart.js reference if chart components are used in your application. -->
@@ -31,3 +31,11 @@
 </body>
 
 </html>
+@code {
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    private IComponentRenderMode? RenderModeForPage => HttpContext.Request.Path.StartsWithSegments("/Account")
+        ? null
+        : InteractiveServer;
+}

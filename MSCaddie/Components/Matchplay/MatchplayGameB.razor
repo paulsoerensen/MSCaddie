@@ -1,5 +1,120 @@
-﻿<h3>MatchplayGameB</h3>
+﻿@rendermode InteractiveServer
+
+<RadzenStack class="rz-p-0 rz-p-md-6 rz-p-lg-12">
+    <RadzenCard Variant="Variant.Outlined">
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Start" Gap="0.5rem" class="rz-p-sm-12">
+            <RadzenLabel Text="Vælg 2" Component="DropDownMultipleChips" />
+            <RadzenDropDown @bind-Value=@values Data=@teams TextProperty="@nameof(MatchplayTeamModel.TeamName)"
+                            ValueProperty="@nameof(MatchplayTeamModel.TeamId)" Name="DropDownMultipleChips"
+                            Multiple=true AllowClear=true Placeholder="Vælg 2" Chips=true
+                            Style="width: 100%; max-width: 400px;" />
+        </RadzenStack>
+
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" Gap="0.5rem" Wrap="FlexWrap.Wrap">
+            <RadzenNumeric @bind-Value="@ToRound" Name="dataLabels"></RadzenNumeric>
+            <RadzenButton Click=@(args => OnCreate()) Text="Opret match" Icon="check_circle" ButtonStyle="ButtonStyle.Success" />
+        </RadzenStack>
+
+    </RadzenCard>
+</RadzenStack>
+
+@if (teams is null)
+{
+    <DisplaySpinner />
+}
+else
+{
+    <div class="container">
+        <div class="row py-5">
+            <RadzenDataGrid @ref="gameGrid" AllowFiltering="false" FilterMode=FilterMode.Simple AllowPaging="false" AllowSorting="true"
+                            Data="@games" TItem="MatchplayGameModel" AllowVirtualization="true" AllowColumnResize="true">
+
+                <Columns>
+                    <RadzenDataGridColumn TItem="MatchplayGameModel" Property="PlayRound" Title="Runde" Width="6rem" />
+                    <RadzenDataGridColumn TItem="MatchplayGameModel" Property="TeamName1" Title="Spiller 1" Width="12rem" />
+                    <RadzenDataGridColumn TItem="MatchplayGameModel" Property="TeamName2" Title="Spiller 2" Width="12rem" />
+                    <RadzenDataGridColumn TItem="MatchplayGameModel" Property="ResultText" Title="Resultat" Width="12rem" />
+
+                    <RadzenDataGridColumn Context="data" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" FrozenPosition="FrozenColumnPosition.Right">
+                        <Template Context="data">
+                            <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" Size="ButtonSize.Medium" Shade="Shade.Lighter" class="rz-my-1 rz-ms-1" Click="@(args => DeleteRow(data))" @onclick:stopPropagation="true" />
+                        </Template>
+                        <EditTemplate Context="data">
+                            <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" Size="ButtonSize.Medium" Shade="Shade.Lighter" class="rz-my-1 rz-ms-1" Click="@(args => DeleteRow(data))" aria-label="Delete" />
+                        </EditTemplate>
+                    </RadzenDataGridColumn>
+                </Columns>
+            </RadzenDataGrid>
+        </div>
+    </div>
+}
 
 @code {
 
+    [Inject] public IMatchplayService matchplaySvc { get; set; } = default!;
+    protected RadzenDataGrid<MatchplayGameModel> gameGrid;
+
+    public IList<int> values = new int[] { };
+
+    public IEnumerable<MatchplayTeamModel>? teams;
+    public IEnumerable<MatchplayGameModel>? games;
+
+    public int FromRound { get; set; } = 0;
+    public int ToRound { get; set; } = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+        await base.OnInitializedAsync();
+    }
+
+    protected async Task LoadData()
+    {
+        teams = await matchplaySvc.GetMatchplayTeams('B');
+        games = await matchplaySvc.GetMatchplayGames('B');
+        await base.OnInitializedAsync();
+    }
+
+    protected async Task OnCreate()
+    {
+        try
+        {
+            if (values.Count() < 2)
+                return;
+
+            // for at lave unikke matcher
+            int i1 = values[0] < values[1] ? values[0] : values[1];
+            int i2 = values[0] > values[1] ? values[0] : values[1];
+            MatchplayTeamModel c1 = teams.Where(t => t.TeamId == i1).FirstOrDefault();
+            MatchplayTeamModel c2 = teams.Where(t => t.TeamId == i2).FirstOrDefault();
+
+            if (c1 == null || c2 == null)
+                return;
+
+            MatchplayGameModel model = new MatchplayGameModel()
+                {
+                    League = c1.League,
+                    PlayRound = ToRound,
+                    TeamId1 = c1.TeamId,
+                    TeamId2 = c2.TeamId
+                };
+            await matchplaySvc.MatchplayGameUpsert(model);
+            await LoadData();
+            values = new int[] { };
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    protected async Task DeleteRow(MatchplayGameModel model)
+    {
+        int i = model.MatchplayGameId;
+        if (i > 0)
+        {
+            await matchplaySvc.MatchplayGameDelete(i);
+            await LoadData();
+        }
+    }
 }

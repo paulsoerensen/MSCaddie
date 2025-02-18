@@ -1,7 +1,4 @@
-﻿@* using Microsoft.AspNetCore.Components;
-using MSCaddie.Shared.Models;
-using MSCaddie.Shared.Services; *@
-
+﻿
 @rendermode InteractiveServer
 
 <RadzenStack class="rz-p-0 rz-p-md-6 rz-p-lg-12">
@@ -12,13 +9,6 @@ using MSCaddie.Shared.Services; *@
                             ValueProperty="@nameof(MatchplayTeamModel.TeamId)" Name="DropDownMultipleChips"
                             Multiple=true AllowClear=true Placeholder="Vælg 2" Chips=true
                             Style="width: 100%; max-width: 400px;" />
-
-@*             <RadzenDropDown @bind-Value=@values Data=@products TextProperty="@nameof(Product.ProductName)" 
-                            ValueProperty="@nameof(Product.ProductID)" Name="DropDownMultipleChips"
-                            Multiple=true AllowClear=true Placeholder="Select products" Chips=true 
-                            Style="width: 100%; max-width: 400px;" />
- *@
-
         </RadzenStack>
 
         <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" Gap="0.5rem" Wrap="FlexWrap.Wrap">
@@ -96,8 +86,8 @@ else
             // for at lave unikke matcher
             int i1 = values[0] < values[1] ? values[0] : values[1];
             int i2 = values[0] > values[1] ? values[0] : values[1];
-            MatchplayTeamModel c1 = teams.OrderBy(t => t.TeamId == i1).FirstOrDefault();
-            MatchplayTeamModel c2 = teams.OrderBy(t => t.TeamId == i2).FirstOrDefault();
+            MatchplayTeamModel c1 = teams.Where(t => t.TeamId == i1).FirstOrDefault();
+            MatchplayTeamModel c2 = teams.Where(t => t.TeamId == i2).FirstOrDefault();
 
             if (c1 == null || c2 == null)
                 return;
@@ -111,6 +101,7 @@ else
             };
             await matchplaySvc.MatchplayGameUpsert(model);
             await LoadData();
+            values = new int[] { };
         }
         catch (Exception e)
         {

@@ -28,22 +28,23 @@
                 </BSNav>
             </Content>
         </BSCollapse>
-        @*        <div class="d-flex">
+        <div class="d-flex">
              <AuthorizeView Context="AuthenticationState">
                 <div class="navbar-text">
-                    @AuthenticationState?.User?.Identity?.Name
-                    <AuthorizeView Roles="@AppRoles.Admin">
+@*                     @AuthenticationState?.User?.Identity?.Name
+ *@                    <AuthorizeView>
                         <Authorized>
-                            (Admin)
+                            <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
                         </Authorized>
                         <NotAuthorized>
-                            (Read Only)
+                            <BSNavItem Url="Account/Register">Opret login</BSNavItem>
+                            <BSNavItem Url="Account/Login">Login</BSNavItem>
                         </NotAuthorized>
                     </AuthorizeView>
                 </div>
             </AuthorizeView> 
-            <LoginDisplay></LoginDisplay>
-            </div>*@
+            <LoginDisplay/>
+        </div>
     </div>
 </BSNavbar>
 

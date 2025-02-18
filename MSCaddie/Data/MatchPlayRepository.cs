@@ -31,7 +31,8 @@ public class MatchplayRepository : RepositoryBase, IMatchplayRepository
     {
         string sql = @"select Season, Firstname, Lastname, VgcNo, TeamSingleId, TeamName, League 
                     FROM ms.vTeamSingle
-                    WHERE [season] = @season";
+                    WHERE [season] = @season
+                    order by LastName";
 
         using (IDbConnection db = new SqlConnection(ConnectionString))
             return await db.QueryAsync<TeamSingleDto>(sql, new { season });
@@ -75,7 +76,8 @@ public class MatchplayRepository : RepositoryBase, IMatchplayRepository
     {
         string sql = @"SELECT [PlayerId],[VgcNo],[Firstname],[Lastname],[Season] 
                     from ms.vTeamPartner
-                    WHERE [season] = @season";
+                    WHERE [season] = @season
+                    Order by Lastname";
 
         using (IDbConnection db = new SqlConnection(ConnectionString))
             return await db.QueryAsync<PlayerDto>(sql, new { season });
@@ -89,7 +91,8 @@ public class MatchplayRepository : RepositoryBase, IMatchplayRepository
     {
         string sql = @"select Season, VgcNo, VgcNoPartner, TeamParId, TeamName
                     FROM ms.TeamPar
-                    WHERE [season] = @season";
+                    WHERE [season] = @season
+                    Order by TeamName";
 
         using (IDbConnection db = new SqlConnection(ConnectionString))
             return await db.QueryAsync<TeamParDto>(sql, new { season });
@@ -136,7 +139,8 @@ public class MatchplayRepository : RepositoryBase, IMatchplayRepository
         {
             sql = @"select Season, TeamSingleId as TeamId, TeamName, League 
                     FROM ms.TeamSingle
-                    WHERE [season] = @season AND League = @league";
+                    WHERE [season] = @season AND League = @league
+                    Order by TeamName";
             using (IDbConnection db = new SqlConnection(ConnectionString))
                 return await db.QueryAsync<MatchplayTeamDto>(sql, new { season, league });
         }
@@ -144,7 +148,8 @@ public class MatchplayRepository : RepositoryBase, IMatchplayRepository
         {
             sql = @"select Season, TeamParId as TeamId, TeamName, League 
                     FROM ms.TeamPar
-                    WHERE [season] = @season";
+                    WHERE [season] = @season
+                    Order by TeamName";
             using (IDbConnection db = new SqlConnection(ConnectionString))
                 return await db.QueryAsync<MatchplayTeamDto>(sql, new { season });
         }
@@ -185,7 +190,7 @@ public class MatchplayRepository : RepositoryBase, IMatchplayRepository
     
     public async Task<int> MatchplayGameDelete(int id)
     {
-        string sql = @"delete ms.MatchplayGame where MatchplayGameDeleteId = @id";
+        string sql = @"delete ms.MatchplayGame where MatchplayGameId = @id";
 
         using IDbConnection db = new SqlConnection(ConnectionString);
         var res = await db.ExecuteScalarAsync(sql, new { id });

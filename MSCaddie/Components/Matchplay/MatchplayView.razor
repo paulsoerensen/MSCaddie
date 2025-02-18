@@ -7,8 +7,21 @@
 <RadzenTabs TabPosition="TabPosition.Top" RenderMode="TabRenderMode.Client">
     <Tabs>
         <RadzenTabsItem Text="Resultater">
-            <MatchplayResult />
+            <RadzenTabs TabPosition="TabPosition.Top" RenderMode="TabRenderMode.Client">
+                <Tabs>
+                    <RadzenTabsItem Text="Single, A">
+                        <MatchplayResultA />
+                    </RadzenTabsItem>
+                    <RadzenTabsItem Text="Single, B">
+                        <MatchplayResultB />
+                    </RadzenTabsItem>
+                    <RadzenTabsItem Text="Par">
+                        <MatchplayResultPar />
+                    </RadzenTabsItem>
+                </Tabs>
+            </RadzenTabs>
         </RadzenTabsItem>
+
         <RadzenTabsItem Text="Matcher">
             <RadzenTabs TabPosition="TabPosition.Top" RenderMode="TabRenderMode.Client">
                 <Tabs>
@@ -23,7 +36,6 @@
                     </RadzenTabsItem>
                 </Tabs>
             </RadzenTabs>
-
         </RadzenTabsItem>
         <RadzenTabsItem Text="Deltagere">
             <RadzenTabs TabPosition="TabPosition.Top" RenderMode="TabRenderMode.Client">
