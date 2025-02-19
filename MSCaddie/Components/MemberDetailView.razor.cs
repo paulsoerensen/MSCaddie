@@ -33,6 +33,7 @@ public partial class MemberDetailViewBase : ComponentBase
 
     protected async Task OnPlayerChanged(int i)
     {
+        Message = string.Empty;
         player = await playerSvc.GetPlayer(i);
         StateHasChanged();
     }
@@ -41,7 +42,7 @@ public partial class MemberDetailViewBase : ComponentBase
         try
         {
             Message = string.Empty;
-            player.Season = player.Season;
+            //player.Season = player.Season;
             player = await playerSvc.UpsertPlayer(player);
             dialogService.Close(true);
         }
@@ -49,5 +50,10 @@ public partial class MemberDetailViewBase : ComponentBase
         {
             Message = e.ToString();
         }
+    }
+
+    protected async Task OnInvalidSubmit(FormInvalidSubmitEventArgs args)
+    {
+        ;
     }
 }
