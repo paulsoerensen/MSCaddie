@@ -134,26 +134,32 @@ public class MatchplayRepository : RepositoryBase, IMatchplayRepository
     /// <returns></returns>
     public async Task<IEnumerable<MatchplayTeamDto>> GetMatchplayTeams(char league)
     {
-        string sql;
-        if (league.Equals('A') || league.Equals('B'))
-        {
-            sql = @"select Season, TeamSingleId as TeamId, TeamName, League 
-                    FROM ms.TeamSingle
-                    WHERE [season] = @season AND League = @league
-                    Order by TeamName";
-            using (IDbConnection db = new SqlConnection(ConnectionString))
-                return await db.QueryAsync<MatchplayTeamDto>(sql, new { season, league });
+        try { 
+            string sql;
+            if (league.Equals('A') || league.Equals('B'))
+            {
+                sql = @"select Season, TeamSingleId as TeamId, TeamName, League 
+                        FROM ms.TeamSingle
+                        WHERE [season] = @season AND League = @league
+                        Order by TeamName";
+                using (IDbConnection db = new SqlConnection(ConnectionString))
+                    return await db.QueryAsync<MatchplayTeamDto>(sql, new { season, league });
+            }
+            else
+            {
+                sql = @"select Season, TeamParId as TeamId, TeamName 
+                        FROM ms.TeamPar
+                        WHERE [season] = @season
+                        Order by TeamName";
+                using (IDbConnection db = new SqlConnection(ConnectionString))
+                    return await db.QueryAsync<MatchplayTeamDto>(sql, new { season });
+            }
         }
-        else
+        catch (Exception e)
         {
-            sql = @"select Season, TeamParId as TeamId, TeamName, League 
-                    FROM ms.TeamPar
-                    WHERE [season] = @season
-                    Order by TeamName";
-            using (IDbConnection db = new SqlConnection(ConnectionString))
-                return await db.QueryAsync<MatchplayTeamDto>(sql, new { season });
+            _logger.LogError(e.ToString());
+            return null;
         }
-
     }
 
     public async Task<IEnumerable<MatchplayGameDto>> GetMatchplayGames(char league)

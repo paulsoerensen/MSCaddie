@@ -45,7 +45,7 @@ namespace MSCaddie.Data
             string sql = @"SELECT [SettingsId],[Season],[SeasonStart],[SeasonEnd],
                                 [MensSectionLogoUrl],[MensSectionShort],[NoOfRoundsRankings],[RyderCupSponsor],
                                 [MaxHcpA],[MaxHcpB],[GBAccount],[GBUsername],[GBPassword],[GBGuid]
-                            FROM [vgcms].[ms].[Settings]";
+                            FROM [ms].[Settings]";
 
             using (IDbConnection db = new SqlConnection(ConnectionString))
             return await db.QueryFirstOrDefaultAsync<SettingsDto>(sql);
