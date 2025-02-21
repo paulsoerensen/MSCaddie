@@ -6,8 +6,7 @@
 @inject NavigationManager Navigation
 @using BlazorStrap
 
-@* @inject SignOutSessionStateManager SignOutManager
- *@
+
 <BSNavbar Color="BSColor.Light" IsFixedTop=true>
     <div class="container-fluid">
         <BSNavbarBrand Url="#">MS Caddie</BSNavbarBrand>
@@ -17,39 +16,57 @@
             </Toggler>
             <Content>
                 <BSNav MarginEnd="Margins.Auto" MarginBottom="Margins.Small" Class="mb-lg-0">
-                     <BSNavItem Url="ClubView">Klubber</BSNavItem>
+                    <BSNavItem Url="ClubView">Klubber</BSNavItem>
                     <AuthorizeView>
                         <BSNavItem Url="MemberListView">Medlemmer</BSNavItem>
                     </AuthorizeView> 
                     <BSNavItem Url="MatchListView">Matcher</BSNavItem>
-                        <BSNavItem Url="MatchResult">Resultater</BSNavItem>
-                        <BSNavItem Url="Matchplay">Hulspil</BSNavItem>
+                    <BSNavItem Url="MatchResult">Resultater</BSNavItem>
+                    <BSNavItem Url="Matchplay">Hulspil</BSNavItem>
                     <AuthorizeView>
                         <BSNavItem Url="settings">Indstillinger</BSNavItem>
                     </AuthorizeView> 
                 </BSNav>
             </Content>
-        </BSCollapse>
+        </BSCollapse>       
         <div class="d-flex">
-             <AuthorizeView Context="AuthenticationState">
-                <div class="navbar-text">
-@*                     @AuthenticationState?.User?.Identity?.Name
- *@                    <AuthorizeView>
-                        <Authorized>
-                            <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
-                        </Authorized>
-                        <NotAuthorized>
-                            <BSNavItem Url="Account/Register">Opret login</BSNavItem>
-                            <BSNavItem Url="Account/Login">Login</BSNavItem>
-                        </NotAuthorized>
-                    </AuthorizeView>
-                </div>
-            </AuthorizeView> 
-            <LoginDisplay/>
+            <AuthorizeView>
+                <Authorized>
+                    <form action="Account/Logout" method="post">
+                        <AntiforgeryToken />
+                        <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+                        <button type="submit" class="nav-link">
+                            <span aria-hidden="true">Logout</span>
+                        </button>
+                    </form>
+                </Authorized>
+                <NotAuthorized>
+                    <BSNav MarginEnd="Margins.Auto" MarginBottom="Margins.Small" Class="mb-lg-0">
+                        <BSNavItem Url="Account/Login">Login</BSNavItem>
+                    </BSNav>
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
     </div>
 </BSNavbar>
 
 @code {
+    private string? currentUrl;
 
+    protected override void OnInitialized()
+    {
+        currentUrl = Navigation.ToBaseRelativePath(Navigation.Uri);
+        Navigation.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        currentUrl = Navigation.ToBaseRelativePath(e.Location);
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        Navigation.LocationChanged -= OnLocationChanged;
+    }
 }

@@ -3,7 +3,6 @@
 
 <AuthorizeView>
     <Authorized>
-        Hello, @context.User.Identity?.Name!
         <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
     </Authorized>
     <NotAuthorized>
@@ -14,6 +13,6 @@
 @code {
     public void BeginLogOut()
     {
-        ; // Navigation.NavigateToLogout("authentication/logout");
+        Navigation.NavigateTo("account/logout");
     }
 }

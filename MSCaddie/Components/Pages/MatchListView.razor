@@ -30,8 +30,13 @@ else
         <div class="row py-5">
             <RadzenDataGrid @ref="matchGrid" AllowFiltering="false" FilterMode=FilterMode.Simple AllowPaging="false" AllowSorting="true"
                             Data="@matches" TItem="MatchModel" AllowVirtualization="true" AllowColumnResize="true">
+
             <HeaderTemplate>
+                <AuthorizeView>
+                    <Authorized>
                     <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle" Text="Ny match" Click="@(args => OpenMatch(-1))" />
+                   </Authorized>
+                </AuthorizeView>
             </HeaderTemplate>
 
             <Columns>
