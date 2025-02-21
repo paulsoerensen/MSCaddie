@@ -27,10 +27,10 @@ public interface IMatchplayService
 
     Task DeleteMatchplayPar(PlayerForMatchplayModel model);
 
-    Task<LeagueMatch?> GetMatchplay(int matchId);
-    Task<IEnumerable<LeagueMatch>?> GetMatchplays();
-    Task<IEnumerable<MatchTeamModel>?> GetTeamsForMatchplay(int leagueId);
-    Task<IEnumerable<MatchTeamModel>> GetMatchTeams(int leagueId);
+    //Task<LeagueMatch?> GetMatchplay(int matchId);
+    //Task<IEnumerable<LeagueMatch>?> GetMatchplays();
+    //Task<IEnumerable<MatchTeamModel>?> GetTeamsForMatchplay(int leagueId);
+    //Task<IEnumerable<MatchTeamModel>> GetMatchTeams(int leagueId);
 
 
     //Task<MatchDto> UpsertMatch(MatchDto match);

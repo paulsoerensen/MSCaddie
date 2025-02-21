@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using MSCaddie.Shared.Dtos;
 using MSCaddie.Shared.Interfaces;
 using MSCaddie.Shared.Models;
-using System.Reflection;
 
 namespace MSCaddie.Shared.Services;
 public class MatchplayService : IMatchplayService
@@ -140,7 +139,7 @@ public class MatchplayService : IMatchplayService
 
     public async Task<IEnumerable<MatchplayGameModel>> GetMatchplayGames(char league)
     {
-        _logger.LogInformation($"Called GetMatchplayTeams()");
+        _logger.LogInformation($"Called GetMatchplayGames()");
         IEnumerable<MatchplayGameDto> dtos = await _matchRepository.GetMatchplayGames(league);
         return mapper.Map<IEnumerable<MatchplayGameModel>>(dtos);
     }
@@ -173,42 +172,9 @@ public class MatchplayService : IMatchplayService
         return mapper.Map<IEnumerable<PlayerModel>>(dtos);
     }
 
-
-    public async Task<IEnumerable<LeagueMatch>?> GetMatchplays()
-    {
-        _logger.LogInformation($"Called GetMatchplays()");
-        return await Task.FromResult(Enumerable.Empty<LeagueMatch>());
-
-        //return await _matchRepository.GetMatchplays();
-    }
-
-    public async Task<LeagueMatch?> GetMatchplay(int matchId)
-    {
-        _logger.LogInformation($"Called GetMatchplay({matchId})");
-        //return await _matchRepository.GetFromJsonAsync<LeagueMatch>($"{BaseAddress}/{matchId}");
-        return await Task.FromResult<LeagueMatch?>(null);
-    }
-
     public async Task DeleteMatchplayPar(PlayerForMatchplayModel model)
     {
         await _matchRepository.DeleteMatchplayPar(model.LeagueTeamId);
     }
-    public async Task<IEnumerable<MatchTeamModel>?> GetTeamsForMatchplay(int leagueId)
-    {
-        _logger.LogInformation("Called GetMatchTeams");
-        var dtos = await _matchRepository.GetMatchplayTeams();
-        //return mapper.Map<IEnumerable<MatchTeamModel>>(dtos);
-        return null;
-    }
-
-
-
-    public async Task<IEnumerable<MatchTeamModel>?> GetMatchTeams(int leagueId)
-    {
-        _logger.LogInformation("Called GetMatchTeams");
-        var dtos = await _matchRepository.GetMatchTeams(leagueId);
-        return mapper.Map< IEnumerable<MatchTeamModel>>(dtos);
-    }
-
 }
 

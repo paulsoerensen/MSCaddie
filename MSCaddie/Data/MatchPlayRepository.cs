@@ -147,7 +147,7 @@ public class MatchplayRepository : RepositoryBase, IMatchplayRepository
             }
             else
             {
-                sql = @"select Season, TeamParId as TeamId, TeamName 
+                sql = @"select Season, TeamParId as TeamId, TeamName, 'X' as League 
                         FROM ms.TeamPar
                         WHERE [season] = @season
                         Order by TeamName";
