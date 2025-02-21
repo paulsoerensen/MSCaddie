@@ -4,6 +4,7 @@ using MSCaddie.Shared.Models;
 using  MSCaddie.Shared.Interfaces;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 
 namespace MSCaddie.Data
@@ -13,7 +14,9 @@ namespace MSCaddie.Data
         protected readonly IConfiguration _config;
         protected readonly ILogger _logger;
         protected readonly IMapper _mapper;
- 
+        private string servername;
+        private string database;
+
 
         public RepositoryBase(IConfiguration config, ILogger logger, IMapper mapper)
         {
@@ -28,26 +31,16 @@ namespace MSCaddie.Data
             if (config["DbPassword"] != null)
                 builder.Password = config["DbPassword"];
             ConnectionString = builder.ConnectionString;
+            using SqlConnection connection = new SqlConnection(ConnectionString);
+            servername = connection.DataSource;
+            database = connection.Database;
         }
 
         #region Database stuff
         public string ConnectionString { get; private set; }
+        public string ServerName => servername;
+        public string Database => database;
 
-        private string? _database;
-        /// <summary>
-        /// Currently only used for information in API
-        /// </summary>
-        public string Database { 
-            get {
-                if (_database == null)
-                {
-                    using var con = new SqlConnection(ConnectionString);
-                    _database = con.Database;
-                }
-                return _database;
-
-            } 
-        }
         public async Task<int> ExecuteCommand(string cmdText)
         {
             try

@@ -1,5 +1,6 @@
 using MSCaddie.Shared.Dtos;
 using MSCaddie.Shared.Models;
+using System.Data;
 
 namespace MSCaddie.Shared.Interfaces;
 
@@ -25,6 +26,14 @@ public interface IMatchplayRepository
     Task<IEnumerable<MatchplayGameDto>> GetMatchplayGames(char league);
     Task<int> MatchplayGameUpsert(MatchplayGameDto model);
     Task<int> MatchplayGameDelete(int id);
+
+
+    Task<IEnumerable<MatchplayGameDto>> GetMatchplayGamePars(char league);
+    Task<int> MatchplayGameParUpsert(MatchplayGameDto model);
+    Task<int> MatchplayGameParDelete(int id);
+
+
+
 
 
     Task<IEnumerable<PlayerForMatchplayDto>> GetPlayersForMatchplay();

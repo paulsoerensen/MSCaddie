@@ -109,7 +109,7 @@ public class MatchplayService : IMatchplayService
 
     public async Task<IEnumerable<TeamParModel>> GetMatchplayTeamPars()
     {
-        _logger.LogInformation($"Called GetMatchplayTeams()");
+        _logger.LogInformation($"Called GetMatchplayTeamPars()");
         IEnumerable<TeamParDto> dtos = await _matchRepository.GetMatchplayTeamPars();
         return mapper.Map<IEnumerable<TeamParModel>>(dtos);
     }

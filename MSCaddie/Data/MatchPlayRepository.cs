@@ -126,7 +126,7 @@ public class MatchplayRepository : RepositoryBase, IMatchplayRepository
     }
     #endregion
 
-    #region Match fixing
+    #region Match fixing, single
     /// <summary>
     /// Teams for match fixing
     /// </summary>
@@ -204,6 +204,50 @@ public class MatchplayRepository : RepositoryBase, IMatchplayRepository
     }
 
 
+    #endregion
+
+    #region Match fixing, par
+
+    public async Task<IEnumerable<MatchplayGameDto>> GetMatchplayGamePars(char league)
+    {
+        string sql = @"SELECT MatchplayGameId, MatchResult, ResultText, League, 
+                        PlayRound, TeamId1, TeamName1, TeamId2, TeamName2, LastUpdate
+                        FROM [ms].[vMatchplayGame]
+                        WHERE League = @league and Season = @season
+                        order by PlayRound desc, LastUpdate desc";
+        using (IDbConnection db = new SqlConnection(ConnectionString))
+            return await db.QueryAsync<MatchplayGameDto>(sql, new { league, season });
+    }
+
+    public async Task<int> MatchplayGameParUpsert(MatchplayGameDto model)
+    {
+        using var con = new SqlConnection(ConnectionString);
+        using var cmd = con.CreateCommand();
+        cmd.CommandType = CommandType.StoredProcedure;
+        cmd.CommandText = "[ms].[MatchplayGameUpsert]";
+        cmd.Parameters.AddWithValue("@MatchplayGameId", model.MatchplayGameId);
+        cmd.Parameters.AddWithValue("MatchResult", model.MatchResult);
+        cmd.Parameters.AddWithValue("ResultText", model.ResultText);
+        cmd.Parameters.AddWithValue("Season", season);
+        cmd.Parameters.AddWithValue("League", model.League);
+        cmd.Parameters.AddWithValue("PlayRound", model.PlayRound);
+        cmd.Parameters.AddWithValue("TeamId1", model.TeamId1);
+        cmd.Parameters.AddWithValue("TeamId2", model.TeamId2);
+
+        cmd.CommandTimeout = 240;
+        con.Open();
+        return await cmd.ExecuteNonQueryAsync();
+    }
+
+
+    public async Task<int> MatchplayGameParDelete(int id)
+    {
+        string sql = @"delete ms.MatchplayGame where MatchplayGameId = @id";
+
+        using IDbConnection db = new SqlConnection(ConnectionString);
+        var res = await db.ExecuteScalarAsync(sql, new { id });
+        return Convert.ToInt32(res ?? 0);
+    }
     #endregion
 
 

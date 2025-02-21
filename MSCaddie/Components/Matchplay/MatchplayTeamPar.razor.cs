@@ -43,13 +43,15 @@ public partial class MatchplayTeamParBase : ComponentBase
         {
             VgcNo = vgcNo1,
             VgcNoPartner = vgcNo2,
-            TeamName = $"{p1.Fullname}, {p2.Fullname}"
+            TeamName = $"{p1?.Fullname}, {p2?.Fullname}"
         };
 
         try
         {
             await matchPlaySvc.MatchplayTeamParUpsert(dto);
             await LoadData();
+            vgcNo1 = -1;
+            vgcNo2 = -1;
         }
         catch (Exception e)
         {

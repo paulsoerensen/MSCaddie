@@ -17,14 +17,16 @@
             </Toggler>
             <Content>
                 <BSNav MarginEnd="Margins.Auto" MarginBottom="Margins.Small" Class="mb-lg-0">
-@*                     <AuthorizeView>
- *@                     <BSNavItem Url="ClubView">Klubber</BSNavItem>
+                     <BSNavItem Url="ClubView">Klubber</BSNavItem>
+                    <AuthorizeView>
                         <BSNavItem Url="MemberListView">Medlemmer</BSNavItem>
-                        <BSNavItem Url="MatchListView">Matcher</BSNavItem>
+                    </AuthorizeView> 
+                    <BSNavItem Url="MatchListView">Matcher</BSNavItem>
                         <BSNavItem Url="MatchResult">Resultater</BSNavItem>
                         <BSNavItem Url="Matchplay">Hulspil</BSNavItem>
+                    <AuthorizeView>
                         <BSNavItem Url="settings">Indstillinger</BSNavItem>
-                    @* </AuthorizeView> *@
+                    </AuthorizeView> 
                 </BSNav>
             </Content>
         </BSCollapse>
