@@ -1,28 +1,32 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorBootstrap;
+using Microsoft.AspNetCore.Components;
 using MSCaddie.Components.Pages;
 using MSCaddie.Shared.Models;
 using MSCaddie.Shared.Services;
+using Radzen;
+using Radzen.Blazor;
 
 namespace MSCaddie.Components.MatchResults;
 
 public class OtherResultsBase : MatchResultBase
 {
-    //[CascadingParameter(Name = "TbCtrl")]
-
     [Parameter]
     public MatchModel Match { get; set; }
+
+    protected RadzenDataGrid<CompetitionResultModel> gameGrid;
+
+    protected bool inserting = false;
 
     private MatchResultPageBase? TabControl { get; set; }
     [Inject] public ILogger<OtherResultsBase> logger { get; set; } = default!;
     [Inject] public ICompetitionService? competitionService { get; set; }
 
-    protected IEnumerable<CompetitionResult> compResults;
+    protected IEnumerable<CompetitionResultModel> compResults;
     protected int competitionId;
-    protected IEnumerable<ListEntry>? competitions;
-    protected bool _showModal = false;
+    protected IEnumerable<ListEntryModel>? competitions;
     protected string? Birdies;
-    protected IEnumerable<MatchResult>? results;
-    protected MatchResult? result;
+    protected IEnumerable<MatchResult>? Results;
+    protected MatchResult result { get; set; } = new MatchResult();
 
     protected override async Task OnInitializedAsync()
     {
@@ -38,50 +42,25 @@ public class OtherResultsBase : MatchResultBase
         logger.LogInformation($"OtherResultsBase:OnParametersSetAsync");
         if (Match != null)
         {
-            compResults = await competitionService.GetMatchCompetitions(Match.MatchId);
-            competitionId = competitions?.FirstOrDefault()?.Key ?? -1;
-
-            results = await service.GetMatchResults(Match.MatchId);
             var birdies = await service.GetMatchBirdies(Match.MatchId);
             logger.LogInformation($"LoadData: GetMatchBirdies,{birdies?.Count()} ");
             List<string> lst = birdies.Select(i => i.BirdieString).ToList();
             Birdies = string.Join(",", lst);
+            Results = await service.MatchResultForRegistration(Match.MatchId);
+            Results = Results?.Where(x => x.Points != null).ToList();
         }
+        await LoadData();
         await base.OnParametersSetAsync();
     }
 
-    private async Task LoadData()
+    protected async Task LoadData()
     {
-        try
+        if (Match != null)
         {
-            competitions = await competitionService.GetCompetitions();
-            logger.LogInformation($"LoadData: GetCompetitions,{competitions.Count()} ");
-            compResults = await competitionService.GetMatchCompetitions(Match.MatchId);
+            compResults = await competitionService.GetMatchCompetitionResults(Match.MatchId);
             competitionId = competitions?.FirstOrDefault()?.Key ?? -1;
-            logger.LogInformation($"LoadData: GetMatchCompetitions,{compResults?.Count()} ");
-            results = await service.GetMatchResults(Match.MatchId);
-            var birdies = await service.GetMatchBirdies(Match.MatchId);
-            logger.LogInformation($"LoadData: GetMatchBirdies,{birdies?.Count()} ");
-            List<string> lst = birdies.Select(i => i.BirdieString).ToList();
-            Birdies = string.Join(",", lst);
         }
-        catch (Exception e)
-        {
-            logger.LogError($"LoadData, {e}");
-        }
-    }
-    protected async Task OnCompetitionSave()
-    {
-        logger.LogInformation($"OnCompetitionSave: {result?.VgcNo}: {competitionId} ");
-        CompetitionUpsert dto = new CompetitionUpsert
-        {
-            MembershipId = result.MemberShipId,
-            CompetitionId = competitionId,
-            MatchId = result.MatchId,
-            VgcNo = result.VgcNo
-        };
-        var res = await competitionService.UpsertGetCompetitionResult(dto);
-        compResults = await competitionService.GetMatchCompetitions(result.MatchId);
+        inserting = false;
     }
 
     protected async Task OnDeleteResultClicked(int id)
@@ -89,7 +68,44 @@ public class OtherResultsBase : MatchResultBase
         logger.LogInformation($"OnDeleteResultClicked: {id}");
         await competitionService.DeleteCompetitionResult(id);
         logger.LogInformation($"OnDeleteResultClicked done");
-        compResults = await competitionService.GetMatchCompetitions(result.MatchId);
+        compResults = await competitionService.GetMatchCompetitionResults(result.MatchId);
+    }
+
+    protected async Task SaveResult(CompetitionResultModel model)
+    {
+        logger.LogInformation($"OnCompetitionSave: {model?.VgcNo}: {model.CompetitionText} ");
+        var res = await competitionService.UpsertGetCompetitionResult(model);
+        compResults = await competitionService.GetMatchCompetitionResults(result.MatchId);
+        inserting = false;
+    }
+
+    protected async Task InsertRow()
+    {
+        if (inserting) return;
+
+        var res = new CompetitionResultModel() { MatchId = Match.MatchId };
+        await gameGrid.InsertRow(res);
+        inserting = true;
+    }
+
+    protected async Task EditResult(CompetitionResultModel model)
+    {
+        await gameGrid.EditRow(model);
+    }
+
+    protected async Task CancelEdit(CompetitionResultModel model)
+    {
+        gameGrid.CancelEditRow(model);
+    }
+
+    protected async Task DeleteRow(CompetitionResultModel model)
+    {
+        int i = model.CompetitionResultId;
+        if (i > 0)
+        {
+            await competitionService.DeleteCompetitionResult(i);
+            await LoadData();
+        }
     }
 }
 

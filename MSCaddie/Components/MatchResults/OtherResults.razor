@@ -4,7 +4,7 @@
 
 @if (Birdies == null)
 {
-    <Div Position="Position.Absolute.Top.Is50.Start.Is50.Translate.Middle"><DisplaySpinner /></Div>
+    <div Position="Position.Absolute.Top.Is50.Start.Is50.Translate.Middle"><DisplaySpinner /></div>
 }
 else
 {
@@ -17,50 +17,61 @@ else
     </Fields>
     <br />
 }
+
 @if (competitions == null)
 {
-    <Div Position="Position.Absolute.Top.Is50.Start.Is50.Translate.Middle"><DisplaySpinner /></Div>
+    <div Position="Position.Absolute.Top.Is50.Start.Is50.Translate.Middle"><DisplaySpinner /></div>
 }
 else
 {
-@*     <Fields Margin="Margin.Is2.FromTop">
-        <Field Horizontal ColumnSize="ColumnSize.Is6">
-            <FieldLabel ColumnSize="ColumnSize.Is2">Spiller</FieldLabel>
-            <FieldBody ColumnSize="ColumnSize.Is8">
-                <InputText id="field-sitewide-search"  
-                    class="form-control" type="text" name="q"
-                    placeholder="spiller navn" autoComplete="off" list="suggestions"
-                        @onclick=FetchOptions @bind-Value="SearchTerm"
-                        @oninput="SearchTermChanged"
-                        @onmouseover="() => SearchHover = true"
-                        @onmouseout="() => SearchHover = false"
-                        @onfocusin="() => SearchFocus = true"
-                        @onfocusout="() => SearchFocus = false" />
+    <div class="container">
+        <div class="row py-5">
+            <RadzenDataGrid @ref="gameGrid" AllowFiltering="false" FilterMode=FilterMode.Simple AllowPaging="false" AllowSorting="true"
+                            Data="@compResults" TItem="CompetitionResultModel" AllowVirtualization="true" AllowColumnResize="true">
+                <HeaderTemplate>
+                    <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle" Text="Nyt resultat" Click="@InsertRow" Disabled="@(inserting)" />
+                </HeaderTemplate>
+                <Columns>
+                    <RadzenDataGridColumn TItem="CompetitionResultModel" Property="CompetitionText" Title="-" Width="20rem">
+                        <EditTemplate Context="data">
+                            <RadzenDropDown @bind-Value=@data.CompetitionId Data=@competitions
+                                            TextProperty="@nameof(ListEntryModel.Value)" ValueProperty="@nameof(ListEntryModel.Key)"
+                                        Style="width: 100%; max-width: 400px;" Name="DropDownTextValueProperties" />
+                        </EditTemplate>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="CompetitionResultModel" Property="Fullname" Title="Spiller" Width="20rem">
+                        <EditTemplate Context="data">
+                            <RadzenDropDown @bind-Value=@data.VgcNo Data=@Results
+                                            TextProperty="Fullname" ValueProperty="VgcNo"
+                                            Style="width: 100%; max-width: 400px;" Name="DropDownTextValueProperties" />
+                        </EditTemplate>
+                    </RadzenDataGridColumn>
 
-                <datalist id="suggestions">
-                    @foreach (var res in results ?? Enumerable.Empty<MatchResult>())
-                    {
-                        <option>@res.Fullname</option>
-                    }
-                </datalist>
-             </FieldBody>
-        </Field> *@
-@*         <Field Horizontal ColumnSize="ColumnSize.Is4">
-            <Select TValue="int" id="competitionId" @bind-SelectedValue="@competitionId" ColumnSize="ColumnSize.Is10">
-                @foreach (var item in competitions ?? Enumerable.Empty<ListEntry>())
-                {
-                    <SelectItem Value="@item.Key">@item.Value</SelectItem>
-                }
-            </Select>
-        </Field>
-        <Field Horizontal ColumnSize="ColumnSize.Is2">
-            <FieldBody ColumnSize="ColumnSize.Is8">
-                <Button Color=ButtonColor.Primary ColumnSize="ColumnSize.Is2" Clicked="@OnCompetitionSave">Gem</Button>
-            </FieldBody>
-        </Field> *@
-@*     </Fields> *@
+@*                     <RadzenDataGridColumn TItem="MatchplayGameModel" Property="ResultText" Title="Resultat" Width="12rem">
+                        <EditTemplate Context="data">
+                            <RadzenTextBox @bind-Value="data.ResultText" Style="width:100px; display: block" Name="ResultText" aria-label="Enter ship country" />
+                        </EditTemplate>
+                    </RadzenDataGridColumn> *@
+
+                    <RadzenDataGridColumn Context="data" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" FrozenPosition="FrozenColumnPosition.Right">
+                        <Template Context="data">
+                            <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="rz-my-1 rz-ms-1" Click="@(args => EditResult(data))" @onclick:stopPropagation="true" />
+                            <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" Size="ButtonSize.Medium" Shade="Shade.Lighter" class="rz-my-1 rz-ms-1" Click="@(args => DeleteRow(data))" @onclick:stopPropagation="true" />
+                        </Template>
+                        <EditTemplate Context="data">
+                            <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@((args) => SaveResult(data))" aria-label="Save" />
+                            <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="rz-my-1 rz-ms-1" Click="@((args) => CancelEdit(data))" aria-label="Cancel" />
+                            <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" Size="ButtonSize.Medium" Shade="Shade.Lighter" class="rz-my-1 rz-ms-1" Click="@(args => DeleteRow(data))" aria-label="Delete" />
+                        </EditTemplate>
+                    </RadzenDataGridColumn>
+
+                </Columns>
+            </RadzenDataGrid>
+        </div>
+    </div>
 }
- 
+
+@*  
 @if (compResults != null)
 {
     <div class="container-md mt-10 col-md-10 offset-md-1">
@@ -89,4 +100,4 @@ else
         </tbody>
         </table>
     </div>
-}
+} *@

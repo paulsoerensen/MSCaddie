@@ -108,7 +108,7 @@ namespace MSCaddie.Data
         #endregion
 
         #region Tee
-        public async Task<ListEntry?> GetTee(int teeId)
+        public async Task<ListEntryModel?> GetTee(int teeId)
         {
             string sql = @"SELECT  [CourseTeeId] as [Key]
                     ,RTrim([Tee]) as [Value] 
@@ -116,18 +116,18 @@ namespace MSCaddie.Data
                     where [CourseTeeId] = @teeId";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
-            return (ListEntry?)(await db.QueryAsync<ListEntry>(sql, new { teeId }));
+            return (ListEntryModel?)(await db.QueryAsync<ListEntryModel>(sql, new { teeId }));
         }
-        public async Task<IEnumerable<ListEntry>> GetTees()
+        public async Task<IEnumerable<ListEntryModel>> GetTees()
         {
             string sql = @"SELECT  [CourseTeeId] as [Key]
                     ,RTrim([Tee]) as [Value] 
                     FROM [ms].[CourseTee]";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
-            return (IEnumerable<ListEntry>)(await db.QueryAsync<ListEntry>(sql));
+            return (IEnumerable<ListEntryModel>)(await db.QueryAsync<ListEntryModel>(sql));
         }
-        public async Task<ListEntry> TeeUpsert(ListEntry model)
+        public async Task<ListEntryModel> TeeUpsert(ListEntryModel model)
         {
             using var con = new SqlConnection(ConnectionString);
 

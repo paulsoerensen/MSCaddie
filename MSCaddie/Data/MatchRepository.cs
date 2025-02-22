@@ -4,6 +4,7 @@ using MSCaddie.Shared.Models;
 using MSCaddie.Shared.Interfaces;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using MSCaddie.Shared.Dtos;
 
 namespace MSCaddie.Data
 {
@@ -15,17 +16,17 @@ namespace MSCaddie.Data
 
         #region Method: MatchResults
 
-        public async Task<IEnumerable<ListEntry>>GetMatchResultDates(DateTime seasonStart)
+        public async Task<IEnumerable<ListEntryModel>>GetMatchResultDates(DateTime seasonStart)
         {
             return await GetMatchResultDates(seasonStart, seasonStart);
         }
 
-        public  async Task<IEnumerable<ListEntry>> GetMatchResultDates(DateTime startDate, DateTime endDate)
+        public  async Task<IEnumerable<ListEntryModel>> GetMatchResultDates(DateTime startDate, DateTime endDate)
         {
             string sql = "exec [ms].[MatchResultSelectDates] @StartDate=startDate, @EndDate= endDate";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
-            return (await db.QueryAsync<ListEntry>(sql, new { startDate, endDate })).ToList();
+            return (await db.QueryAsync<ListEntryModel>(sql, new { startDate, endDate })).ToList();
         }
 
 
@@ -169,7 +170,7 @@ namespace MSCaddie.Data
         #endregion
 
         #region Competition
-        public async Task<IEnumerable<ListEntry>?> GetCompetitions()
+        public async Task<IEnumerable<ListEntryModel>?> GetCompetitions()
         {
             string sql = @"SELECT [CompetitionId] as [Key] 
                 ,[CompetitionText] as [Value] 
@@ -180,7 +181,7 @@ namespace MSCaddie.Data
             try
             {
                 using IDbConnection db = new SqlConnection(ConnectionString);
-                return await db.QueryAsync<ListEntry>(sql);
+                return await db.QueryAsync<ListEntryModel>(sql);
             }
             catch (Exception e)
             {
@@ -189,12 +190,17 @@ namespace MSCaddie.Data
             }
         }
 
-        public async Task<IEnumerable<CompetitionResult>> GetCompetitionResults(int matchId)
+        public async Task<IEnumerable<CompetitionResultDto>> GetCompetitionResults(int matchId)
         {
             try
             {
+                string sql = @"	SELECT [CompetitionText],[CompetitionResultId],[CompetitionId] 
+		                            ,[VgcNo],[Firstname],[Lastname],[MatchId] 
+	                             FROM [ms].[vCompetitionResult] 
+	                             WHERE MatchId = @matchId
+	                             order by listorder";
                 using IDbConnection db = new SqlConnection(ConnectionString);
-                return await db.QueryAsync<CompetitionResult>("[ms].[CompetitionResults] @MatchId", new { matchId });
+                return await db.QueryAsync<CompetitionResultDto>(sql, new { matchId });
             }
             catch (Exception e)
             {
@@ -216,7 +222,7 @@ namespace MSCaddie.Data
                 throw;
             }
         }
-        public async Task<int> UpsertCompetitionResult(CompetitionUpsert dto)
+        public async Task<int> UpsertCompetitionResult(CompetitionResultDto dto)
         {
             try
             {
@@ -225,7 +231,8 @@ namespace MSCaddie.Data
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = "[ms].[CompetitionResultUpsert]";
 
-                cmd.Parameters.AddWithValue("@MembershipId", dto.MembershipId);
+                cmd.Parameters.AddWithValue("@CompetitionResultId", dto.CompetitionResultId);
+                cmd.Parameters.AddWithValue("@VgcNo", dto.VgcNo);
                 cmd.Parameters.AddWithValue("@MatchId", dto.MatchId);
                 cmd.Parameters.AddWithValue("@CompetitionId", dto.CompetitionId);
 
@@ -240,46 +247,6 @@ namespace MSCaddie.Data
                 throw;
             }
         }
-        //public IEnumerable<Dto.CompetitionResult> GetCompetitionResults(int matchId)
-        //{
-        //    MSDatabase.EnableAutoSelect = false;
-        //    var list = MSDatabase.Query<Dto.CompetitionResult>(";exec [ms].[CompetitionResults] @MatchId"
-        //            , new { MatchId = matchId });
-        //    return list;
-        //}
-
-        //public Dto.CompetitionResult GetCompetitionResult(int matchId, int competitionId)
-        //{
-        //    MSDatabase.EnableAutoSelect = false;
-        //    var dto = MSDatabase.Query<Dto.CompetitionResult>("SELECT [MatchDate],[CompetitionText] " +
-        //        ",[CompetitionResultId],[MembershipId],[CompetitionId] " +
-        //        ",[VgcNo],[Firstname],[Lastname],[MatchId] " +
-        //        " FROM [ms].[vCompetitionResult]" +
-        //        " WHERE MatchId = @MatchId  and CompetitionId = @CompetitionId " +
-        //        " order by listorder"
-        //            , new
-        //            {
-        //                MatchId = matchId,
-        //                CompetitionId = competitionId
-        //            }).FirstOrDefault();
-
-        //    return dto;
-        //}
-        //public Dto.CompetitionResult GetCompetitionResultById(int id)
-        //{
-        //    MSDatabase.EnableAutoSelect = false;
-        //    var dto = MSDatabase.Query<Dto.CompetitionResult>("SELECT [MatchDate],[CompetitionText] " +
-        //        ",[CompetitionResultId],[MembershipId],[CompetitionId] " +
-        //        ",[VgcNo],[Firstname],[Lastname],[MatchId] " +
-        //        " FROM [ms].[vCompetitionResult]" +
-        //        " WHERE CompetitionResultId = @CompetitionResultId "
-        //            , new
-        //            {
-        //                CompetitionResultId = id
-        //            }).FirstOrDefault();
-
-        //    return dto;
-        //}
         #endregion
 
         #region Match
@@ -344,12 +311,12 @@ namespace MSCaddie.Data
         #endregion
 
         #region Matchform
-        public async Task<IEnumerable<ListEntry>> GetMatchforms()
+        public async Task<IEnumerable<ListEntryModel>> GetMatchforms()
         {
             string sql = "SELECT [MatchformId] as [Key],[MatchForm] as [Value] FROM [ms].[Matchform]";
 
             using (IDbConnection db = new SqlConnection(ConnectionString))
-                return (await db.QueryAsync<ListEntry>(sql));
+                return (await db.QueryAsync<ListEntryModel>(sql));
         }
 
         #endregion

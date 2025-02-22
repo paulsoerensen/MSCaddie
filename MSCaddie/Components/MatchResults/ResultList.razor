@@ -10,17 +10,17 @@
         <div class="collapse navbar-collapse" id="navbarColor01"> 
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <button class="btn btn-primary my-2 my-sm-0" type="button" @onclick="() => OnButtonClick(ResultAction.All)">Alle resultater</button>
+                    <button class="btn btn-primary my-2 my-sm-0" type="button" @onclick="() => OnSettleMatch(ResultAction.All)">Alle resultater</button>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-info my-2 my-sm-0" type="button" @onclick="() => OnButtonClick(ResultAction.A)">A rækken</button>
+                    <button class="btn btn-info my-2 my-sm-0" type="button" @onclick="() => OnSettleMatch(ResultAction.A)">A rækken</button>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-secondary my-2 my-sm-0" type="button" @onclick="() => OnButtonClick(ResultAction.B)">B rækken</button>
+                    <button class="btn btn-secondary my-2 my-sm-0" type="button" @onclick="() => OnSettleMatch(ResultAction.B)">B rækken</button>
                 </li>
             </ul>
            <form class="d-flex">
-                <button class="btn btn-secondary my-2 my-sm-0" type="button" @onclick="() => OnButtonClick(ResultAction.B)">Afslut match</button>
+                <button class="btn btn-secondary my-2 my-sm-0" type="button" @onclick="() => OnSettleMatch(ResultAction.X)">Afslut match</button>
             </form>
         </div>
     </div>
@@ -38,7 +38,7 @@ else
             <RadzenDataGridColumn Property="@nameof(MatchResult.No)" Title="Nr" Width="20px" />
             <RadzenDataGridColumn Property="@nameof(MatchResult.VgcNo)" Title="Vgc nr." FormatString="{0:d}" TextAlign="TextAlign.Center" Width="20px" />
             <RadzenDataGridColumn Property="@nameof(MatchResult.Fullname)" Title="Navn" FormatString="{0:d}" TextAlign="TextAlign.Start" Width="180px" />
-            <RadzenDataGridColumn Property="@nameof(MatchResult.Hcp)" Title="Hcp" TextAlign="TextAlign.Center" />
+            <RadzenDataGridColumn Property="@nameof(MatchResult.HcpIndex)" Title="Hcp" TextAlign="TextAlign.Center" />
             <RadzenDataGridColumn Property="@nameof(MatchResult.Hallington)" Title="Resultat" FormatString="{0:d}" Visible="Match.IsHallington" TextAlign="TextAlign.Center" />
             <RadzenDataGridColumn Property="@nameof(MatchResult.Brutto)" Title="Brutto" FormatString="{0:d}" Visible="Match.IsStrokePlay" TextAlign="TextAlign.Center" />
             <RadzenDataGridColumn Property="@nameof(MatchResult.Netto)" Title="Netto" FormatString="{0:d}" Visible="Match.IsStrokePlay" TextAlign="TextAlign.Center" />

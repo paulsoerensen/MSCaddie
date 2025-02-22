@@ -1,4 +1,6 @@
-﻿using MSCaddie.Shared.Models;
+﻿using AutoMapper;
+using MSCaddie.Shared.Interfaces;
+using MSCaddie.Shared.Models;
 
 namespace MSCaddie.Shared.Services
 {
@@ -16,6 +18,6 @@ namespace MSCaddie.Shared.Services
         Task<bool> MatchSettlement(int matchId);
         Task<bool> DeleteResultMatch(int matchResultId);
         Task<string> MatchRegistration(int matchResultId, string regFile);
-        Task<IEnumerable<ListEntry>?> GetMatchforms();
+        Task<IEnumerable<ListEntryModel>?> GetMatchforms();
     }
 }

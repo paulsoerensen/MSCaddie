@@ -1,9 +1,8 @@
 ﻿using MSCaddie.Shared.Dtos;
 using MSCaddie.Shared.Models;
 using Microsoft.Extensions.Logging;
-using System.Net.Http.Json;
-using System.Text.Json;
 using MSCaddie.Shared.Interfaces;
+using AutoMapper;
 
 namespace MSCaddie.Shared.Services;
 public class MatchService : IMatchService
@@ -12,12 +11,23 @@ public class MatchService : IMatchService
 
     IMatchRepository _matchRepository;
     ILogger<MatchService> _logger;
+    IMapper mapper;
 
     public MatchService(IMatchRepository matchRepository,
         ILogger<MatchService> logger)
     {
         _matchRepository = matchRepository;
         _logger = logger;
+        mapper = new MapperConfiguration(cfg =>
+        {
+            cfg.CreateMap<CompetitionResultDto, CompetitionResultModel>().ReverseMap();
+            cfg.CreateMap<ListItem, ListEntryModel>().ReverseMap()
+                .ForMember(dest => dest.KeyId, opt =>
+                    opt.MapFrom(src => src.Key))
+                .ForMember(dest => dest.KeyValue, opt =>
+                    opt.MapFrom(src => src.Value));
+        })
+        .CreateMapper();
     }
     //public string Baseaddress => _client.BaseAddress?.ToString();
 
@@ -89,7 +99,7 @@ public class MatchService : IMatchService
         //return res.ToString();
     }
 
-    public async Task<IEnumerable<ListEntry>?> GetMatchforms()
+    public async Task<IEnumerable<ListEntryModel>?> GetMatchforms()
     {
         return await _matchRepository.GetMatchforms();
         //return await _client.GetFromJsonAsync<IEnumerable<ListItem>>($"api/matchform");
@@ -100,16 +110,6 @@ public class MatchService : IMatchService
         return await _matchRepository.GetMatchBirdies(matchId);
         //return await _client.GetFromJsonAsync<IEnumerable<MatchBirdieResultDto>>($"api/match/{matchId}/birdies");
     }
-    public async Task<IEnumerable<CompetitionResult>?> GetMatchCompetitions(int matchId)
-    {
-        return await _matchRepository.GetCompetitionResults(matchId);
-        //return await _client.GetFromJsonAsync<IEnumerable<CompetitionResultDto>?>($"api/match/{matchId}/CompetitionResults");
-    }
-    public async Task<IEnumerable<ListEntry>?> GetCompetitions()
-    {
-        return await _matchRepository.GetCompetitions();
-        //var res = await _client.GetFromJsonAsync<IEnumerable<ListItem>>($"api/competitions");
-        //return res;
-    }
+
 }
 

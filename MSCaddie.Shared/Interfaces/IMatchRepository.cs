@@ -1,3 +1,4 @@
+using MSCaddie.Shared.Dtos;
 using MSCaddie.Shared.Models;
 
 namespace MSCaddie.Shared.Interfaces;
@@ -6,9 +7,9 @@ public interface IMatchRepository
 {
 
     #region Competition
-    Task<IEnumerable<ListEntry>?> GetCompetitions();
-    Task<IEnumerable<CompetitionResult>> GetCompetitionResults(int matchId);
-    Task<int> UpsertCompetitionResult(CompetitionUpsert dto);
+    Task<IEnumerable<ListEntryModel>?> GetCompetitions();
+    Task<IEnumerable<CompetitionResultDto>> GetCompetitionResults(int matchId);
+    Task<int> UpsertCompetitionResult(CompetitionResultDto dto);
     Task<int> DeleteCompetitionResult(int resultId);
     #endregion
 
@@ -25,7 +26,7 @@ public interface IMatchRepository
     Task<int> MatchResultDelete(int id);
     Task<IEnumerable<MatchBirdieResult>?> GetMatchBirdies(int matchId);
     Task<int> MatchResultSettlement(int matchId);
-    Task<IEnumerable<ListEntry>> GetMatchforms();
+    Task<IEnumerable<ListEntryModel>> GetMatchforms();
 
     #endregion
 

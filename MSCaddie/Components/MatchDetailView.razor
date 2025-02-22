@@ -47,7 +47,7 @@
             <RadzenColumn Size="12" SizeMD="6">
                 <RadzenFormField Text="Match form" Variant="Variant.Outlined" Style="width: 100%;">
                     <RadzenDropDown @bind-Value=@match.MatchformId Data=@matchForms
-                                    TextProperty="@nameof(ListEntry.Value)" ValueProperty="@nameof(ListEntry.Key)"
+                                        TextProperty="@nameof(ListEntryModel.Value)" ValueProperty="@nameof(ListEntryModel.Key)"
                                     Style="width: 100%; max-width: 400px;" Name="DropDownTextValueProperties" />
                 </RadzenFormField>
             </RadzenColumn >

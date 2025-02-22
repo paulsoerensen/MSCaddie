@@ -3,60 +3,62 @@
 
 @rendermode InteractiveServer
 
-@if (Match != null)
+@if (Match == null)
+{
+    <DisplaySpinner />
+}
+else
 {
     <RadzenRow Gap="0.5rem" RowGap="0.5rem">
-    <RadzenColumn Size="12" class="rz-p-1">
-        <RadzenStack Orientation="Radzen.Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Start" class="rz-p-4 rz-border-radius-1" Style="border: var(--rz-grid-cell-border);">
-                <div class="rz-p-2 rz-text-align-center">
-                    <BlazorBootstrap.AutoComplete @bind-Value="Fullname"
-                        TItem="MatchResult"
-                        DataProvider="ResultDataProvider"
-                        PropertyName="Fullname"
-                        Placeholder="Vælg spiller..."
-                        StringComparison="StringComparison.Ordinal"
-                        OnChanged="(MatchResult res) => OnAutoCompleteChanged(res)" />
-                </div>
-        </RadzenStack>
-    </RadzenColumn>
+        <RadzenColumn Size="12" class="rz-p-1">
+            <RadzenStack Orientation="Radzen.Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Start" class="rz-p-4 rz-border-radius-1" Style="border: var(--rz-grid-cell-border);">
+                    <div class="rz-p-2 rz-text-align-center">
+                        <BlazorBootstrap.AutoComplete @bind-Value="Fullname"
+                            TItem="MatchResult"
+                            DataProvider="ResultDataProvider"
+                            PropertyName="Fullname"
+                            Placeholder="Vælg spiller..."
+                            StringComparison="StringComparison.Ordinal"
+                            OnChanged="(MatchResult res) => OnAutoCompleteChanged(res)" />
+                    </div>
+            </RadzenStack>
+        </RadzenColumn>
     </RadzenRow>
 }
 @if (result != null && Match != null)
 {
     <RadzenCard class="rz-my-6">
+        <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Start" Wrap="FlexWrap.Wrap" Gap="1rem">
+            <RadzenFormField Text="Hcp" Variant="@variant" Style="flex: 1;">
+                <RadzenNumeric @bind-Value="@result.HcpIndex" />
+            </RadzenFormField>
+            <RadzenFormField Text="Antal tildelte" Variant="@variant" Style="flex: 1;">
+                <RadzenNumeric @bind-Value="@result.Hcp" />
+            </RadzenFormField>
+            <RadzenFormField Text="Brutto" Variant="@variant" Visible="@Match.IsStrokePlay" Style="flex: 1;">
+                <RadzenNumeric @bind-Value="@result.Brutto" />
+            </RadzenFormField>
+@*             <RadzenFormField Text="Netto" Variant="@variant" Visible="@Match.IsStrokePlay" Style="flex: 1;">
+                <RadzenNumeric @bind-Value="@result.Netto" />
+            </RadzenFormField> *@
+            <RadzenFormField Text="Hallington" Variant="@variant" Visible="@Match.IsHallington" Style="flex: 1;">
+                <RadzenNumeric @bind-Value="@result.Hallington" />
+            </RadzenFormField>
+@*         </RadzenStack>
         <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Start" Wrap="FlexWrap.Wrap">
-            <RadzenStack Orientation="Radzen.Orientation.Vertical" Gap="4px">
-                <RadzenFormField Text="Antal tildelte" Variant="@variant">
-                    <RadzenNumeric @bind-Value="@result.Hcp" />
-                </RadzenFormField>
-            </RadzenStack>
-            <RadzenStack Orientation="Radzen.Orientation.Vertical" Gap="4px">
-                <RadzenFormField Text="Brutto" Variant="@variant" Visible="@Match.IsStrokePlay">
-                    <RadzenNumeric @bind-Value="@result.Brutto" />
-                </RadzenFormField>
-            </RadzenStack>
-            <RadzenStack Orientation="Radzen.Orientation.Vertical" Gap="4px">
-                <RadzenFormField Text="Netto" Variant="@variant" Visible="@Match.IsStrokePlay">
-                    <RadzenNumeric @bind-Value="@result.Netto" />
-                </RadzenFormField>
-            </RadzenStack>
-            <RadzenStack Orientation="Radzen.Orientation.Vertical" Gap="4px">
-                <RadzenFormField Text="Hallington" Variant="@variant" Visible="@Match.IsHallington">
-                    <RadzenNumeric @bind-Value="@result.Hallington" />
-                </RadzenFormField>
-            </RadzenStack>
-
-            <RadzenStack Orientation="Radzen.Orientation.Vertical" Gap="4px">
-                <RadzenFormField Text="Stableford" Variant="@variant">
-                    <RadzenNumeric @bind-Value="@result.Points" />
-                </RadzenFormField>
-            </RadzenStack>
-
-            <RadzenStack Orientation="Radzen.Orientation.Vertical" Gap="4px" Visible="@Match.Shootout">
-                <RadzenFormField Text="Shoot-out" Variant="@variant">
-                    <RadzenNumeric @bind-Value="@result.Shootout" />
-                </RadzenFormField>
-            </RadzenStack>
+ *@
+            <RadzenFormField Text="Puts" Variant="@variant" Visible="@Match.IsStrokePlay" Style="flex: 1;">
+                <RadzenNumeric @bind-Value="@result.Puts" />
+            </RadzenFormField>
+            <RadzenFormField Text="Stableford" Variant="@variant" Style="flex: 1;">
+                <RadzenNumeric @bind-Value="@result.Points" />
+            </RadzenFormField>
+            <RadzenFormField Text="Birdies" Variant="@variant" Style="flex: 1;">
+                <RadzenNumeric @bind-Value="@result.Birdies" />
+            </RadzenFormField>
+            <RadzenFormField Text="Shoot-out" Variant="@variant" Visible="@Match.Shootout" Style="flex: 1;">
+                <RadzenNumeric @bind-Value="@result.Shootout" />
+            </RadzenFormField>
         </RadzenStack>
 
         <RadzenStack Orientation="Radzen.Orientation.Horizontal" Gap="1rem" class="rz-mt-1" Style="justify-content: flex-end;">
@@ -73,7 +75,7 @@
                     <RadzenCheckBox @bind-Value="@result.Dining" />
                 </div>
             </RadzenStack>
-            </RadzenStack>
+        </RadzenStack>
 
         <RadzenStack Orientation="Radzen.Orientation.Horizontal" Gap="1rem" class="rz-mt-1" Style="justify-content: flex-end;">
             <div class="rz-p-2 .rz-w-fit-content  rz-text-align-left">
@@ -85,5 +87,29 @@
         </RadzenStack>
     </RadzenCard>
 }
+@if (Message is not null)
+{
+<div class="text-red-500">
+    <em>@message</em>
+</div>    
+}
 
+@if (result != null && Match != null)
+{
+    <RadzenDataGrid @ref="resultsGrid" AllowColumnResize="true"
+                    AllowSorting="true" Data="@registredResults">
+    <Columns>
+        <RadzenDataGridColumn Property="@nameof(MatchResult.No)" Title="Nr" Width="20px" />
+        <RadzenDataGridColumn Property="@nameof(MatchResult.VgcNo)" Title="Vgc nr." FormatString="{0:d}" TextAlign="TextAlign.Center" Width="20px" />
+        <RadzenDataGridColumn Property="@nameof(MatchResult.Fullname)" Title="Navn" FormatString="{0:d}" TextAlign="TextAlign.Start" Width="180px" />
+        <RadzenDataGridColumn Property="@nameof(MatchResult.Hallington)" Title="Resultat" FormatString="{0:d}" Visible="Match.IsHallington" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn Property="@nameof(MatchResult.Brutto)" Title="Brutto" FormatString="{0:d}" Visible="Match.IsStrokePlay" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn Property="@nameof(MatchResult.Hcp)" Title="Hcp" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn Property="@nameof(MatchResult.Netto)" Title="Netto" FormatString="{0:d}" Visible="Match.IsStrokePlay" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn Property="@nameof(MatchResult.Points)" Title="Stableford" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn Property="@nameof(MatchResult.Puts)" Title="Puts" Visible="Match.IsStrokePlay" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn Property="@nameof(MatchResult.Birdies)" Title="Birdies" TextAlign="TextAlign.Center" />
+    </Columns>
+</RadzenDataGrid>
+}
 

@@ -19,7 +19,7 @@ public partial class MatchDetailViewBase : ComponentBase
     public List<ClubModel> clubs { get; set; } = new List<ClubModel>();
     public List<CourseInfo> courses { get; set; } = new List<CourseInfo>();
     public List<CourseInfo> clubCourses { get; set; } = new List<CourseInfo>();
-    public List<ListEntry> matchForms { get; set; } = new List<ListEntry>();
+    public List<ListEntryModel> matchForms { get; set; } = new List<ListEntryModel>();
     public CourseInfo course { get; set; } = new CourseInfo();
     protected IEnumerable<string> matchTexts
         = ["Torsdagsmatch", "ÅbningsMatch", "Afslutningsmatch"];

@@ -44,7 +44,7 @@ public class ResultListBase : MatchResultBase
         await base.OnParametersSetAsync();
     }
 
-    protected async Task OnButtonClick(ResultAction filter)
+    protected async Task OnSettleMatch(ResultAction filter)
     {
         switch(filter)
         {
@@ -63,8 +63,10 @@ public class ResultListBase : MatchResultBase
             case ResultAction.X:
                 var res = await service.MatchSettlement(Match.MatchId);
                 results = await service.GetMatchResults(Match.MatchId);
+                FilterResult();
                 break;
         }
+        StateHasChanged();
     }
 
     protected void FilterResult()

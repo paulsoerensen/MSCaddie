@@ -18,8 +18,8 @@ public interface IClubRepository
     #endregion
 
     #region Tee
-    Task<ListEntry?> GetTee(int teeId);
-    Task<IEnumerable<ListEntry>> GetTees();
-    Task<ListEntry> TeeUpsert(ListEntry model);
+    Task<ListEntryModel?> GetTee(int teeId);
+    Task<IEnumerable<ListEntryModel>> GetTees();
+    Task<ListEntryModel> TeeUpsert(ListEntryModel model);
     #endregion
 }

@@ -1,24 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 
-namespace MSCaddie.Shared.Dtos
+namespace MSCaddie.Shared.Dtos;
+
+public class CompetitionResultDto
 {
-    public class CompetitionResultDto
+    public int CompetitionResultId { get; set; }
+    public int MatchId { get; set; }
+    public int CompetitionId { get; set; }
+    public int VgcNo { get; set; }
+    public string? Firstname { get; set; }
+    public string? Lastname { get; set; }
+    public string Fullname
     {
-        public int CompetitionResultId { get; set; }
-        public int MatchId { get; set; }
-        public DateTime MatchDate { get; set; }
-        public int CompetitionId { get; set; }
-        public int VgcNo { get; set; }
-        public int MembershipId { get; set; }
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
-        public string CompetitionText { get; set; }
+        get
+        {
+            if (string.IsNullOrEmpty(Firstname))
+                return this?.Lastname;
+            if (string.IsNullOrEmpty(Lastname))
+                return this?.Firstname;
 
-
+            return string.Format(CultureInfo.InstalledUICulture, $"{Firstname?.Trim()} {Lastname?.Trim()}");
+        }
+        set {; }
     }
+    public string CompetitionText { get; set; }
+
+
 }
