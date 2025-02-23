@@ -8,17 +8,13 @@
 }
 else
 {
-
-    <Fields>
-        <Field>
-            <FieldLabel>Birdies</FieldLabel>
-            <MemoEdit Rows="3" Text="@Birdies" Placeholder="Players with one or more birdies" ReadOnly />
-        </Field>
-    </Fields>
-    <br />
+    <div class="mb-3">
+        <BSLabel>Birdies</BSLabel>
+        <BSInput InputType="InputType.TextArea" Value="@Birdies" />
+    </div>
 }
 
-@if (competitions == null)
+@if (Competitions == null)
 {
     <div Position="Position.Absolute.Top.Is50.Start.Is50.Translate.Middle"><DisplaySpinner /></div>
 }
@@ -26,15 +22,15 @@ else
 {
     <div class="container">
         <div class="row py-5">
-            <RadzenDataGrid @ref="gameGrid" AllowFiltering="false" FilterMode=FilterMode.Simple AllowPaging="false" AllowSorting="true"
+            <RadzenDataGrid @ref="gameGrid" AllowFiltering="false" EditMode="DataGridEditMode.Single"
                             Data="@compResults" TItem="CompetitionResultModel" AllowVirtualization="true" AllowColumnResize="true">
                 <HeaderTemplate>
                     <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle" Text="Nyt resultat" Click="@InsertRow" Disabled="@(inserting)" />
                 </HeaderTemplate>
                 <Columns>
-                    <RadzenDataGridColumn TItem="CompetitionResultModel" Property="CompetitionText" Title="-" Width="20rem">
+                    <RadzenDataGridColumn TItem="CompetitionResultModel" Property="CompetitionText" Title="Text" Width="20rem">
                         <EditTemplate Context="data">
-                            <RadzenDropDown @bind-Value=@data.CompetitionId Data=@competitions
+                            <RadzenDropDown @bind-Value=@data.CompetitionId Data=@Competitions
                                             TextProperty="@nameof(ListEntryModel.Value)" ValueProperty="@nameof(ListEntryModel.Key)"
                                         Style="width: 100%; max-width: 400px;" Name="DropDownTextValueProperties" />
                         </EditTemplate>
@@ -71,33 +67,3 @@ else
     </div>
 }
 
-@*  
-@if (compResults != null)
-{
-    <div class="container-md mt-10 col-md-10 offset-md-1">
-        <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-                <th style="width:45%">Navn</th>
-                    <th style="width:45%">Tekst</th>
-                    <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var comp in compResults)
-            {
-                <tr>
-                        <td>@comp.Fullname</td>
-                        <td>@comp.CompetitionText</td>
-                    <td>
-                            <Button Color="ButtonColor.Primary" 
-                            @onclick="() => OnDeleteResultClicked(comp.CompetitionResultId)">
-                                X
-                            </Button>
-                    </td>
-            </tr> 
-            }
-        </tbody>
-        </table>
-    </div>
-} *@

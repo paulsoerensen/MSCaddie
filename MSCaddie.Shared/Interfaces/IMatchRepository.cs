@@ -1,5 +1,4 @@
 using MSCaddie.Shared.Dtos;
-using MSCaddie.Shared.Models;
 
 namespace MSCaddie.Shared.Interfaces;
 
@@ -7,26 +6,26 @@ public interface IMatchRepository
 {
 
     #region Competition
-    Task<IEnumerable<ListEntryModel>?> GetCompetitions();
+    Task<IEnumerable<ListEntryDto>?> GetCompetitions();
     Task<IEnumerable<CompetitionResultDto>> GetCompetitionResults(int matchId);
     Task<int> UpsertCompetitionResult(CompetitionResultDto dto);
     Task<int> DeleteCompetitionResult(int resultId);
     #endregion
 
     #region Match
-    Task<MatchModel?> GetMatch(int matchId);
-    Task<IEnumerable<MatchModel>> GetMatchList();
-    Task<IEnumerable<MatchModel>> GetSeasonMatchList(int season);
-    Task<MatchModel> MatchUpsert(MatchModel dto);
+    Task<MatchDto?> GetMatch(int matchId);
+    Task<IEnumerable<MatchDto>> GetMatchList();
+    Task<IEnumerable<MatchDto>> GetSeasonMatchList(int season);
+    Task<MatchDto> MatchUpsert(MatchDto dto);
 
-    Task<IEnumerable<MatchResult>> GetMatchResults(int matchId);
-    Task<IEnumerable<MatchResult>?> GetMatchResultForRegistration(int matchId);
-    Task<MatchResult> MatchResultUpsert(MatchResult model);
-    Task<int> MatchRegistrationUpsert(MatchRegistration model);
+    Task<IEnumerable<MatchResultDto>> GetMatchResults(int matchId);
+    Task<IEnumerable<MatchResultDto>?> GetMatchResultForRegistration(int matchId);
+    Task<MatchResultDto> MatchResultUpsert(MatchResultDto dto);
+    Task<int> MatchRegistrationUpsert(MatchRegistrationDto dto);
     Task<int> MatchResultDelete(int id);
-    Task<IEnumerable<MatchBirdieResult>?> GetMatchBirdies(int matchId);
+    Task<IEnumerable<MatchResultDto>?> GetMatchBirdies(int matchId);
     Task<int> MatchResultSettlement(int matchId);
-    Task<IEnumerable<ListEntryModel>> GetMatchforms();
+    Task<IEnumerable<ListEntryDto>> GetMatchforms();
 
     #endregion
 

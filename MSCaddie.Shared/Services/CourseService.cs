@@ -1,6 +1,7 @@
-﻿using MSCaddie.Shared.Interfaces;
+﻿using AutoMapper;
+using MSCaddie.Shared.Interfaces;
+using MSCaddie.Shared.Dtos;
 using MSCaddie.Shared.Models;
-using System.Net.Http.Json;
 
 namespace MSCaddie.Shared.Services;
 public class CourseService : ICourseService
@@ -9,20 +10,29 @@ public class CourseService : ICourseService
     private const string BaseCourseAddress = "api/course";
 
     private readonly IClubRepository _repo;
+    IMapper mapper;
 
     public CourseService(IClubRepository repo)
     {
         _repo = repo;
+        mapper = new MapperConfiguration(cfg =>
+        {
+            cfg.CreateMap<ClubDto, ClubModel>().ReverseMap();
+            cfg.CreateMap<CourseDto, CourseModel>().ReverseMap();
+        })
+        .CreateMapper();
     }
     public async Task<IEnumerable<ClubModel>> GetClubs()
     {
-        return await _repo.GetClubs();
+        var dtos = await _repo.GetClubs();
+        return mapper.Map<IEnumerable<ClubModel>>(dtos);
         //return await _client.GetFromJsonAsync<IEnumerable<ClubDto>>(BaseAddress);
     }
 
     public async Task<bool> AddClub(ClubModel model)
     {
-        model =  await _repo.ClubUpsert(model);
+        var dto = mapper.Map<ClubDto>(model);
+        dto =  await _repo.ClubUpsert(dto);
         return model != null;
         //var response = await _client.PostAsJsonAsync<ClubDto>(BaseAddress, dto);
         //if (response.IsSuccessStatusCode)
@@ -36,23 +46,17 @@ public class CourseService : ICourseService
         //}
     }
 
-    
-    //public async Task<IEnumerable<ListItem>> GetClubNames()
-    //{
-    //    var res = await _client.GetFromJsonAsync<IEnumerable<ClubDto>>(BaseAddress);
-    //    var dis = res.DistinctBy(x => x.ClubName);
-    //    return dis.Select(x => new ListItem { KeyId = x.ClubName, KeyValue = x.ClubName });
-    //}
-
-    public async Task<IEnumerable<CourseInfo>?> GetCourses()
+    public async Task<IEnumerable<CourseModel>?> GetCourses()
     {
-        return await _repo.GetCourses(null, null);
+        var dtos = await _repo.GetCourses(null, null);
+        return mapper.Map<IEnumerable<CourseModel>>(dtos);
         //return await _client.GetFromJsonAsync<IEnumerable<CourseDto>>($"{BaseCourseAddress}");
     }
 
-    public async Task<IEnumerable<CourseInfo>?> GetCourses(int clubId)
+    public async Task<IEnumerable<CourseModel>?> GetCourses(int clubId)
     {
-        return await _repo.GetCourses(clubId, null);
+        var dtos = await _repo.GetCourses(clubId, null);
+        return mapper.Map<IEnumerable<CourseModel>>(dtos);
         //return await _client.GetFromJsonAsync<IEnumerable<CourseDto>>($"{BaseAddress}/{clubId}/course");
     }
 }

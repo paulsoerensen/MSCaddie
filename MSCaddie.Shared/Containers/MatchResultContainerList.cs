@@ -5,7 +5,7 @@ using Serilog;
 
 namespace MSCaddie.Shared.Containers;
 
-public class MatchResultContainerList : ContainerListBase<MatchResult>
+public class MatchResultContainerList : ContainerListBase<MatchResultModel>
 {
     public int MatchId { get; set; }
     private readonly IMatchService _dataService;
@@ -21,7 +21,7 @@ public class MatchResultContainerList : ContainerListBase<MatchResult>
         //_spinnerService = spinnerService;
     }
 
-    protected override async Task<List<MatchResult>?>? FetchContent()
+    protected override async Task<List<MatchResultModel>?>? FetchContent()
     {
         _logger.LogInformation("FetchContent called");
         var lst = (await _dataService.MatchResultForRegistration(matchId: MatchId)).ToList();

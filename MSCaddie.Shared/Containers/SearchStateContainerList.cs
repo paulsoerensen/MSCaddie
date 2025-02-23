@@ -1,12 +1,12 @@
 ﻿using MSCaddie.Shared.Models;
 
 namespace MSCaddie.Shared.Containers;
-public class SearchStateContainerList : ContainerListBase<MatchResult>
+public class SearchStateContainerList : ContainerListBase<MatchResultModel>
 {
     private readonly MatchResultContainerList _MatchResultContainerList;
     private string _searchTerm = "";
 
-    private List<MatchResult>? FilteredMatchResults => _MatchResultContainerList.Content?
+    private List<MatchResultModel>? FilteredMatchResults => _MatchResultContainerList.Content?
         .Where(model => model.Fullname != null &&
                         model.Fullname.Contains(_searchTerm, StringComparison.InvariantCultureIgnoreCase))
         .ToList();
@@ -25,9 +25,9 @@ public class SearchStateContainerList : ContainerListBase<MatchResult>
         SetFilteredMatchResults();
     }
 
-    protected override Task<List<MatchResult>> FetchContent()
+    protected override Task<List<MatchResultModel>> FetchContent()
     {
-        return Task.FromResult(FilteredMatchResults ?? new List<MatchResult>());
+        return Task.FromResult(FilteredMatchResults ?? new List<MatchResultModel>());
     }
 
     private void SetFilteredMatchResults()

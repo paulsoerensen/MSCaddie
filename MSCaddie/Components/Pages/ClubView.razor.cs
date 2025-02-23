@@ -16,7 +16,7 @@ public partial class ClubViewBase : ComponentBase, IDisposable
 
     public int clubId { get; set; } = -1;
     public IEnumerable<ClubModel>? clubs;
-    public IEnumerable<CourseInfo>? courses = default!;
+    public IEnumerable<CourseModel>? courses = default!;
     //public EventConsole? console;
     protected string? message;
 

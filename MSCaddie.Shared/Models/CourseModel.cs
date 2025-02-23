@@ -1,6 +1,6 @@
 ﻿namespace MSCaddie.Shared.Models
 {
-    public class CourseInfo
+    public class CourseModel
     {
         public int ClubId { get; set; }
         public string? ClubName { get; set; }

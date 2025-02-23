@@ -13,15 +13,15 @@ public class PlayerResultBase : MatchResultBase
     public MatchModel Match { get; set; }
     [Inject] public ILogger<PlayerResultBase> logger { get; set; } = default!;
     //[Inject] protected MatchResultContainerList _matchResultContainerList { get; set; } = null!;
-    protected RadzenDataGrid<MatchResult> resultsGrid;
+    protected RadzenDataGrid<MatchResultModel> resultsGrid;
 
     protected bool _showModal = false;
     protected string message = "";
     //protected Validations _validations { get; set; }
     protected Variant variant = Variant.Outlined;
-    protected IEnumerable<MatchResult>? Results { get; set; }
-    protected IEnumerable<MatchResult>? registredResults { get; set; }
-    protected MatchResult result { get; set; } = new MatchResult();
+    protected IEnumerable<MatchResultModel>? Results { get; set; }
+    protected IEnumerable<MatchResultModel>? registredResults { get; set; }
+    protected MatchResultModel result { get; set; } = new MatchResultModel();
 
     protected string Fullname;
     protected object selectedItem;
@@ -47,12 +47,12 @@ public class PlayerResultBase : MatchResultBase
         await LoadData();
     }
 
-    protected async Task<AutoCompleteDataProviderResult<MatchResult>> ResultDataProvider(AutoCompleteDataProviderRequest<MatchResult> request)
+    protected async Task<AutoCompleteDataProviderResult<MatchResultModel>> ResultDataProvider(AutoCompleteDataProviderRequest<MatchResultModel> request)
     {
         // Ensure that results is never null. If it's null, initialize as an empty collection.
         if (Results == null)
         {
-            Results = Enumerable.Empty<MatchResult>(); // Initialize as an empty set if results is null
+            Results = Enumerable.Empty<MatchResultModel>(); // Initialize as an empty set if results is null
         }
 
         // If results is empty, fetch the data from the service
@@ -65,14 +65,14 @@ public class PlayerResultBase : MatchResultBase
         var filteredResults = Results.Where(x => x.Fullname.Contains(request.Filter.Value, StringComparison.OrdinalIgnoreCase)).ToList();
 
         // Return the filtered results in an AutoCompleteDataProviderResult
-        return await Task.FromResult(new AutoCompleteDataProviderResult<MatchResult>
+        return await Task.FromResult(new AutoCompleteDataProviderResult<MatchResultModel>
         {
             Data = filteredResults, // return filtered results
             TotalCount = filteredResults.Count // return filtered count
         });
     }
 
-    protected void OnAutoCompleteChanged(MatchResult res)
+    protected void OnAutoCompleteChanged(MatchResultModel res)
     {
         result = res;
     }

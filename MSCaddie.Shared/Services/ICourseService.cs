@@ -6,7 +6,7 @@ namespace MSCaddie.Shared.Services
     {
         Task<IEnumerable<ClubModel>> GetClubs();
         Task<bool> AddClub(ClubModel model);
-        Task<IEnumerable<CourseInfo>?> GetCourses();
-        Task<IEnumerable<CourseInfo>?> GetCourses(int clubId);
+        Task<IEnumerable<CourseModel>?> GetCourses();
+        Task<IEnumerable<CourseModel>?> GetCourses(int clubId);
     }
 }

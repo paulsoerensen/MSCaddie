@@ -1,6 +1,5 @@
 using AutoMapper;
 using Dapper;
-using MSCaddie.Shared.Models;
 using MSCaddie.Shared.Interfaces;
 using System.Data;
 using Microsoft.Data.SqlClient;
@@ -16,21 +15,21 @@ namespace MSCaddie.Data
 
         #region Method: MatchResults
 
-        public async Task<IEnumerable<ListEntryModel>>GetMatchResultDates(DateTime seasonStart)
+        public async Task<IEnumerable<ListEntryDto>>GetMatchResultDates(DateTime seasonStart)
         {
             return await GetMatchResultDates(seasonStart, seasonStart);
         }
 
-        public  async Task<IEnumerable<ListEntryModel>> GetMatchResultDates(DateTime startDate, DateTime endDate)
+        public  async Task<IEnumerable<ListEntryDto>> GetMatchResultDates(DateTime startDate, DateTime endDate)
         {
             string sql = "exec [ms].[MatchResultSelectDates] @StartDate=startDate, @EndDate= endDate";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
-            return (await db.QueryAsync<ListEntryModel>(sql, new { startDate, endDate })).ToList();
+            return (await db.QueryAsync<ListEntryDto>(sql, new { startDate, endDate })).ToList();
         }
 
 
-        public async Task<ResultMatch?>GetLastResult()
+        public async Task<MatchResultDto?>GetLastResult()
         {
             string sql = "SELECT TOP (1) FirstName, LastName, Brutto, Netto, " +
                 "DamstahlPoints, Points, Hallington, Tee, MatchFormId, OverallWinner, " +
@@ -41,22 +40,22 @@ namespace MSCaddie.Data
                 "ORDER BY MatchDate DESC";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
-            return (await db.QueryAsync<ResultMatch>(sql)).FirstOrDefault();
+            return (await db.QueryAsync<MatchResultDto>(sql)).FirstOrDefault();
         }
 
 
-        public async Task<IEnumerable<MatchResult>>GetMatchResults(int matchId)
+        public async Task<IEnumerable<MatchResultDto>>GetMatchResults(int matchId)
         {
             using IDbConnection db = new SqlConnection(ConnectionString);
 
-            return await db.QueryAsync<MatchResult>("[ms].[MatchResultSelectWinners] @MatchId", new { matchId });
+            return await db.QueryAsync<MatchResultDto>("[ms].[MatchResultSelectWinners] @MatchId", new { matchId });
         }
-        public async Task<IEnumerable<MatchResult>?>GetMatchResultForRegistration(int matchId)
+        public async Task<IEnumerable<MatchResultDto>?>GetMatchResultForRegistration(int matchId)
         {
             try
             {
                 using IDbConnection db = new SqlConnection(ConnectionString);
-                return await db.QueryAsync<MatchResult>("[ms].[MatchResultListForRegistration] @MatchId", new { matchId });
+                return await db.QueryAsync<MatchResultDto>("[ms].[MatchResultListForRegistration] @MatchId", new { matchId });
             }
             catch (Exception e)
             {
@@ -65,7 +64,7 @@ namespace MSCaddie.Data
             }        
         }
 
-        public async Task<MatchResult> MatchResultUpsert(MatchResult model)
+        public async Task<MatchResultDto> MatchResultUpsert(MatchResultDto dto)
         {
             using var con = new SqlConnection(ConnectionString);
 
@@ -74,19 +73,19 @@ namespace MSCaddie.Data
             cmd.CommandText = "[ms].[MatchResultUpsert]";
             cmd.Parameters.Add("MatchResultId", SqlDbType.Int).Direction = ParameterDirection.Output;
 
-            cmd.Parameters.AddWithValue("VgcNo", model.VgcNo);
-            cmd.Parameters.AddWithValue("MatchId", model.MatchId);
-            cmd.Parameters.AddWithValue("Hcp", model.Hcp);
-            cmd.Parameters.AddWithValue("HcpGroup", model.HcpGroup);
-            cmd.Parameters.AddWithValue("Puts", model.Puts);
-            cmd.Parameters.AddWithValue("Brutto", model.Brutto);
-            cmd.Parameters.AddWithValue("Points", model.Points);
-            cmd.Parameters.AddWithValue("Hallington", model.Hallington);
-            cmd.Parameters.AddWithValue("Birdies", model.Birdies);
-            cmd.Parameters.AddWithValue("ShootOut", model.ShootOut);
-            cmd.Parameters.AddWithValue("Dining", model.Dining);
-            cmd.Parameters.AddWithValue("InNearestPin", model.InNearestPin);
-            cmd.Parameters.AddWithValue("InBirdies", model.InBirdies);
+            cmd.Parameters.AddWithValue("VgcNo", dto.VgcNo);
+            cmd.Parameters.AddWithValue("MatchId", dto.MatchId);
+            cmd.Parameters.AddWithValue("Hcp", dto.Hcp);
+            cmd.Parameters.AddWithValue("HcpGroup", dto.HcpGroup);
+            cmd.Parameters.AddWithValue("Puts", dto.Puts);
+            cmd.Parameters.AddWithValue("Brutto", dto.Brutto);
+            cmd.Parameters.AddWithValue("Points", dto.Points);
+            cmd.Parameters.AddWithValue("Hallington", dto.Hallington);
+            cmd.Parameters.AddWithValue("Birdies", dto.Birdies);
+            cmd.Parameters.AddWithValue("ShootOut", dto.ShootOut);
+            cmd.Parameters.AddWithValue("Dining", dto.Dining);
+            cmd.Parameters.AddWithValue("InNearestPin", dto.InNearestPin);
+            cmd.Parameters.AddWithValue("InBirdies", dto.InBirdies);
 
             cmd.CommandTimeout = 240;
             con.Open();
@@ -94,12 +93,12 @@ namespace MSCaddie.Data
 
             object obj = cmd.Parameters["MatchResultId"].Value;
             if (!(obj is DBNull))
-                model.MatchResultId = Convert.ToInt32(obj);
+                dto.MatchResultId = Convert.ToInt32(obj);
 
-            return model;
+            return dto;
         }
 
-        public async Task<int> MatchRegistrationUpsert(MatchRegistration model)
+        public async Task<int> MatchRegistrationUpsert(MatchRegistrationDto dto)
         {
             using var con = new SqlConnection(ConnectionString);
 
@@ -107,11 +106,11 @@ namespace MSCaddie.Data
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.CommandText = "[ms].[MatchRegistrationUpsert]";
 
-            cmd.Parameters.AddWithValue("@VgcNo", model.VgcNo);
-            cmd.Parameters.AddWithValue("@MatchId", model.MatchId);
-            cmd.Parameters.AddWithValue("@Birdies", model.Birdies);
-            cmd.Parameters.AddWithValue("@NearestPin", model.NearestPin);
-            cmd.Parameters.AddWithValue("@Dining", model.Dining);
+            cmd.Parameters.AddWithValue("@VgcNo", dto.VgcNo);
+            cmd.Parameters.AddWithValue("@MatchId", dto.MatchId);
+            cmd.Parameters.AddWithValue("@Birdies", dto.Birdies);
+            cmd.Parameters.AddWithValue("@NearestPin", dto.NearestPin);
+            cmd.Parameters.AddWithValue("@Dining", dto.Dining);
 
             cmd.CommandTimeout = 240;
             con.Open();
@@ -127,7 +126,7 @@ namespace MSCaddie.Data
             return i;
         }
 
-        public async Task<IEnumerable<MatchBirdieResult>?> GetMatchBirdies(int matchId)
+        public async Task<IEnumerable<MatchResultDto>?> GetMatchBirdies(int matchId)
         {
             using IDbConnection db = new SqlConnection(ConnectionString);
             string sql = @"select r.Birdies, m.Firstname, m.Lastname
@@ -135,9 +134,9 @@ namespace MSCaddie.Data
 		                            ms.MemberShip  as s ON r.MemberShipId = s.MemberShipId INNER JOIN
 		                            ms.Player m ON s.VgcNo = m.VgcNo
 	                        WHERE  (r.Birdies > 0) AND (r.MatchId = @MatchId)
-	                        ORDER BY m.Lastname";
+	                        ORDER BY r.Birdies, r.HcpIndex, m.Lastname";
 
-            var res  = await db.QueryAsync<MatchBirdieResult>(sql, new { matchId });
+            var res  = await db.QueryAsync<MatchResultDto>(sql, new { matchId });
             return res;
         }
        
@@ -145,7 +144,7 @@ namespace MSCaddie.Data
         { 
             string sql = "select MatchFormId from ms.Match where MatchId = @matchId";
             using IDbConnection db = new SqlConnection(ConnectionString);
-            MatchModel m = (await db.QueryAsync<MatchModel>(sql, new { matchId })).FirstOrDefault();
+            MatchDto m = (await db.QueryAsync<MatchDto>(sql, new { matchId })).FirstOrDefault();
 
             if (m.MatchformId == 1)
                 sql = "[ms].[MatchResultSettleByStroke]";
@@ -170,10 +169,10 @@ namespace MSCaddie.Data
         #endregion
 
         #region Competition
-        public async Task<IEnumerable<ListEntryModel>?> GetCompetitions()
+        public async Task<IEnumerable<ListEntryDto>?> GetCompetitions()
         {
-            string sql = @"SELECT [CompetitionId] as [Key] 
-                ,[CompetitionText] as [Value] 
+            string sql = @"SELECT [CompetitionId] as [KeyId] 
+                ,[CompetitionText] as [KeyValue] 
                 FROM[ms].[Competition] 
                 where Active = 1 
                 order by listorder";
@@ -181,7 +180,7 @@ namespace MSCaddie.Data
             try
             {
                 using IDbConnection db = new SqlConnection(ConnectionString);
-                return await db.QueryAsync<ListEntryModel>(sql);
+                return await db.QueryAsync<ListEntryDto>(sql);
             }
             catch (Exception e)
             {
@@ -258,65 +257,65 @@ namespace MSCaddie.Data
 
         private const string orderBy = " order by MatchDate";
 
-        public async Task<MatchModel?>GetMatch(int id)
+        public async Task<MatchDto?>GetMatch(int id)
         {
             string sql = matchSelect + " where MatchId = @id " + orderBy;
 
             using IDbConnection db = new SqlConnection(ConnectionString);
-            return (MatchModel?)(await db.QueryAsync<MatchModel>(sql, new { id })).FirstOrDefault();
+            return (MatchDto?)(await db.QueryAsync<MatchDto>(sql, new { id })).FirstOrDefault();
         }
  
-        public async Task<IEnumerable<MatchModel>>GetMatchList()
+        public async Task<IEnumerable<MatchDto>>GetMatchList()
         {
             string sql = matchSelect + orderBy;
 
             using (IDbConnection db = new SqlConnection(ConnectionString))
-            return (IEnumerable<MatchModel>)(await db.QueryAsync<MatchModel>(sql));
+            return (IEnumerable<MatchDto>)(await db.QueryAsync<MatchDto>(sql));
         }
-        public async Task<IEnumerable<MatchModel>>GetSeasonMatchList(int season)
+        public async Task<IEnumerable<MatchDto>>GetSeasonMatchList(int season)
         {
             string sql = matchSelect + " where Season = @season " + orderBy;
 
             using (IDbConnection db = new SqlConnection(ConnectionString))
-            return (IEnumerable<MatchModel>)(await db.QueryAsync<MatchModel>(sql, new { season }));
+            return (IEnumerable<MatchDto>)(await db.QueryAsync<MatchDto>(sql, new { season }));
         }
 
-        public async Task<MatchModel> MatchUpsert(MatchModel model)       
+        public async Task<MatchDto> MatchUpsert(MatchDto dto)       
         {
             using var con = new SqlConnection(ConnectionString);
 
             using var cmd = con.CreateCommand();
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.CommandText = "[ms].[MatchUpsert]";
-            cmd.Parameters.AddWithValue("MatchId", model.MatchId).Direction = ParameterDirection.InputOutput;
-            cmd.Parameters.AddWithValue("MatchDate", model.MatchDate);
-            cmd.Parameters.AddWithValue("MatchformId", model.MatchformId);
-            cmd.Parameters.AddWithValue("CourseDetailId", model.CourseDetailId);
-            cmd.Parameters.AddWithValue("Par", model.Par);
-            cmd.Parameters.AddWithValue("Description", model.MatchText);
-            cmd.Parameters.AddWithValue("Sponsor", model.Sponsor);
-            cmd.Parameters.AddWithValue("SponsorLogoId", model.SponsorLogoId);
-            cmd.Parameters.AddWithValue("Remarks", model.Remarks);
-            cmd.Parameters.AddWithValue("Official", model.Official);
-            cmd.Parameters.AddWithValue("Shootout", model.Shootout);
-            //cmd.Parameters.AddWithValue("timestamp", model.timestamp);
-               
+            cmd.Parameters.AddWithValue("MatchId", dto.MatchId).Direction = ParameterDirection.InputOutput;
+            cmd.Parameters.AddWithValue("MatchDate", dto.MatchDate);
+            cmd.Parameters.AddWithValue("MatchformId", dto.MatchformId);
+            cmd.Parameters.AddWithValue("CourseDetailId", dto.CourseDetailId);
+            cmd.Parameters.AddWithValue("Par", dto.Par);
+            cmd.Parameters.AddWithValue("Description", dto.MatchText);
+            cmd.Parameters.AddWithValue("Sponsor", dto.Sponsor);
+            cmd.Parameters.AddWithValue("SponsorLogoId", dto.SponsorLogoId);
+            cmd.Parameters.AddWithValue("Remarks", dto.Remarks);
+            cmd.Parameters.AddWithValue("Official", dto.Official);
+            cmd.Parameters.AddWithValue("Shootout", dto.Shootout);
+            //cmd.Parameters.AddWithValue("timestamp", dto.timestamp);
+
             cmd.CommandTimeout = 240;
             con.Open();
             await cmd.ExecuteNonQueryAsync();
 
-            model.MatchId = (int)cmd.Parameters["MatchId"].Value; 
-            return model;
+            dto.MatchId = (int)cmd.Parameters["MatchId"].Value; 
+            return dto;
         }
         #endregion
 
         #region Matchform
-        public async Task<IEnumerable<ListEntryModel>> GetMatchforms()
+        public async Task<IEnumerable<ListEntryDto>> GetMatchforms()
         {
-            string sql = "SELECT [MatchformId] as [Key],[MatchForm] as [Value] FROM [ms].[Matchform]";
+            string sql = "SELECT [MatchformId] as [KeyId],[MatchForm] as [KeyValue] FROM [ms].[Matchform]";
 
             using (IDbConnection db = new SqlConnection(ConnectionString))
-                return (await db.QueryAsync<ListEntryModel>(sql));
+                return (await db.QueryAsync<ListEntryDto>(sql));
         }
 
         #endregion

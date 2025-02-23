@@ -1,4 +1,4 @@
-using MSCaddie.Shared.Models;
+using MSCaddie.Shared.Dtos;
 
 namespace  MSCaddie.Shared.Interfaces;
 
@@ -6,20 +6,20 @@ public interface IClubRepository
 {
 
     #region Club
-    Task<ClubModel?> GetClub(int id);
-    Task<IEnumerable<ClubModel>> GetClubs();
-    Task<ClubModel> ClubUpsert(ClubModel model);
+    Task<ClubDto?> GetClub(int id);
+    Task<IEnumerable<ClubDto>> GetClubs();
+    Task<ClubDto> ClubUpsert(ClubDto model);
     #endregion
 
     #region Course
-    Task<CourseInfo?> GetCourse(int courseId);
-    Task<IEnumerable<CourseInfo>> GetCourses(int? clubId, int? courseId);
-    Task<CourseInfo> CourseUpsert(CourseInfo model);
+    Task<CourseDto?> GetCourse(int courseId);
+    Task<IEnumerable<CourseDto>> GetCourses(int? clubId, int? courseId);
+    Task<CourseDto> CourseUpsert(CourseDto model);
     #endregion
 
     #region Tee
-    Task<ListEntryModel?> GetTee(int teeId);
-    Task<IEnumerable<ListEntryModel>> GetTees();
-    Task<ListEntryModel> TeeUpsert(ListEntryModel model);
+    Task<ListEntryDto?> GetTee(int teeId);
+    Task<IEnumerable<ListEntryDto>> GetTees();
+    Task<ListEntryDto> TeeUpsert(ListEntryDto model);
     #endregion
 }

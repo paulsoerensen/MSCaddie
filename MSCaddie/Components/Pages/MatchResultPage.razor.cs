@@ -16,6 +16,7 @@ public partial class MatchResultPageBase : ComponentBase
     //[Inject] protected NavigationManager NavigationManager { get; set; } = default!;
     [Inject] public ILogger<MatchResultPageBase> _logger { get; set; } = default!;
     [Inject] public IMatchService service { get; set; } = default!;
+    [Inject] public ICompetitionService? competitionService { get; set; }
 
 
     protected TabPosition tabPosition = TabPosition.Top;
@@ -28,6 +29,7 @@ public partial class MatchResultPageBase : ComponentBase
     //protected IEnumerable<MatchResult>? results;
 
     protected string _selectedTab = "Results";
+    protected bool _otherResultsTabVisible = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -45,6 +47,9 @@ public partial class MatchResultPageBase : ComponentBase
     {
         matchId = selectedKey;
         match = await service.GetMatch(matchId);
+        var compResults = await competitionService.GetMatchCompetitionResults(matchId);
+        _otherResultsTabVisible = (compResults.Any());
+
         _logger.LogInformation($"match: {match?.MatchDisplay}");
     }
 
@@ -60,9 +65,6 @@ public partial class MatchResultPageBase : ComponentBase
     {
         _selectedTab = name;
         await tabsRef.ShowTabByNameAsync(_selectedTab);
-
-        //_logger.LogInformation($"OnSelectedTabChanged{name}");
-        //return Task.CompletedTask;
     }
     internal void SetResultListPage(ResultListBase page)
     {

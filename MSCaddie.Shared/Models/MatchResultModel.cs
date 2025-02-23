@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace MSCaddie.Shared.Models;
 
-public class MatchResult
+public class MatchResultModel
 {
     public int? MatchResultId { get; set; }
     public int MemberShipId { get; set; }
@@ -12,19 +12,7 @@ public class MatchResult
     public int VgcNo { get; set; }
     public string? Firstname { get; set; }
     public string? Lastname { get; set; }
-    public string Fullname
-    {
-        get
-        {
-            if (string.IsNullOrEmpty(Firstname))
-                return this?.Lastname;
-            if (string.IsNullOrEmpty(Lastname))
-                return this?.Firstname;
-
-            return string.Format(CultureInfo.InstalledUICulture, $"{Firstname?.Trim()} {Lastname?.Trim()}");
-        }
-        set {; }
-    }
+    public string Fullname { get; set; }
     public bool Dining { get; set; }
     public int HcpGroup { get; set; }
     public int Hcp { get; set; }
@@ -38,6 +26,7 @@ public class MatchResult
     public int? DamstahlPoints { get; set; }
     public int? Hallington { get; set; }
     public int? Birdies { get; set; }
+    public string? BirdieString { get; set; }
     public bool InBirdies { get; set; }
     public bool InNearestPin { get; set; }
     public int? Shootout { get; set; }
@@ -49,28 +38,6 @@ public class MatchResult
     public int Par { get; set; } = 72;
     public int? ShootOut { get; set; }
 
-    public string ScoreText
-    {
-        get
-        {
-            switch (MatchformId)
-            {
-                case 1:
-                    return $"Brutto/Netto: {Brutto}/{Netto} ({ToPar})";
-                case 3:
-                    return $"Hallington: {Hallington}";
-                default:
-                    return $"Points: {Points}";
-            }
-        }
-    }
-    public int? ToPar
-    {
-        get
-        {
-            if (Brutto != null)
-                return Brutto - Par + 72;
-            return null;
-        }
-    }
+    public string ScoreText { get; set; }
+    public int? ToPar { get; set; }
 }

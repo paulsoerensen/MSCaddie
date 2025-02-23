@@ -20,8 +20,9 @@ public class MatchService : IMatchService
         _logger = logger;
         mapper = new MapperConfiguration(cfg =>
         {
-            cfg.CreateMap<CompetitionResultDto, CompetitionResultModel>().ReverseMap();
-            cfg.CreateMap<ListItem, ListEntryModel>().ReverseMap()
+            cfg.CreateMap<MatchDto, MatchModel>().ReverseMap();
+            cfg.CreateMap<MatchResultDto, MatchResultModel>().ReverseMap();
+            cfg.CreateMap<ListEntryDto, ListEntryModel>().ReverseMap()
                 .ForMember(dest => dest.KeyId, opt =>
                     opt.MapFrom(src => src.Key))
                 .ForMember(dest => dest.KeyValue, opt =>
@@ -29,31 +30,34 @@ public class MatchService : IMatchService
         })
         .CreateMapper();
     }
-    //public string Baseaddress => _client.BaseAddress?.ToString();
 
     public async Task<IEnumerable<MatchModel>?> GetMatches()
     {
-        return await _matchRepository.GetMatchList();
+        IEnumerable<MatchDto> dtos = await _matchRepository.GetMatchList();
+        return mapper.Map<IEnumerable<MatchModel>>(dtos);
         //return await _client.GetFromJsonAsync<IEnumerable<Match>>(BaseAddress);
     }
 
-    public async Task<MatchModel?> GetMatch(int matchId)
+    public async Task<MatchModel?> GetMatch(int id)
     {
-        return await _matchRepository.GetMatch(matchId);
-        //return await _client.GetFromJsonAsync<Match>($"{BaseAddress}/{matchId}");
+        MatchDto? dto = await _matchRepository.GetMatch(id);
+        return mapper.Map<MatchModel>(dto);
+        //return await _client.GetFromJsonAsync<IEnumerable<Match>>(BaseAddress);
     }
 
-    public async Task<IEnumerable<MatchResult>?> GetMatchResults(int matchId)
+    public async Task<IEnumerable<MatchResultModel>?> GetMatchResults(int matchId)
     {
         _logger.LogInformation("Called GetMatchResults");
-        return await _matchRepository.GetMatchResults(matchId);
+        IEnumerable<MatchResultDto> dtos = await _matchRepository.GetMatchResults(matchId);
+        return mapper.Map<IEnumerable<MatchResultModel>>(dtos);
         //return await _client.GetFromJsonAsync<IEnumerable<MatchResultDto>>($"{BaseAddress}/{matchId}/result");
     }
 
-    public async Task<IEnumerable<MatchResult>?> MatchResultForRegistration(int matchId)
+    public async Task<IEnumerable<MatchResultModel>?> MatchResultForRegistration(int matchId)
     {
         _logger.LogInformation($"Called MatchResultForRegistration({matchId})");
-        return await _matchRepository.GetMatchResultForRegistration(matchId);
+        IEnumerable<MatchResultDto> dtos = await _matchRepository.GetMatchResultForRegistration(matchId);
+        return mapper.Map<IEnumerable<MatchResultModel>>(dtos);
         //return await _client.GetFromJsonAsync<IEnumerable<MatchResultDto>>($"{BaseAddress}/{matchId}/resultregistration");
     }
 
@@ -67,9 +71,12 @@ public class MatchService : IMatchService
 
     }
 
-    public async Task<MatchModel> UpsertMatch(MatchModel dto)
+    public async Task<MatchModel> UpsertMatch(MatchModel model)
     {
-        return await _matchRepository.MatchUpsert(dto);
+        MatchDto dto = mapper.Map<MatchDto>(model);
+        dto = await _matchRepository.MatchUpsert(dto);
+        return mapper.Map<MatchModel>(dto);
+
         //var response = await _client.PostAsJsonAsync<Match>($"{BaseAddress}", dto);
         //if (response.IsSuccessStatusCode)
         //{
@@ -78,8 +85,9 @@ public class MatchService : IMatchService
         //return null;
     }
 
-    public async Task<bool> UpsertResultMatch(MatchResult dto)
+    public async Task<bool> UpsertResultMatch(MatchResultModel model)
     {
+        MatchResultDto dto = mapper.Map<MatchResultDto>(model);
         await _matchRepository.MatchResultUpsert(dto);
         //var res = await _client.PostAsJsonAsync<MatchResultDto>($"{BaseAddress}/result", dto);
         return true; // res.IsSuccessStatusCode;
@@ -101,13 +109,15 @@ public class MatchService : IMatchService
 
     public async Task<IEnumerable<ListEntryModel>?> GetMatchforms()
     {
-        return await _matchRepository.GetMatchforms();
+        IEnumerable<ListEntryDto> dtos = await _matchRepository.GetMatchforms();
+        return mapper.Map<IEnumerable<ListEntryModel>>(dtos);
         //return await _client.GetFromJsonAsync<IEnumerable<ListItem>>($"api/matchform");
     }
 
-    public async Task<IEnumerable<MatchBirdieResult>?> GetMatchBirdies(int matchId)
+    public async Task<IEnumerable<MatchResultModel>?> GetMatchBirdies(int matchId)
     {
-        return await _matchRepository.GetMatchBirdies(matchId);
+        var dtos =  await _matchRepository.GetMatchBirdies(matchId);
+        return mapper.Map<IEnumerable<MatchResultModel>>(dtos);
         //return await _client.GetFromJsonAsync<IEnumerable<MatchBirdieResultDto>>($"api/match/{matchId}/birdies");
     }
 

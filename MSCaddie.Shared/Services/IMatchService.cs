@@ -11,10 +11,10 @@ namespace MSCaddie.Shared.Services
         Task<MatchModel?> GetMatch(int matchId);
         Task<IEnumerable<MatchModel>?> GetMatches();
         Task<MatchModel> UpsertMatch(MatchModel match);
-        Task<IEnumerable<MatchResult>?> GetMatchResults(int matchId);
-        Task<IEnumerable<MatchBirdieResult>?> GetMatchBirdies(int matchId);
-        Task<IEnumerable<MatchResult>?> MatchResultForRegistration(int matchId);
-        Task<bool> UpsertResultMatch(MatchResult dto);
+        Task<IEnumerable<MatchResultModel>?> GetMatchResults(int matchId);
+        Task<IEnumerable<MatchResultModel>?> GetMatchBirdies(int matchId);
+        Task<IEnumerable<MatchResultModel>?> MatchResultForRegistration(int matchId);
+        Task<bool> UpsertResultMatch(MatchResultModel dto);
         Task<bool> MatchSettlement(int matchId);
         Task<bool> DeleteResultMatch(int matchResultId);
         Task<string> MatchRegistration(int matchResultId, string regFile);

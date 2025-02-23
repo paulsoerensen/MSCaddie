@@ -9,21 +9,21 @@ public class ResultListBase : MatchResultBase
 {
     [Parameter]
     public MatchModel Match { get; set; }
-    protected IEnumerable<MatchResult>? results;
+    protected IEnumerable<MatchResultModel>? results;
 
     [Inject] public IMatchService? service { get; set; }
+    [Inject] public ICompetitionService? competitionService { get; set; }
 
-    protected RadzenDataGrid<MatchResult> grid;
+    protected RadzenDataGrid<MatchResultModel> grid;
     protected int HcpGroup { get; set; } = 0;
-    protected List<MatchResult>? filteredResults;
+    protected List<MatchResultModel>? filteredResults;
     protected string message = string.Empty;
 
     public enum ResultAction
     {
         All = 0,
         A = 1,
-        B = 2,
-        X = 3
+        B = 2
     }
     protected override async Task OnInitializedAsync()
     {
@@ -43,10 +43,9 @@ public class ResultListBase : MatchResultBase
         }
         await base.OnParametersSetAsync();
     }
-
-    protected async Task OnSettleMatch(ResultAction filter)
+    protected async Task OnFilterResult(ResultAction filter)
     {
-        switch(filter)
+        switch (filter)
         {
             case ResultAction.All:
                 HcpGroup = 0;
@@ -60,12 +59,40 @@ public class ResultListBase : MatchResultBase
                 HcpGroup = 2;
                 FilterResult();
                 break;
-            case ResultAction.X:
-                var res = await service.MatchSettlement(Match.MatchId);
-                results = await service.GetMatchResults(Match.MatchId);
-                FilterResult();
-                break;
         }
+        StateHasChanged();
+    }
+
+    protected async Task OnSettleMatch()
+    {
+        await service.MatchSettlement(Match.MatchId);
+        results = await service.GetMatchResults(Match.MatchId);
+        //results = results?.Where(x => x.Points != null).ToList();
+        //MatchResultModel? res = results?
+        //    .OrderBy(r => r.Rank)
+        //    .SkipLast(1)
+        //    .LastOrDefault();
+
+        //if (res != null)
+        //{
+        //    CompetitionResultModel model = await competitionService.GetCompetitionResultModel("trøst");
+
+        //    model.VgcNo = res.VgcNo; model.Fullname = res.Fullname;
+        //    await competitionService.UpsertGetCompetitionResult(model);
+        //}
+        //res = results?
+        //    .Where(x => x.InBirdies && x.Birdies > 0)
+        //    .OrderBy(r => r.Birdies)
+        //    .FirstOrDefault();
+
+        //if (res != null)
+        //{
+        //    CompetitionResultModel model = await competitionService.GetCompetitionResultModel("birdie");
+
+        //    model.VgcNo = res.VgcNo; model.Fullname = res.Fullname;
+        //    await competitionService.UpsertGetCompetitionResult(model);
+        //}
+
         StateHasChanged();
     }
 

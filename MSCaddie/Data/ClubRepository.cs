@@ -4,6 +4,7 @@ using MSCaddie.Shared.Models;
 using MSCaddie.Shared.Interfaces;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using MSCaddie.Shared.Dtos;
 
 
 namespace MSCaddie.Data
@@ -16,24 +17,24 @@ namespace MSCaddie.Data
         }
 
         #region Club
-        public async Task<ClubModel?> GetClub(int id)
+        public async Task<ClubDto?> GetClub(int id)
         {
             string sql = @"SELECT ClubId, ClubName "
                 + "from ms.Club where ClubId = @id";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
-            return (ClubModel?)(await db.QueryAsync<ClubModel>(sql, new { id })).FirstOrDefault();
+            return (ClubDto?)(await db.QueryAsync<ClubDto>(sql, new { id })).FirstOrDefault();
         }
 
-        public async Task<IEnumerable<ClubModel>> GetClubs()
+        public async Task<IEnumerable<ClubDto>> GetClubs()
         {
             string sql = @"SELECT ClubId, ClubName FROM "
                 + "ms.Club ORDER BY ClubName";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
-            return (IEnumerable<ClubModel>)(await db.QueryAsync<ClubModel>(sql));
+            return (IEnumerable<ClubDto>)(await db.QueryAsync<ClubDto>(sql));
         }
-        public async Task<ClubModel> ClubUpsert(ClubModel model)
+        public async Task<ClubDto> ClubUpsert(ClubDto model)
         {
             using var con = new SqlConnection(ConnectionString);
 
@@ -55,7 +56,7 @@ namespace MSCaddie.Data
 
         #region Course
 
-        public async Task<CourseInfo?> GetCourse(int id)
+        public async Task<CourseDto?> GetCourse(int id)
         {
             string sql = @"SELECT [CourseName]" +
                     ",[ClubId],[ClubName],[CourseId],[Slope],[CourseRating],[Par],[Tee]" +
@@ -64,11 +65,11 @@ namespace MSCaddie.Data
                     "where CourseDetailId = @id";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
-            return (await db.QueryAsync<CourseInfo>(sql, new { id })).FirstOrDefault();
+            return (await db.QueryAsync<CourseDto>(sql, new { id })).FirstOrDefault();
         }
 
 
-        public async Task<IEnumerable<CourseInfo>> GetCourses(int? clubId, int? courseId)
+        public async Task<IEnumerable<CourseDto>> GetCourses(int? clubId, int? courseId)
         {
             using var con = new SqlConnection(ConnectionString);
 
@@ -82,67 +83,67 @@ namespace MSCaddie.Data
                         order by[CourseName], [Tee]";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
-            return await db.QueryAsync<CourseInfo>(sql, new { clubId, courseId });
+            return await db.QueryAsync<CourseDto>(sql, new { clubId, courseId });
         }
-        public async Task<CourseInfo> CourseUpsert(CourseInfo model)
+        public async Task<CourseDto> CourseUpsert(CourseDto dto)
         {
             using var con = new SqlConnection(ConnectionString);
 
             using var cmd = con.CreateCommand();
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.CommandText = "[ds].[CourseDetailUpsert]";
-            cmd.Parameters.AddWithValue("CourseDetailId", model.CourseDetailId).Direction = ParameterDirection.InputOutput;
-            cmd.Parameters.AddWithValue("CourseId", model.CourseId);
-            cmd.Parameters.AddWithValue("CourseTeeId", model.CourseTeeId);
-            cmd.Parameters.AddWithValue("Par", model.Par);
-            cmd.Parameters.AddWithValue("CourseRating", model.CourseRating);
-            cmd.Parameters.AddWithValue("Slope", model.Slope);
+            cmd.Parameters.AddWithValue("CourseDetailId", dto.CourseDetailId).Direction = ParameterDirection.InputOutput;
+            cmd.Parameters.AddWithValue("CourseId", dto.CourseId);
+            cmd.Parameters.AddWithValue("CourseTeeId", dto.CourseTeeId);
+            cmd.Parameters.AddWithValue("Par", dto.Par);
+            cmd.Parameters.AddWithValue("CourseRating", dto.CourseRating);
+            cmd.Parameters.AddWithValue("Slope", dto.Slope);
 
             cmd.CommandTimeout = 240;
             con.Open();
             await cmd.ExecuteNonQueryAsync();
 
-            model.CourseDetailId = (int)cmd.Parameters["CourseDetailId"].Value;
-            return model;
+            dto.CourseDetailId = (int)cmd.Parameters["CourseDetailId"].Value;
+            return dto;
         }
         #endregion
 
         #region Tee
-        public async Task<ListEntryModel?> GetTee(int teeId)
+        public async Task<ListEntryDto?> GetTee(int teeId)
         {
-            string sql = @"SELECT  [CourseTeeId] as [Key]
-                    ,RTrim([Tee]) as [Value] 
+            string sql = @"SELECT  [CourseTeeId] as [KeyId]
+                    ,RTrim([Tee]) as [KeyValue] 
                     FROM [ms].[CourseTee]
                     where [CourseTeeId] = @teeId";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
-            return (ListEntryModel?)(await db.QueryAsync<ListEntryModel>(sql, new { teeId }));
+            return (await db.QueryAsync<ListEntryDto>(sql, new { teeId })).FirstOrDefault();
         }
-        public async Task<IEnumerable<ListEntryModel>> GetTees()
+        public async Task<IEnumerable<ListEntryDto>> GetTees()
         {
-            string sql = @"SELECT  [CourseTeeId] as [Key]
-                    ,RTrim([Tee]) as [Value] 
+            string sql = @"SELECT  [CourseTeeId] as [KeyId]
+                    ,RTrim([Tee]) as [KeyValue] 
                     FROM [ms].[CourseTee]";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
-            return (IEnumerable<ListEntryModel>)(await db.QueryAsync<ListEntryModel>(sql));
+            return await db.QueryAsync<ListEntryDto>(sql);
         }
-        public async Task<ListEntryModel> TeeUpsert(ListEntryModel model)
+        public async Task<ListEntryDto> TeeUpsert(ListEntryDto dto)
         {
             using var con = new SqlConnection(ConnectionString);
 
             using var cmd = con.CreateCommand();
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.CommandText = "[ds].[TeeUpsert]";
-            cmd.Parameters.AddWithValue("CourseTeeId", model.Key).Direction = ParameterDirection.InputOutput;
-            cmd.Parameters.AddWithValue("TeeName", model.Value);
+            cmd.Parameters.AddWithValue("CourseTeeId", dto.KeyId).Direction = ParameterDirection.InputOutput;
+            cmd.Parameters.AddWithValue("TeeName", dto.KeyValue);
 
             cmd.CommandTimeout = 240;
             con.Open();
             await cmd.ExecuteNonQueryAsync();
 
-            model.Key = (int)cmd.Parameters["CourseTeeId"].Value;
-            return model;
+            dto.KeyId = (int)cmd.Parameters["CourseTeeId"].Value;
+            return dto;
         }
         #endregion
     }

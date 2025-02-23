@@ -1,12 +1,12 @@
 ﻿namespace MSCaddie.Shared.Dtos;
 
-public class ListItem
+public class ListEntryDto
 {
-    public ListItem()
+    public ListEntryDto()
     {
     }
 
-    public ListItem(int keyId, string keyValue)
+    public ListEntryDto(int keyId, string keyValue)
     {
         KeyId = keyId;
         KeyValue = keyValue;

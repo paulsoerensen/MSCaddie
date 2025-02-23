@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using MSCaddie.Shared.Dtos;
 using MSCaddie.Shared.Interfaces;
 using MSCaddie.Shared.Models;
+using System.Text.RegularExpressions;
 
 namespace MSCaddie.Shared.Services;
 public class CompetitionService : ICompetitionService
@@ -18,7 +19,12 @@ public class CompetitionService : ICompetitionService
         mapper = new MapperConfiguration(cfg =>
         {
             cfg.CreateMap<CompetitionResultDto, CompetitionResultModel>().ReverseMap();
-            cfg.CreateMap<ListItem, ListEntryModel>().ReverseMap()
+            cfg.CreateMap<ListEntryDto, ListEntryModel>()
+                .ForMember(dest => dest.Key, opt =>
+                    opt.MapFrom(src => src.KeyId))
+                .ForMember(dest => dest.Value, opt =>
+                    opt.MapFrom(src => src.KeyValue));
+            cfg.CreateMap<ListEntryModel, ListEntryDto>()
                 .ForMember(dest => dest.KeyId, opt =>
                     opt.MapFrom(src => src.Key))
                 .ForMember(dest => dest.KeyValue, opt =>
@@ -33,11 +39,31 @@ public class CompetitionService : ICompetitionService
         var dtos = await _repo.GetCompetitionResults(matchId);
         return mapper.Map<IEnumerable<CompetitionResultModel>>(dtos);
     }
+
+    private IEnumerable<ListEntryModel> Competitions;
+
     public async Task<IEnumerable<ListEntryModel>?> GetCompetitions()
     {
-        var dtos = await _repo.GetCompetitions();
-        return mapper.Map<IEnumerable<ListEntryModel>>(dtos);
+        if (Competitions == null)
+        {
+            var dtos = await _repo.GetCompetitions();
+            Competitions = mapper.Map<IEnumerable<ListEntryModel>>(dtos);
+        }
+        return Competitions;
     }
+
+    public async Task<CompetitionResultModel> GetCompetitionResultModel(string text)
+    {
+        var comp = Competitions
+            .Where(x => x.Value.Contains(text))
+            .SingleOrDefault();
+        return new CompetitionResultModel()
+            {
+                CompetitionId = comp.Key,
+                CompetitionText = comp.Value
+            };
+    }
+
     public async Task<bool> UpsertGetCompetitionResult(CompetitionResultModel model)
     {
         var dto = mapper.Map<CompetitionResultDto>(model);

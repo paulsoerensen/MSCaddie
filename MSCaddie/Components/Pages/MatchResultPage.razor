@@ -34,16 +34,15 @@ else
          <RadzenTabsItem Text="Registrering">
            <PlayerResult Match="match"></PlayerResult>
             </RadzenTabsItem>
-         <RadzenTabsItem Text="Øvrige resultater">
-            <OtherResults Match="match"></OtherResults>
-        </RadzenTabsItem>
         <RadzenTabsItem Text="Resultater">
            <ResultList Match="match"></ResultList>
-        </RadzenTabsItem> 
+        </RadzenTabsItem>
+            <RadzenTabsItem Text="Øvrige resultater" Visible="@_otherResultsTabVisible">
+            <OtherResults Match="match"></OtherResults>
+        </RadzenTabsItem>
     </Tabs>
 </RadzenTabs>
 
-@* @ChildContent
- *@</CascadingValue>
+</CascadingValue>
 
 

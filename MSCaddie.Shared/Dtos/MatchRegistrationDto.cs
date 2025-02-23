@@ -1,7 +1,7 @@
 
-namespace MSCaddie.Shared.Models;
+namespace MSCaddie.Shared.Dtos;
 
-public class MatchRegistration
+public class MatchRegistrationDto
 {
     public int? MatchRegistrationId { get; set; }
 

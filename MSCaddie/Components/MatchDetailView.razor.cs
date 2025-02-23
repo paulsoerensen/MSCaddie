@@ -17,10 +17,10 @@ public partial class MatchDetailViewBase : ComponentBase
 
     public MatchModel? match { get; set; } = new MatchModel();
     public List<ClubModel> clubs { get; set; } = new List<ClubModel>();
-    public List<CourseInfo> courses { get; set; } = new List<CourseInfo>();
-    public List<CourseInfo> clubCourses { get; set; } = new List<CourseInfo>();
+    public List<CourseModel> courses { get; set; } = new List<CourseModel>();
+    public List<CourseModel> clubCourses { get; set; } = new List<CourseModel>();
     public List<ListEntryModel> matchForms { get; set; } = new List<ListEntryModel>();
-    public CourseInfo course { get; set; } = new CourseInfo();
+    public CourseModel course { get; set; } = new CourseModel();
     protected IEnumerable<string> matchTexts
         = ["Torsdagsmatch", "ÅbningsMatch", "Afslutningsmatch"];
 
