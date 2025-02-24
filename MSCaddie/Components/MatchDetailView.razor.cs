@@ -76,14 +76,7 @@ public partial class MatchDetailViewBase : ComponentBase
         try
         {
             Message = string.Empty;
-            if (match.MatchId < 0) //new
-            {
-                match = await matchSvc.UpsertMatch(match);
-            }
-            else
-            {
-                match = await matchSvc.UpsertMatch(match);
-            }
+            match = await matchSvc.UpsertMatch(match);
             dialogService.Close(true);
         }
         catch (Exception e)

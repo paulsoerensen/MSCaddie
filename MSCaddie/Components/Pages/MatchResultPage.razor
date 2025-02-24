@@ -42,7 +42,10 @@ else
         </RadzenTabsItem>
     </Tabs>
 </RadzenTabs>
-
+    @if (!String.IsNullOrEmpty(Message))
+    { 
+        <div>@Message</div>
+    }
 </CascadingValue>
 
 

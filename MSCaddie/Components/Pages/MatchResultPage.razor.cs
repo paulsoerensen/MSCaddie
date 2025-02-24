@@ -25,7 +25,7 @@ public partial class MatchResultPageBase : ComponentBase
     public IEnumerable<MatchModel>? matches { get; set; } = default!;
     public int matchId { get; set; } = -1;
     public MatchModel? match { get; set; }
-
+    public string Message { get; set; }
     //protected IEnumerable<MatchResult>? results;
 
     protected string _selectedTab = "Results";
@@ -33,9 +33,18 @@ public partial class MatchResultPageBase : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        matches = await service.GetMatches();
-        match = matches.FirstOrDefault(r => r.MatchDate >= DateTime.Now.CustomDateTimeNow());
-        await HandleMatchSelected(match.MatchId);
+        try
+        {
+            Message = string.Empty;
+
+            matches = await service.GetMatches();
+            match = matches.FirstOrDefault(r => r.MatchDate >= DateTime.Now.CustomDateTimeNow());
+            await HandleMatchSelected(match.MatchId);
+        }
+        catch (Exception e)
+        {
+            Message = e.ToString();
+        }
     }
 
     protected void OnChange(int index)
@@ -45,12 +54,19 @@ public partial class MatchResultPageBase : ComponentBase
 
     protected async Task HandleMatchSelected(int selectedKey)
     {
-        matchId = selectedKey;
-        match = await service.GetMatch(matchId);
-        var compResults = await competitionService.GetMatchCompetitionResults(matchId);
-        _otherResultsTabVisible = (compResults.Any());
+        try {
+            Message = string.Empty;
+            matchId = selectedKey;
+            match = await service.GetMatch(matchId);
+            var compResults = await competitionService.GetMatchCompetitionResults(matchId);
+            _otherResultsTabVisible = (compResults.Any());
 
-        _logger.LogInformation($"match: {match?.MatchDisplay}");
+            _logger.LogInformation($"match: {match?.MatchDisplay}");
+        }
+        catch (Exception e)
+        {
+            Message = e.ToString();
+        }
     }
 
     protected int GetMatchId(MatchModel match) => match.MatchId;

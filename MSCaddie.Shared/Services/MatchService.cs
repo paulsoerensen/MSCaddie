@@ -22,7 +22,12 @@ public class MatchService : IMatchService
         {
             cfg.CreateMap<MatchDto, MatchModel>().ReverseMap();
             cfg.CreateMap<MatchResultDto, MatchResultModel>().ReverseMap();
-            cfg.CreateMap<ListEntryDto, ListEntryModel>().ReverseMap()
+            cfg.CreateMap<ListEntryDto, ListEntryModel>()
+                .ForMember(dest => dest.Key, opt =>
+                    opt.MapFrom(src => src.KeyId))
+                .ForMember(dest => dest.Value, opt =>
+                    opt.MapFrom(src => src.KeyValue));
+            cfg.CreateMap<ListEntryModel, ListEntryDto>()
                 .ForMember(dest => dest.KeyId, opt =>
                     opt.MapFrom(src => src.Key))
                 .ForMember(dest => dest.KeyValue, opt =>
@@ -76,20 +81,12 @@ public class MatchService : IMatchService
         MatchDto dto = mapper.Map<MatchDto>(model);
         dto = await _matchRepository.MatchUpsert(dto);
         return mapper.Map<MatchModel>(dto);
-
-        //var response = await _client.PostAsJsonAsync<Match>($"{BaseAddress}", dto);
-        //if (response.IsSuccessStatusCode)
-        //{
-        //    return await JsonSerializer.DeserializeAsync<Match>(await response.Content.ReadAsStreamAsync());
-        //}
-        //return null;
     }
 
     public async Task<bool> UpsertResultMatch(MatchResultModel model)
     {
         MatchResultDto dto = mapper.Map<MatchResultDto>(model);
         await _matchRepository.MatchResultUpsert(dto);
-        //var res = await _client.PostAsJsonAsync<MatchResultDto>($"{BaseAddress}/result", dto);
         return true; // res.IsSuccessStatusCode;
     }
     public async Task<bool> DeleteResultMatch(int matchResultId)
