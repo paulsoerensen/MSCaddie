@@ -1,22 +1,26 @@
 ﻿@rendermode InteractiveServer
+<AuthorizeView>
+    <Authorized>
+        <RadzenStack class="rz-p-0 rz-p-md-6 rz-p-lg-12">
+            <RadzenCard Variant="Variant.Outlined">
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Start" Gap="0.5rem" class="rz-p-sm-12">
+                    <RadzenLabel Text="Vælg 2" Component="DropDownMultipleChips" />
+                    <RadzenDropDown @bind-Value=@values Data=@teams TextProperty="@nameof(MatchplayTeamModel.TeamName)"
+                                    ValueProperty="@nameof(MatchplayTeamModel.TeamId)" Name="DropDownMultipleChips"
+                                    Multiple=true AllowClear=true Placeholder="Vælg 2" Chips=true
+                                    Style="width: 100%; max-width: 400px;" />
+                </RadzenStack>
 
-<RadzenStack class="rz-p-0 rz-p-md-6 rz-p-lg-12">
-    <RadzenCard Variant="Variant.Outlined">
-        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Start" Gap="0.5rem" class="rz-p-sm-12">
-            <RadzenLabel Text="Vælg 2" Component="DropDownMultipleChips" />
-            <RadzenDropDown @bind-Value=@values Data=@teams TextProperty="@nameof(MatchplayTeamModel.TeamName)"
-                            ValueProperty="@nameof(MatchplayTeamModel.TeamId)" Name="DropDownMultipleChips"
-                            Multiple=true AllowClear=true Placeholder="Vælg 2" Chips=true
-                            Style="width: 100%; max-width: 400px;" />
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" Gap="0.5rem" Wrap="FlexWrap.Wrap">
+                    <RadzenNumeric @bind-Value="@ToRound" Name="dataLabels"></RadzenNumeric>
+                    <RadzenButton Click=@(args => OnCreate()) Text="Opret match" Icon="check_circle" ButtonStyle="ButtonStyle.Success" />
+                </RadzenStack>
+
+            </RadzenCard>
         </RadzenStack>
+    </Authorized>
+</AuthorizeView>
 
-        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" Gap="0.5rem" Wrap="FlexWrap.Wrap">
-            <RadzenNumeric @bind-Value="@ToRound" Name="dataLabels"></RadzenNumeric>
-            <RadzenButton Click=@(args => OnCreate()) Text="Opret match" Icon="check_circle" ButtonStyle="ButtonStyle.Success" />
-        </RadzenStack>
-
-    </RadzenCard>
-</RadzenStack>
 
 @if (teams is null)
 {
@@ -31,7 +35,7 @@ else
 
                 <Columns>
                     <RadzenDataGridColumn TItem="MatchplayGameModel" Property="PlayRound" Title="Runde" Width="6rem" />
-                    <RadzenDataGridColumn TItem="MatchplayGameModel" Property="TeamName1" Title="Spiller 1" Width="18rem" >
+                    <RadzenDataGridColumn TItem="MatchplayGameModel" Property="TeamName1" Title="Spiller 1" Width="18rem">
                         <Template Context="data">
                             @if (data.MatchResult == 1)
                             {
@@ -44,7 +48,7 @@ else
                         </Template>
                     </RadzenDataGridColumn>
 
-                    <RadzenDataGridColumn TItem="MatchplayGameModel" Property="TeamName2" Title="Spiller 2" Width="18rem" >
+                    <RadzenDataGridColumn TItem="MatchplayGameModel" Property="TeamName2" Title="Spiller 2" Width="18rem">
                         <Template Context="data">
                             @if (data.MatchResult == 2)
                             {
@@ -66,19 +70,22 @@ else
                             <RadzenTextBox @bind-Value="data.ResultText" Style="width:100px; display: block" Name="ResultText" aria-label="Enter ship country" />
                         </EditTemplate>
                     </RadzenDataGridColumn>
+                    <AuthorizeView>
+                        <Authorized>
+                            <RadzenDataGridColumn Context="data" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" FrozenPosition="FrozenColumnPosition.Right">
 
-                    <RadzenDataGridColumn Context="data" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" FrozenPosition="FrozenColumnPosition.Right">
-                        <Template Context="data">
-                            <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="rz-my-1 rz-ms-1" Click="@(args => EditResult(data))" @onclick:stopPropagation="true" />
-                            <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" Size="ButtonSize.Medium" Shade="Shade.Lighter" class="rz-my-1 rz-ms-1" Click="@(args => DeleteRow(data))" @onclick:stopPropagation="true" />
-                        </Template>
-                        <EditTemplate Context="data">
-                            <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@((args) => SaveResult(data))" aria-label="Save" />
-                            <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="rz-my-1 rz-ms-1" Click="@((args) => CancelEdit(data))" aria-label="Cancel" />
-                            <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" Size="ButtonSize.Medium" Shade="Shade.Lighter" class="rz-my-1 rz-ms-1" Click="@(args => DeleteRow(data))" aria-label="Delete" />
-                        </EditTemplate>
-                    </RadzenDataGridColumn>
-
+                                <Template Context="data">
+                                    <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="rz-my-1 rz-ms-1" Click="@(args => EditResult(data))" @onclick:stopPropagation="true" />
+                                    <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" Size="ButtonSize.Medium" Shade="Shade.Lighter" class="rz-my-1 rz-ms-1" Click="@(args => DeleteRow(data))" @onclick:stopPropagation="true" />
+                                </Template>
+                                <EditTemplate Context="data">
+                                    <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@((args) => SaveResult(data))" aria-label="Save" />
+                                    <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="rz-my-1 rz-ms-1" Click="@((args) => CancelEdit(data))" aria-label="Cancel" />
+                                    <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" Size="ButtonSize.Medium" Shade="Shade.Lighter" class="rz-my-1 rz-ms-1" Click="@(args => DeleteRow(data))" aria-label="Delete" />
+                                </EditTemplate>
+                            </RadzenDataGridColumn>
+                        </Authorized>
+                    </AuthorizeView>
                 </Columns>
             </RadzenDataGrid>
         </div>

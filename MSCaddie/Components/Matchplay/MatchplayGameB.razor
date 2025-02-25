@@ -1,23 +1,27 @@
 ﻿@rendermode InteractiveServer
 
-<RadzenStack class="rz-p-0 rz-p-md-6 rz-p-lg-12">
-    <RadzenCard Variant="Variant.Outlined">
-        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Start" Gap="0.5rem" class="rz-p-sm-12">
-            <RadzenLabel Text="Vælg 2" Component="DropDownMultipleChips" />
-            <RadzenDropDown @bind-Value=@values Data=@teams TextProperty="@nameof(MatchplayTeamModel.TeamName)"
-                            ValueProperty="@nameof(MatchplayTeamModel.TeamId)" Name="DropDownMultipleChips"
-                            Multiple=true AllowClear=true Placeholder="Vælg 2" Chips=true
-                            Style="width: 100%; max-width: 400px;" />
+<AuthorizeView>
+    <Authorized>
+
+        <RadzenStack class="rz-p-0 rz-p-md-6 rz-p-lg-12">
+            <RadzenCard Variant="Variant.Outlined">
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Start" Gap="0.5rem" class="rz-p-sm-12">
+                    <RadzenLabel Text="Vælg 2" Component="DropDownMultipleChips" />
+                    <RadzenDropDown @bind-Value=@values Data=@teams TextProperty="@nameof(MatchplayTeamModel.TeamName)"
+                                    ValueProperty="@nameof(MatchplayTeamModel.TeamId)" Name="DropDownMultipleChips"
+                                    Multiple=true AllowClear=true Placeholder="Vælg 2" Chips=true
+                                    Style="width: 100%; max-width: 400px;" />
+                </RadzenStack>
+
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" Gap="0.5rem" Wrap="FlexWrap.Wrap">
+                    <RadzenNumeric @bind-Value="@ToRound" Name="dataLabels"></RadzenNumeric>
+                    <RadzenButton Click=@(args => OnCreate()) Text="Opret match" Icon="check_circle" ButtonStyle="ButtonStyle.Success" />
+                </RadzenStack>
+
+            </RadzenCard>
         </RadzenStack>
-
-        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" Gap="0.5rem" Wrap="FlexWrap.Wrap">
-            <RadzenNumeric @bind-Value="@ToRound" Name="dataLabels"></RadzenNumeric>
-            <RadzenButton Click=@(args => OnCreate()) Text="Opret match" Icon="check_circle" ButtonStyle="ButtonStyle.Success" />
-        </RadzenStack>
-
-    </RadzenCard>
-</RadzenStack>
-
+    </Authorized>
+</AuthorizeView>
 @if (teams is null)
 {
     <DisplaySpinner />
