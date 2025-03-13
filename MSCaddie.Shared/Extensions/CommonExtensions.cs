@@ -13,10 +13,10 @@ public static class CommonExtensions
 
     public static DateTime CustomDateTimeNow(this DateTime dateTime)
     {
-#if DEBUG
-        return new DateTime(2024, 6, 6);
-#else
+//#if DEBUG
+//        return new DateTime(2024, 6, 6);
+//#else
         return DateTime.Now;
-#endif
+//#endif
     }
 }

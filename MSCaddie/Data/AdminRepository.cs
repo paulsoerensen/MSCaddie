@@ -21,6 +21,8 @@ namespace MSCaddie.Data
         }
 
         public string Connectionstring { get => base.ConnectionString; set => throw new NotImplementedException(); }
+        public new string DatabaseServer => base.DatabaseServer;
+        public new string Database => base.Database;
 
         public Dictionary<string, string> Info()
         {

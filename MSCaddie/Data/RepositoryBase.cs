@@ -38,7 +38,7 @@ namespace MSCaddie.Data
 
         #region Database stuff
         public string ConnectionString { get; private set; }
-        public string ServerName => servername;
+        public string DatabaseServer => servername;
         public string Database => database;
 
         public async Task<int> ExecuteCommand(string cmdText)

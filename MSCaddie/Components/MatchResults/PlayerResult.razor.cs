@@ -1,9 +1,9 @@
-﻿using Azure.Core;
-using BlazorBootstrap;
+﻿using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
 using MSCaddie.Shared.Models;
 using Radzen;
 using Radzen.Blazor;
+
 namespace MSCaddie.Components.MatchResults;
 
 
@@ -12,7 +12,6 @@ public class PlayerResultBase : MatchResultBase
     [Parameter]
     public MatchModel Match { get; set; }
     [Inject] public ILogger<PlayerResultBase> logger { get; set; } = default!;
-    //[Inject] protected MatchResultContainerList _matchResultContainerList { get; set; } = null!;
     protected RadzenDataGrid<MatchResultModel> resultsGrid;
 
     protected bool _showModal = false;

@@ -9,6 +9,8 @@ public interface IAdminRepository
     Dictionary<string, string> Info();
 
     string Connectionstring { get; set; }
+    string Database { get; }
+    string DatabaseServer { get; }
 
     #region Settings
     List<string> GetPropertyList();

@@ -16,5 +16,7 @@ public class SettingsDto
     public string? GBGuid { get; set; }  
     public int? NoOfRoundsRankings { get; set; }  
     public int? MaxHcpA { get; set; }  
-    public int? MaxHcpB { get; set; }  
+    public int? MaxHcpB { get; set; }
+    public string? Database { get; set; }
+    public string? DatabaseServer { get; set; }
 }

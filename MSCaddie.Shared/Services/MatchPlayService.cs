@@ -40,11 +40,7 @@ public class MatchplayService : IMatchplayService
 
             cfg.CreateMap<PlayerDto, PlayerModel>();
             cfg.CreateMap<PlayerForMatchplayDto, PlayerForMatchplayModel>();
-            //cfg.CreateMap<PlayerForMatchplayModel, MatchplayTeamDto>()
-            //    .ForMember(dest => dest.TeamName,
-            //            opts => opts.MapFrom(src => src.Fullname))
-            //    .ForMember(dest => dest.TeamName2,
-            //            opts => opts.MapFrom(src => $"{src.Fullname}, {src.Fullname2}"));
+
             cfg.CreateMap<PlayerForMatchplayModel, MatchTeamDto>().ReverseMap();
             cfg.CreateMap<MatchTeamModel, MatchTeamDto>().ReverseMap(); 
         })

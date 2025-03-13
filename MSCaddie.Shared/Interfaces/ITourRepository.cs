@@ -1,0 +1,16 @@
+﻿using MSCaddie.Shared.Dtos;
+
+namespace MSCaddie.Shared.Interfaces;
+
+public interface ITourRepository
+{
+    Task<IEnumerable<TourDto?>> GetTours(int season);
+    Task<TourDto> TourUpsert(TourDto dto);
+    Task<int> Subscribe(int tourId, int vgcNo);
+    Task<int> ToggleSubscribtion(int tourId, int vgcNo);
+
+    Task<IEnumerable<TourPlayerDto?>> GetTourPlayers(int tourId);
+    Task<IEnumerable<TourPlayerDto?>> GetNonTourPlayers(int tourId);
+
+    Task<TourPlayerDto> TourPlayerUpsert(TourPlayerDto dto);
+}

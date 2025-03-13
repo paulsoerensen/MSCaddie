@@ -137,6 +137,26 @@ else
                                 </RadzenRow>
                             </RadzenStack>
                         </RadzenFieldset>
+                        <RadzenFieldset Text="Database">
+                            <RadzenStack Gap="1rem">
+                                <RadzenRow AlignItems="AlignItems.Center">
+                                    <RadzenColumn Size="12" SizeMD="4">
+                                        <RadzenLabel Text="Navn" Component="Navn" />
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="12" SizeMD="8">
+                                        <RadzenTextBox Style="width: 100%;" Name="Damstahl" Disabled="true" @bind-Value="settings.Database" />
+                                    </RadzenColumn>
+                                </RadzenRow>
+                                <RadzenRow AlignItems="AlignItems.Center">
+                                    <RadzenColumn Size="12" SizeMD="4">
+                                        <RadzenLabel Text="Database server" Component="DatabaseServer" />
+                                    </RadzenColumn>
+                                    <RadzenColumn Size="12" SizeMD="8">
+                                        <RadzenTextBox Style="width: 100%;" Name="DatabaseServer" Disabled="true" @bind-Value="settings.DatabaseServer" />
+                                    </RadzenColumn>
+                                </RadzenRow>
+                            </RadzenStack>
+                        </RadzenFieldset>
                     </RadzenStack>
                 </RadzenColumn>
             </RadzenRow>

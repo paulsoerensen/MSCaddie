@@ -39,7 +39,14 @@ public partial class MatchResultPageBase : ComponentBase
 
             matches = await service.GetMatches();
             match = matches.FirstOrDefault(r => r.MatchDate >= DateTime.Now.CustomDateTimeNow());
-            await HandleMatchSelected(match.MatchId);
+            if (match == null)
+            {
+                match = matches.OrderByDescending(r => r.MatchDate).FirstOrDefault();
+            }
+            if (match != null)
+            {
+                await HandleMatchSelected(match.MatchId);
+            }
         }
         catch (Exception e)
         {
