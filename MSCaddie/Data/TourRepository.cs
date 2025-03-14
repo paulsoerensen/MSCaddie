@@ -44,7 +44,7 @@ public class TourRepository : RepositoryBase, ITourRepository
             string sql = @"with p as (
 	                            SELECT t.TourId, t.[VgcNo],[SignedUp],[LastUpdateBy],
 		                            t.[LastUpdate],Firstname, LastName
-                                FROM [ms].[Player] as p
+                                FROM [ms].[vMembers] as p
 		                            left join [ms].[TourPlayer] as t
 			                            on p.VgcNo = t.VgcNo
                             )
@@ -69,22 +69,11 @@ public class TourRepository : RepositoryBase, ITourRepository
     {
         try
         {
-
-            string sql = @"with t as (
-	                        SELECT t.TourId, p.[VgcNo],[LastUpdateBy]
-	                        FROM ms.Tour as t 
-		                        inner join ms.TourPlayer as p
-		                        on p.TourId = t.TourId
-	                        WHERE t.TourId = @tourId
-                        )
-                        SELECT p.[VgcNo],Firstname, LastName
-                        FROM [ms].[Player] as p
-	                        left join t
-		                        on p.VgcNo = t.VgcNo
-                        where [LastUpdateBy] is null";
+            string sql = @"SELECT VgcNo, Firstname, LastName
+                        FROM [ms].[PlayerNotInTour] (@tourId)";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
-            return await db.QueryAsync<TourPlayerDto>(sql, new { TourId = tourId });
+            return await db.QueryAsync<TourPlayerDto>(sql, new { tourId });
         }
         catch (Exception e)
         {

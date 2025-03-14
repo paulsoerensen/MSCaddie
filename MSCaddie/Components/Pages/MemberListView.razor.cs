@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MSCaddie.Shared.Models;
 using MSCaddie.Shared.Services;
@@ -8,6 +9,7 @@ using System.Text.Json;
 
 namespace MSCaddie.Components.Pages;
 
+[Authorize]
 public partial class MemberListViewBase : ComponentBase, IDisposable
 {
     [Inject] public IPlayerService playerSvc { get; set; } = default!;

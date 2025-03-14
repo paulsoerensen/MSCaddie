@@ -22,26 +22,30 @@ else
         </Tabs>
     </RadzenTabs>
 
-    <RadzenRow Gap="0.5rem" RowGap="0.5rem">
-        <RadzenColumn Size="12" class="rz-p-1">
-            <RadzenStack Orientation="Radzen.Orientation.Horizontal" Gap="0.5rem" 
-            AlignItems="AlignItems.Start" class="rz-p-4 rz-border-radius-1" 
-            Style="border: var(--rz-grid-cell-border);"
-            JustifyContent="JustifyContent.Normal" >
-                <div class="rz-p-2 rz-text-align-center">
-                    <BlazorBootstrap.AutoComplete @bind-Value="Fullname"
-                    TItem="TourPlayerModel"
-                    DataProvider="TourPlayerProvider"
-                    PropertyName="Fullname"
-                    Placeholder="Vælg spiller..."
-                    StringComparison="StringComparison.Ordinal"
-                    OnChanged="(TourPlayerModel res) => OnAutoCompleteChanged(res)" />
-                </div>
-                <RadzenButton Icon="save" Click="@(args => Subscribe())" 
-                ButtonStyle="ButtonStyle.Success" Disabled="@(player.VgcNo is null)" />
-            </RadzenStack>
-        </RadzenColumn>
-    </RadzenRow>
+    <AuthorizeView>
+        <Authorized>
+            <RadzenRow Gap="0.5rem" RowGap="0.5rem">
+                <RadzenColumn Size="12" class="rz-p-1">
+                    <RadzenStack Orientation="Radzen.Orientation.Horizontal" Gap="0.5rem" 
+                    AlignItems="AlignItems.Start" class="rz-p-4 rz-border-radius-1" 
+                    Style="border: var(--rz-grid-cell-border);"
+                    JustifyContent="JustifyContent.Normal" >
+                        <div class="rz-p-2 rz-text-align-center">
+                            <BlazorBootstrap.AutoComplete @bind-Value="Fullname"
+                            TItem="TourPlayerModel"
+                            DataProvider="TourPlayerProvider"
+                            PropertyName="Fullname"
+                            Placeholder="Vælg spiller..."
+                            StringComparison="StringComparison.Ordinal"
+                            OnChanged="(TourPlayerModel res) => OnAutoCompleteChanged(res)" />
+                        </div>
+                                <RadzenButton Icon="save" Click="@(args => Subscribe())" 
+                                    ButtonStyle="ButtonStyle.Success" Disabled="@(player.VgcNo is null)" />
+                    </RadzenStack>
+                </RadzenColumn>
+            </RadzenRow>
+        </Authorized>
+    </AuthorizeView>
 
     <div class="container">
         <div class="row py-5">
@@ -60,11 +64,16 @@ else
                         </Template>
                     </RadzenDataGridColumn>
                     <RadzenDataGridColumn TItem="TourPlayerModel" Property="LastUpdateBy" Title="Opdateret af" Width="12rem" />
-                    <RadzenDataGridColumn Context="data" TextAlign="TextAlign.Right" Filterable="false">
-                        <Template Context="data">
-                            <RadzenButton Icon="cached" title="Tilmeld" Click="@(args => Unsubscribe(data.VgcNo))" ButtonStyle="ButtonStyle.Success" />
-                        </Template>
-                    </RadzenDataGridColumn> 
+                    <AuthorizeView>
+                       <Authorized>
+                        <RadzenDataGridColumn Context="data" TextAlign="TextAlign.Right" Filterable="false">
+                            <Template Context="data">
+                                <RadzenButton Icon="cached" title="Tilmeld" Click="@(args => Unsubscribe(data.VgcNo))" ButtonStyle="ButtonStyle.Success" />
+                            </Template>
+                        </RadzenDataGridColumn> 
+                        </Authorized>
+                    </AuthorizeView>
+
                 </Columns>
             </RadzenDataGrid>
         </div>
