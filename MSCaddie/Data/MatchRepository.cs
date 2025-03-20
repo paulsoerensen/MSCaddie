@@ -9,8 +9,13 @@ namespace MSCaddie.Data
 {
     public class MatchRepository : RepositoryBase, IMatchRepository
     {
-        public MatchRepository(IConfiguration config, ILogger<PlayerRepository> logger, IMapper mapper) : base(config, logger, mapper)
+        private int season;
+        public MatchRepository(IConfiguration config, 
+            ILogger<PlayerRepository> logger,
+            IAdminRepository adminRepo,
+            IMapper mapper) : base(config, logger, mapper)
         {
+            season = adminRepo.Season;
         }
 
         #region Method: MatchResults
@@ -27,7 +32,6 @@ namespace MSCaddie.Data
             using IDbConnection db = new SqlConnection(ConnectionString);
             return (await db.QueryAsync<ListEntryDto>(sql, new { startDate, endDate })).ToList();
         }
-
 
         public async Task<MatchResultDto?>GetLastResult()
         {

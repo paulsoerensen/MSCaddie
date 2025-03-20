@@ -7,17 +7,18 @@ using AutoMapper;
 namespace MSCaddie.Shared.Services;
 public class MatchService : IMatchService
 {
-    private const string BaseAddress = "api/match";
-
     IMatchRepository _matchRepository;
     ILogger<MatchService> _logger;
     IMapper mapper;
+    int season = 2000;
 
     public MatchService(IMatchRepository matchRepository,
+        IAdminRepository adminRepo,
         ILogger<MatchService> logger)
     {
         _matchRepository = matchRepository;
         _logger = logger;
+        season = adminRepo.Season;
         mapper = new MapperConfiguration(cfg =>
         {
             cfg.CreateMap<MatchDto, MatchModel>().ReverseMap();
@@ -38,7 +39,7 @@ public class MatchService : IMatchService
 
     public async Task<IEnumerable<MatchModel>?> GetMatches()
     {
-        IEnumerable<MatchDto> dtos = await _matchRepository.GetMatchList();
+        IEnumerable<MatchDto> dtos = await _matchRepository.GetSeasonMatchList(season);
         return mapper.Map<IEnumerable<MatchModel>>(dtos);
         //return await _client.GetFromJsonAsync<IEnumerable<Match>>(BaseAddress);
     }

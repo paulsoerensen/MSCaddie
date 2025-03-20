@@ -1,0 +1,39 @@
+@using BlazorBootstrap;
+
+<div class="rz-p-2 rz-text-align-center">
+    <BlazorBootstrap.AutoComplete @bind-Value="Fullname"
+        TItem="PlayerModel"
+        DataProvider="PlayerProvider"
+        PropertyName="Fullname"
+        Placeholder="Vælg spiller..."
+        StringComparison="StringComparison.Ordinal"
+        OnChanged="(PlayerModel res) => OnAutoCompleteChanged(res)" />
+</div>
+
+@code {
+    [Parameter]
+    public IEnumerable<PlayerModel?> Players { get; set; }
+
+    [Parameter]
+    public EventCallback<int> SelectedItemChanged { get; set; }
+
+    private string? Fullname;
+
+    protected async Task<AutoCompleteDataProviderResult<PlayerModel>> PlayerProvider(AutoCompleteDataProviderRequest<PlayerModel> request)
+    {
+        var filteredResults = Players?.Where(x => x.Fullname.Contains(request.Filter.Value, StringComparison.OrdinalIgnoreCase)).ToList();
+
+        return await Task.FromResult(new AutoCompleteDataProviderResult<PlayerModel>
+            {
+                Data = filteredResults, // return filtered results
+                TotalCount = filteredResults?.Count ?? 0
+            });
+    }
+
+    protected void OnAutoCompleteChanged(PlayerModel res)
+    {
+        if (res!=null) {
+            SelectedItemChanged.InvokeAsync(res.VgcNo);
+        }
+    }
+}

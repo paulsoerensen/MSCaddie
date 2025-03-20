@@ -30,17 +30,9 @@ else
                     AlignItems="AlignItems.Start" class="rz-p-4 rz-border-radius-1" 
                     Style="border: var(--rz-grid-cell-border);"
                     JustifyContent="JustifyContent.Normal" >
-                        <div class="rz-p-2 rz-text-align-center">
-                            <BlazorBootstrap.AutoComplete @bind-Value="Fullname"
-                            TItem="TourPlayerModel"
-                            DataProvider="TourPlayerProvider"
-                            PropertyName="Fullname"
-                            Placeholder="Vælg spiller..."
-                            StringComparison="StringComparison.Ordinal"
-                            OnChanged="(TourPlayerModel res) => OnAutoCompleteChanged(res)" />
-                        </div>
-                                <RadzenButton Icon="save" Click="@(args => Subscribe())" 
-                                    ButtonStyle="ButtonStyle.Success" Disabled="@(player.VgcNo is null)" />
+                        <PlayerSelection Players="@nonPlayers" SelectedItemChanged="HandlePlayerSelected" />
+                        <RadzenButton Icon="save" Click="@(args => Subscribe())"
+                            ButtonStyle="ButtonStyle.Success" Disabled="@(VgcNo < 1)" />
                     </RadzenStack>
                 </RadzenColumn>
             </RadzenRow>
@@ -49,28 +41,30 @@ else
 
     <div class="container">
         <div class="row py-5">
-            <RadzenDataGrid @ref="playerGrid" AllowFiltering="false" AllowGrouping="true"
-            Render="@OnRender" AllowPaging="false" AllowSorting="true"
+            <RadzenDataGrid @ref="playerGrid" AllowFiltering="false" 
+            Render="@OnRender" 
+            AllowPaging="false" AllowSorting="true"
             Data="@players" TItem="TourPlayerModel" AllowVirtualization="true" AllowColumnResize="true"
             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" 
             LogicalFilterOperator="LogicalFilterOperator.Or" FilterPopupRenderMode="PopupRenderMode.OnDemand">
 
                 <Columns>
                     <RadzenDataGridColumn TItem="TourPlayerModel" Property="VgcNo" Title="VGC Nr." Width="8rem" />
-                    <RadzenDataGridColumn TItem="TourPlayerModel" Property="Fullname" Title="Navn" Width="12rem" />
-                    <RadzenDataGridColumn TItem="TourPlayerModel" Property="Opdateret" Title="Dato" Width="8rem">
+                    <RadzenDataGridColumn TItem="TourPlayerModel" Property="Fullname" Title="Navn" Width="20rem" />
+                    <RadzenDataGridColumn TItem="TourPlayerModel" Property="Opdateret" Title="Dato" Width="10rem">
                         <Template Context="data">
                             @(data.LastUpdateDisplay)
                         </Template>
                     </RadzenDataGridColumn>
                     <RadzenDataGridColumn TItem="TourPlayerModel" Property="LastUpdateBy" Title="Opdateret af" Width="12rem" />
                     <AuthorizeView>
-                       <Authorized>
-                        <RadzenDataGridColumn Context="data" TextAlign="TextAlign.Right" Filterable="false">
-                            <Template Context="data">
-                                <RadzenButton Icon="cached" title="Tilmeld" Click="@(args => Unsubscribe(data.VgcNo))" ButtonStyle="ButtonStyle.Success" />
-                            </Template>
-                        </RadzenDataGridColumn> 
+                        <Authorized>
+                            <RadzenDataGridColumn Context="data" TextAlign="TextAlign.Right" Filterable="false">
+                                <Template Context="data">
+                                    <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" 
+                                                  Shade="Shade.Lighter" class="rz-my-1 rz-ms-1" Click="@(args => Unsubscribe(data.VgcNo))" @onclick:stopPropagation="true" />
+                                </Template>
+                            </RadzenDataGridColumn> 
                         </Authorized>
                     </AuthorizeView>
 
@@ -80,14 +74,14 @@ else
     </div>
 }
 @code {
+    public TourModel? tour;
     public List<TourModel> tours;
     public List<TourPlayerModel?> players;
-    public List<TourPlayerModel?> nonPlayers;
-    public TourModel? tour;
     protected RadzenDataGrid<TourPlayerModel> playerGrid;
 
-    protected TourPlayerModel player { get; set; } = new TourPlayerModel();
-    protected string Fullname;
+    public List<PlayerModel?> nonPlayers = null;
+    protected PlayerModel? player { get; set; }
+    protected int VgcNo = -1;
 
     [Inject] public ITourService tourSvc { get; set; } = default!;
 
@@ -108,22 +102,25 @@ else
         if (tour != null)
         {
             players = (await tourSvc.GetTourPlayers(tour.TourId))?.ToList() ?? new List<TourPlayerModel?>();
+            nonPlayers = (await tourSvc.GetNonTourPlayers(tour.TourId))?.ToList() ?? new List<PlayerModel?>();
         }
         else {
             players = new List<TourPlayerModel?>();
+            nonPlayers = null;
         }
+        StateHasChanged();
     }
 
     protected async Task Subscribe()
     {
-        await tourSvc.Subscribe(tour.TourId, player.VgcNo.Value);
+        await tourSvc.Subscribe(tour.TourId, VgcNo);
         await RefreshPlayers();
-        player = new TourPlayerModel(); 
+        VgcNo = -1;
     }
 
     protected async Task Unsubscribe(int? vgcNo)
     {
-        await tourSvc.ToggleSubscribtion(tour.TourId, vgcNo.Value);
+        await tourSvc.Unsubscribe(tour.TourId, vgcNo.Value);
         await RefreshPlayers();
     }
 
@@ -131,36 +128,41 @@ else
     {
         if (args.FirstRender)
         {
-            args.Grid.Groups.Add(new GroupDescriptor() { Property = "Tilmeldt", SortOrder = SortOrder.Descending });
+            // args.Grid.Groups.Add(new GroupDescriptor() { Property = "Tilmeldt", SortOrder = SortOrder.Descending });
             StateHasChanged();
         }
     }
 
-    protected async Task<AutoCompleteDataProviderResult<TourPlayerModel>> TourPlayerProvider(AutoCompleteDataProviderRequest<TourPlayerModel> request)
+    protected async Task<AutoCompleteDataProviderResult<PlayerModel>> PlayerProvider(AutoCompleteDataProviderRequest<PlayerModel> request)
     {
         if (nonPlayers == null)
         {
-            nonPlayers = new List<TourPlayerModel>(); // Initialize as an empty set if results is null
+            nonPlayers = new List<PlayerModel>(); // Initialize as an empty set if results is null
         }
 
         // If results is empty, fetch the data from the service
         if (!nonPlayers.Any())
         {
-            nonPlayers = (await tourSvc.GetNonTourPlayers(tour.TourId))?.ToList() ?? new List<TourPlayerModel?>();
+            nonPlayers = (await tourSvc.GetNonTourPlayers(tour.TourId))?.ToList() ?? new List<PlayerModel?>();
         }
 
         // Filter results based on the request filter value
         var filteredResults = nonPlayers.Where(x => x.Fullname.Contains(request.Filter.Value, StringComparison.OrdinalIgnoreCase)).ToList();
 
         // Return the filtered results in an AutoCompleteDataProviderResult
-        return await Task.FromResult(new AutoCompleteDataProviderResult<TourPlayerModel>
+        return await Task.FromResult(new AutoCompleteDataProviderResult<PlayerModel>
             {
                 Data = nonPlayers, // return filtered results
                 TotalCount = nonPlayers.Count // return filtered count
             });
     }
-    protected void OnAutoCompleteChanged(TourPlayerModel res)
+    protected void OnAutoCompleteChanged(PlayerModel res)
     {
         player = res;
+    }
+
+    protected async Task HandlePlayerSelected(int vgcNo)
+    {
+        VgcNo = vgcNo;
     }
 }

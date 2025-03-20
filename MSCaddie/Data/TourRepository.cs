@@ -54,7 +54,7 @@ public class TourRepository : RepositoryBase, ITourRepository
 			                    left join p
 									on p.TourId = t.TourId
                             where t.TourId = @TourId
-                            ORDER BY SignedUp, LastName";
+                            ORDER BY LastUpdate desc";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
             return await db.QueryAsync<TourPlayerDto>(sql, new { TourId = tourId });
@@ -70,7 +70,7 @@ public class TourRepository : RepositoryBase, ITourRepository
         try
         {
             string sql = @"SELECT VgcNo, Firstname, LastName
-                        FROM [ms].[PlayerNotInTour] (@tourId)";
+                        FROM [ms].[fnPlayerNotInTour] (@tourId)";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
             return await db.QueryAsync<TourPlayerDto>(sql, new { tourId });
@@ -94,11 +94,9 @@ public class TourRepository : RepositoryBase, ITourRepository
         return Convert.ToInt32(res ?? 0);
     }
 
-    public async Task<int>ToggleSubscribtion(int tourId, int vgcNo)
+    public async Task<int> Unsubscribe(int tourId, int vgcNo)
     {
-        string sql = @"UPDATE [ms].[TourPlayer]
-                        SET [SignedUp] = CASE WHEN [SignedUp] = 1 THEN 0 ELSE 1 END
-                            ,[LastUpdate] = sysdatetime()
+        string sql = @"DELETE [ms].[TourPlayer]
                         WHERE [TourId] = @tourId and [VgcNo] = @vgcNo";
 
         using IDbConnection db = new SqlConnection(ConnectionString);

@@ -19,6 +19,7 @@ public class TourService : ITourService
         {
             cfg.CreateMap<TourDto, TourModel>().ReverseMap();
             cfg.CreateMap<TourPlayerDto, TourPlayerModel>().ReverseMap();
+            cfg.CreateMap<TourPlayerDto, PlayerModel>();
         })
         .CreateMapper();
 
@@ -36,15 +37,20 @@ public class TourService : ITourService
         return mapper.Map<IEnumerable<TourPlayerModel>>(dtos);
     }
 
-    public async Task<IEnumerable<TourPlayerModel?>?> GetNonTourPlayers(int tourId)
+    /// <summary>
+    /// Only to select from players not already signed up for the tour
+    /// </summary>
+    /// <param name="tourId"></param>
+    /// <returns></returns>
+    public async Task<IEnumerable<PlayerModel?>?> GetNonTourPlayers(int tourId)
     {
         var dtos = await _repo.GetNonTourPlayers(tourId);
-        return mapper.Map<IEnumerable<TourPlayerModel>>(dtos);
+        return mapper.Map<IEnumerable<PlayerModel>>(dtos);
     }
 
-    public async Task<int>ToggleSubscribtion(int tourId, int vgcNo)
+    public async Task<int> Unsubscribe(int tourId, int vgcNo)
     {
-        return await _repo.ToggleSubscribtion(tourId, vgcNo);
+        return await _repo.Unsubscribe(tourId, vgcNo);
     }
 
     public async Task<int> Subscribe(int tourId, int vgcNo)

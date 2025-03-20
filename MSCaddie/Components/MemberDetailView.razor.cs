@@ -30,13 +30,13 @@ public partial class MemberDetailViewBase : ComponentBase
             NonMembers = await playerSvc.GetNonMembers();
         }
     }
-
-    protected async Task OnPlayerChanged(int i)
+    protected async Task HandlePlayerSelected(int vgcNo)
     {
         Message = string.Empty;
-        player = await playerSvc.GetPlayer(i);
+        player = await playerSvc.GetPlayer(vgcNo);
         StateHasChanged();
     }
+
     protected async Task OnSubmit(PlayerModel player)
     {
         try
