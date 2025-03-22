@@ -20,7 +20,7 @@ public class PlayerResultBase : MatchResultBase
     protected Variant variant = Variant.Outlined;
     protected IEnumerable<MatchResultModel>? Results { get; set; }
     protected IEnumerable<MatchResultModel>? registredResults { get; set; }
-    protected MatchResultModel result { get; set; } = new MatchResultModel();
+    protected MatchResultModel result { get; set; }
 
     protected string Fullname;
     protected object selectedItem;
@@ -28,6 +28,7 @@ public class PlayerResultBase : MatchResultBase
     protected override async Task OnInitializedAsync()
     {
         logger.LogInformation($"PlayerResult:OnInitializedAsync");
+        result = new MatchResultModel();
         await base.OnInitializedAsync();
     }
 
@@ -36,7 +37,8 @@ public class PlayerResultBase : MatchResultBase
         if (Match != null)
         {
             Results = await service.MatchResultForRegistration(Match.MatchId);
-            registredResults = Results?.Where(x => x.Points != null).ToList();
+            registredResults = Results?.Where(x => x.Points != null)
+                                        .OrderByDescending(x => x.MatchResultId).ToList();
         }
     }
 
@@ -48,22 +50,17 @@ public class PlayerResultBase : MatchResultBase
 
     protected async Task<AutoCompleteDataProviderResult<MatchResultModel>> ResultDataProvider(AutoCompleteDataProviderRequest<MatchResultModel> request)
     {
-        // Ensure that results is never null. If it's null, initialize as an empty collection.
         if (Results == null)
         {
             Results = Enumerable.Empty<MatchResultModel>(); // Initialize as an empty set if results is null
         }
 
-        // If results is empty, fetch the data from the service
         if (!Results.Any())
         {
             Results = await service.MatchResultForRegistration(Match.MatchId);
         }
 
-        // Filter results based on the request filter value
         var filteredResults = Results.Where(x => x.Fullname.Contains(request.Filter.Value, StringComparison.OrdinalIgnoreCase)).ToList();
-
-        // Return the filtered results in an AutoCompleteDataProviderResult
         return await Task.FromResult(new AutoCompleteDataProviderResult<MatchResultModel>
         {
             Data = filteredResults, // return filtered results
@@ -75,8 +72,12 @@ public class PlayerResultBase : MatchResultBase
     {
         result = res;
     }
+    protected async Task OnInvalidSubmit(FormInvalidSubmitEventArgs args)
+    {
+        //ToastService.Notify(new(ToastType.Danger, $"Error: {message}."));
+    }
 
-    protected async Task OnUpdate()
+    protected async Task OnSubmit(MatchResultModel model)
     {
         try
         {
@@ -87,6 +88,8 @@ public class PlayerResultBase : MatchResultBase
             {
                 ToastService.Notify(new(ToastType.Success, $"Resultatet er opdateret."));
                 await LoadData();
+                result = new MatchResultModel();
+                Fullname = "";
             }
             else
             {
@@ -100,19 +103,20 @@ public class PlayerResultBase : MatchResultBase
         }
     }
 
-    protected async Task OnDelete()
+    protected async Task OnDelete(MatchResultModel model)
     {
         try
         {
-            if (result?.MatchResultId.HasValue == true)
+            if (model?.MatchResultId.HasValue == true)
             {
-                await service!.DeleteResultMatch(result.MatchResultId.Value); ToastService.Notify(new(ToastType.Success, $"Employee details saved successfully."));
+                await service!.DeleteResultMatch(model.MatchResultId.Value); 
                 ToastService.Notify(new(ToastType.Success, $"Resultatet er slettet."));
+                await LoadData();
             }
             else
             {
                 // Handle the case where MatchResultId is null, e.g., throw an exception
-                ToastService.Notify(new(ToastType.Danger, "Intet resultat valg."));
+                ToastService.Notify(new(ToastType.Danger, "Intet resultat valgt."));
             }
         }
         catch (Exception e)

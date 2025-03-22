@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MSCaddie.Shared.Models;
 using MSCaddie.Shared.Services;
+using Radzen;
 using Radzen.Blazor;
 
 namespace MSCaddie.Components.MatchResults;
@@ -13,11 +14,13 @@ public class ResultListBase : MatchResultBase
 
     [Inject] public IMatchService? service { get; set; }
     [Inject] public ICompetitionService? competitionService { get; set; }
+    [Inject] public ILogger<ResultListBase> _logger { get; set; } = default!;
 
     protected RadzenDataGrid<MatchResultModel> grid;
     protected int HcpGroup { get; set; } = 0;
     protected List<MatchResultModel>? filteredResults;
     protected string message = string.Empty;
+    protected int rank { get; set; } = -1;
 
     public enum ResultAction
     {
@@ -35,6 +38,7 @@ public class ResultListBase : MatchResultBase
 
     protected override async Task OnParametersSetAsync()
     {
+        _logger.LogInformation("OnParametersSetAsync");
         if (Match != null)
         {
             results = await service.GetMatchResults(Match.MatchId);
@@ -45,6 +49,7 @@ public class ResultListBase : MatchResultBase
     }
     protected async Task OnFilterResult(ResultAction filter)
     {
+        _logger.LogInformation("OnFilterResult");
         switch (filter)
         {
             case ResultAction.All:
@@ -65,62 +70,55 @@ public class ResultListBase : MatchResultBase
 
     protected async Task OnSettleMatch()
     {
+        _logger.LogInformation("OnSettleMatch");
         await service.MatchSettlement(Match.MatchId);
-        results = await service.GetMatchResults(Match.MatchId);
-        //results = results?.Where(x => x.Points != null).ToList();
-        //MatchResultModel? res = results?
-        //    .OrderBy(r => r.Rank)
-        //    .SkipLast(1)
-        //    .LastOrDefault();
-
-        //if (res != null)
-        //{
-        //    CompetitionResultModel model = await competitionService.GetCompetitionResultModel("trøst");
-
-        //    model.VgcNo = res.VgcNo; model.Fullname = res.Fullname;
-        //    await competitionService.UpsertGetCompetitionResult(model);
-        //}
-        //res = results?
-        //    .Where(x => x.InBirdies && x.Birdies > 0)
-        //    .OrderBy(r => r.Birdies)
-        //    .FirstOrDefault();
-
-        //if (res != null)
-        //{
-        //    CompetitionResultModel model = await competitionService.GetCompetitionResultModel("birdie");
-
-        //    model.VgcNo = res.VgcNo; model.Fullname = res.Fullname;
-        //    await competitionService.UpsertGetCompetitionResult(model);
-        //}
-
-        StateHasChanged();
+        OnParametersSetAsync();
     }
 
     protected void FilterResult()
     {
-        logger.LogInformation($"FilterResult, {DateTime.Now.Second} - HcpGroup: {HcpGroup}");
+        _logger.LogInformation($"FilterResult, {DateTime.Now.Second} - HcpGroup: {HcpGroup}");
         if (Match.IsStrokePlay)
         {
             filteredResults = results?.Where(x => x.Points != null)
-                .OrderByDescending(x => x.Dining)
-                .ThenBy(x => x.Netto)
+                .OrderBy(x => x.Netto)
                 .ThenBy(x => x.HcpIndex).ToList();
         }
         else if (Match.IsHallington)
         {
             filteredResults = results?.Where(x => x.Points != null)
-                .OrderByDescending(x => x.Dining)
                 .OrderByDescending(x => x.Hallington)
                 .ThenBy(x => x.HcpIndex).ToList();
         }
         else
         {
             filteredResults = results?.Where(x => x.Points != null)
-                .OrderByDescending(x => x.Dining)
-                .ThenByDescending(x => x.Points)
+                .OrderByDescending(x => x.Points)
                 .ThenByDescending(x => x.HcpIndex).ToList();
         }
         filteredResults = filteredResults?.Where(x => (x.HcpGroup == HcpGroup) || (HcpGroup == 0)).ToList();
+        rank = -1;
         StateHasChanged();
+    }
+    protected void OnRender(DataGridRenderEventArgs<MatchResultModel> args)
+    {
+        _logger.LogInformation("OnRender");
+        if (args.FirstRender)
+        {
+            args.Grid.Groups.Add(new GroupDescriptor() { Title = "Placering", Property = "WinnerText", SortOrder = SortOrder.Descending });
+            StateHasChanged();
+        }
+    }
+    protected string DisplayRank(int i)
+    {
+        _logger.LogInformation($"DisplayRank({i}-{rank})");
+        if (rank != i)
+        {
+            rank = rank < 1 ? rank+1 : i;
+            if (rank < 1) return "1";
+            return rank.ToString();
+        }
+        _logger.LogInformation($"DisplayRank - blank");
+        return "";
     }
 }

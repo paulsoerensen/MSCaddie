@@ -15,12 +15,12 @@ else
             <RadzenStack Orientation="Radzen.Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Start" class="rz-p-4 rz-border-radius-1" Style="border: var(--rz-grid-cell-border);">
                 <div class="rz-p-2 rz-text-align-center">
                     <BlazorBootstrap.AutoComplete @bind-Value="Fullname"
-                                                    TItem="MatchResultModel"
-                                                    DataProvider="ResultDataProvider"
-                                                    PropertyName="Fullname"
-                                                    Placeholder="Vælg spiller..."
-                                                    StringComparison="StringComparison.Ordinal"
-                                                    OnChanged="(MatchResultModel res) => OnAutoCompleteChanged(res)" />
+                        TItem="MatchResultModel"
+                        DataProvider="ResultDataProvider"
+                        PropertyName="Fullname"
+                        Placeholder="Vælg spiller..."
+                        StringComparison="StringComparison.Ordinal"
+                        OnChanged="(MatchResultModel res) => OnAutoCompleteChanged(res)" />
                 </div>
             </RadzenStack>
         </RadzenColumn>
@@ -28,31 +28,27 @@ else
 }
 @if (result != null && Match != null)
 {
-    <RadzenCard class="rz-my-6">
-        <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Start" Wrap="FlexWrap.Wrap" Gap="1rem">
+    <RadzenTemplateForm TItem="MatchResultModel" Data=@result Submit=@OnSubmit InvalidSubmit=@OnInvalidSubmit>
+       <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Start" Wrap="FlexWrap.Wrap" Gap="1rem">
             <RadzenFormField Text="Hcp" Variant="@variant" Style="flex: 1;">
                 <RadzenNumeric @bind-Value="@result.HcpIndex" />
             </RadzenFormField>
             <RadzenFormField Text="Antal tildelte" Variant="@variant" Style="flex: 1;">
-                <RadzenNumeric @bind-Value="@result.Hcp" />
+                <RadzenNumeric Name="Hcp" @bind-Value="@result.Hcp" />
+                <RadzenRequiredValidator Component="Hcp" Text="Hcp skal angives"  Style="position: absolute" />
             </RadzenFormField>
             <RadzenFormField Text="Brutto" Variant="@variant" Visible="@Match.IsStrokePlay" Style="flex: 1;">
                 <RadzenNumeric @bind-Value="@result.Brutto" />
             </RadzenFormField>
-            @*             <RadzenFormField Text="Netto" Variant="@variant" Visible="@Match.IsStrokePlay" Style="flex: 1;">
-        <RadzenNumeric @bind-Value="@result.Netto" />
-        </RadzenFormField> *@
             <RadzenFormField Text="Hallington" Variant="@variant" Visible="@Match.IsHallington" Style="flex: 1;">
                 <RadzenNumeric @bind-Value="@result.Hallington" />
             </RadzenFormField>
-            @*         </RadzenStack>
-        <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Start" Wrap="FlexWrap.Wrap">
-        *@
             <RadzenFormField Text="Puts" Variant="@variant" Visible="@Match.IsStrokePlay" Style="flex: 1;">
                 <RadzenNumeric @bind-Value="@result.Puts" />
             </RadzenFormField>
             <RadzenFormField Text="Stableford" Variant="@variant" Style="flex: 1;">
-                <RadzenNumeric @bind-Value="@result.Points" />
+                <RadzenNumeric Name="Stableford" style="display: block"  @bind-Value="@result.Points" />
+                <RadzenRequiredValidator Component="Stableford" Text="Points skal angives" Style="position: absolute" />
             </RadzenFormField>
             <RadzenFormField Text="Birdies" Variant="@variant" Style="flex: 1;">
                 <RadzenNumeric @bind-Value="@result.Birdies" />
@@ -80,13 +76,10 @@ else
 
         <RadzenStack Orientation="Radzen.Orientation.Horizontal" Gap="1rem" class="rz-mt-1" Style="justify-content: flex-end;">
             <div class="rz-p-2 .rz-w-fit-content  rz-text-align-left">
-                <RadzenButton Click=@(args => OnDelete()) Text="Slet" Icon="check_circle" ButtonStyle="ButtonStyle.Danger" />
-            </div>
-            <div class="rz-p-2 .rz-w-fit-content  rz-text-align-left">
-                <RadzenButton Click=@(args => OnUpdate()) Text="Opdater" Icon="check_circle" ButtonStyle="ButtonStyle.Success" />
+                <RadzenButton Text="Opdater" Icon="check_circle" ButtonType="ButtonType.Submit" ButtonStyle="ButtonStyle.Success" />
             </div>
         </RadzenStack>
-    </RadzenCard>
+    </RadzenTemplateForm>
 }
 @if (Message is not null)
 {
@@ -102,7 +95,13 @@ else
         <Columns>
             <RadzenDataGridColumn Property="@nameof(MatchResultModel.No)" Title="Nr" Width="20px" />
             <RadzenDataGridColumn Property="@nameof(MatchResultModel.VgcNo)" Title="Vgc nr." FormatString="{0:d}" TextAlign="TextAlign.Center" Width="20px" />
-            <RadzenDataGridColumn Property="@nameof(MatchResultModel.Fullname)" Title="Navn" FormatString="{0:d}" TextAlign="TextAlign.Start" Width="180px" />
+            <RadzenDataGridColumn Property="@nameof(MatchResultModel.Fullname)" Title="Navn" FormatString="{0:d}" TextAlign="TextAlign.Start" Width="180px">
+                <Template Context="data">
+                    <div class="@(data.Dining ? "" : "fw-light fst-italic")">
+                        @data.Fullname
+                    </div>
+                </Template>
+            </RadzenDataGridColumn>
             <RadzenDataGridColumn Property="@nameof(MatchResultModel.Hallington)" Title="Resultat" FormatString="{0:d}" Visible="Match.IsHallington" TextAlign="TextAlign.Center" />
             <RadzenDataGridColumn Property="@nameof(MatchResultModel.Brutto)" Title="Brutto" FormatString="{0:d}" Visible="Match.IsStrokePlay" TextAlign="TextAlign.Center" />
             <RadzenDataGridColumn Property="@nameof(MatchResultModel.Hcp)" Title="Hcp" TextAlign="TextAlign.Center" />
@@ -110,6 +109,11 @@ else
             <RadzenDataGridColumn Property="@nameof(MatchResultModel.Points)" Title="Stableford" TextAlign="TextAlign.Center" />
             <RadzenDataGridColumn Property="@nameof(MatchResultModel.Puts)" Title="Puts" Visible="Match.IsStrokePlay" TextAlign="TextAlign.Center" />
             <RadzenDataGridColumn Property="@nameof(MatchResultModel.Birdies)" Title="Birdies" TextAlign="TextAlign.Center" />
+            <RadzenDataGridColumn Context="data" TextAlign="TextAlign.Right" Filterable="false">
+                <Template Context="data">
+                    <RadzenButton Icon="delete" Click="@(args => OnDelete(data))" ButtonStyle="ButtonStyle.Warning" />
+                </Template>
+            </RadzenDataGridColumn>
         </Columns>
     </RadzenDataGrid>
 }

@@ -1,12 +1,11 @@
 using MSCaddie.Shared.Models;
 using Microsoft.AspNetCore.Components;
 using MSCaddie.Shared.Services;
-using MSCaddie.Components.MatchResults;
 using BlazorBootstrap;
 using Radzen;
 using MSCaddie.Shared.Extensions;
 
-namespace MSCaddie.Components.Pages;
+namespace MSCaddie.Components.MatchResults;
 
 public partial class MatchResultPageBase : ComponentBase
 {
@@ -66,7 +65,7 @@ public partial class MatchResultPageBase : ComponentBase
             matchId = selectedKey;
             match = await service.GetMatch(matchId);
             var compResults = await competitionService.GetMatchCompetitionResults(matchId);
-            _otherResultsTabVisible = (compResults.Any());
+            _otherResultsTabVisible = compResults.Any();
 
             _logger.LogInformation($"match: {match?.MatchDisplay}");
         }

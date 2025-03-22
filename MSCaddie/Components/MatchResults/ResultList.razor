@@ -10,13 +10,13 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <button class="btn btn-primary my-2 my-sm-0" type="button" @onclick="() => OnFilterResult(ResultAction.All)">Alle resultater</button>
+                    <button class="btn btn-default my-2 my-sm-0" type="button" @onclick="() => OnFilterResult(ResultAction.All)">Alle resultater</button>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-info my-2 my-sm-0" type="button" @onclick="() => OnFilterResult(ResultAction.A)">A rækken</button>
+                    <button class="btn btn-default my-2 my-sm-0" type="button" @onclick="() => OnFilterResult(ResultAction.A)">A rækken</button>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-secondary my-2 my-sm-0" type="button" @onclick="() => OnFilterResult(ResultAction.B)">B rækken</button>
+                    <button class="btn btn-default my-2 my-sm-0" type="button" @onclick="() => OnFilterResult(ResultAction.B)">B rækken</button>
                 </li>
             </ul>
             <AuthorizeView>
@@ -38,18 +38,28 @@
 else
 {
     <RadzenDataGrid @ref="grid" AllowColumnResize="true"
-                    AllowSorting="true" Data="@filteredResults">
+    AllowSorting="true" Data="@filteredResults" Render="@OnRender">
         <Columns>
-            <RadzenDataGridColumn Property="@nameof(MatchResultModel.No)" Title="Nr" Width="20px" />
-            <RadzenDataGridColumn Property="@nameof(MatchResultModel.VgcNo)" Title="Vgc nr." FormatString="{0:d}" TextAlign="TextAlign.Center" Width="20px" />
-            <RadzenDataGridColumn Property="@nameof(MatchResultModel.Fullname)" Title="Navn" FormatString="{0:d}" TextAlign="TextAlign.Start" Width="180px" />
-            <RadzenDataGridColumn Property="@nameof(MatchResultModel.HcpIndex)" Title="Hcp" TextAlign="TextAlign.Center" />
-            <RadzenDataGridColumn Property="@nameof(MatchResultModel.Hallington)" Title="Resultat" FormatString="{0:d}" Visible="Match.IsHallington" TextAlign="TextAlign.Center" />
-            <RadzenDataGridColumn Property="@nameof(MatchResultModel.Brutto)" Title="Brutto" FormatString="{0:d}" Visible="Match.IsStrokePlay" TextAlign="TextAlign.Center" />
-            <RadzenDataGridColumn Property="@nameof(MatchResultModel.Netto)" Title="Netto" FormatString="{0:d}" Visible="Match.IsStrokePlay" TextAlign="TextAlign.Center" />
-            <RadzenDataGridColumn Property="@nameof(MatchResultModel.Points)" Title="Stableford" TextAlign="TextAlign.Center" />
-            <RadzenDataGridColumn Property="@nameof(MatchResultModel.Puts)" Title="Puts" Visible="Match.IsStrokePlay" TextAlign="TextAlign.Center" />
-            <RadzenDataGridColumn Property="@nameof(MatchResultModel.DamstahlPoints)" Title="Midspar" TextAlign="TextAlign.Center" />
+            <RadzenDataGridColumn Property="@nameof(MatchResultModel.No)" Title="Nr" Width="3rem" Visible=@(HcpGroup > 0)>
+                <Template Context="data">
+                    @(filteredResults.IndexOf(data)  == data.No ? data.No : "")
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn Property="@nameof(MatchResultModel.VgcNo)" Title="Vgc nr." FormatString="{0:d}" TextAlign="TextAlign.Center" Width="5rem" />
+            <RadzenDataGridColumn Property="@nameof(MatchResultModel.Fullname)" Title="Navn" FormatString="{0:d}" TextAlign="TextAlign.Start" Width="15rem">
+                <Template Context="data">
+                    <div class="@((data.Dining ? "" : "fw-light fst-italic") + (data.Rank==1 ? " fw-bold" : ""))">
+                        @data.Fullname
+                    </div>
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn Property="@nameof(MatchResultModel.HcpIndex)" Title="Hcp" TextAlign="TextAlign.Center" Width="5rem" />
+            <RadzenDataGridColumn Property="@nameof(MatchResultModel.Hallington)" Title="Resultat" FormatString="{0:d}" Visible="Match.IsHallington" TextAlign="TextAlign.Center" Width="5rem" />
+            <RadzenDataGridColumn Property="@nameof(MatchResultModel.Brutto)" Title="Brutto" FormatString="{0:d}" Visible="Match.IsStrokePlay" TextAlign="TextAlign.Center" Width="5rem" />
+            <RadzenDataGridColumn Property="@nameof(MatchResultModel.Netto)" Title="Netto" FormatString="{0:d}" Visible="Match.IsStrokePlay" TextAlign="TextAlign.Center" Width="5rem" />
+            <RadzenDataGridColumn Property="@nameof(MatchResultModel.Points)" Title="Stableford" TextAlign="TextAlign.Center" Width="5rem" />
+            <RadzenDataGridColumn Property="@nameof(MatchResultModel.Puts)" Title="Puts" Visible="Match.IsStrokePlay" TextAlign="TextAlign.Center" Width="5rem" />
+            <RadzenDataGridColumn Property="@nameof(MatchResultModel.DamstahlPoints)" Title="Midspar" TextAlign="TextAlign.Center" Width="5rem" />
         </Columns>
     </RadzenDataGrid>
 }

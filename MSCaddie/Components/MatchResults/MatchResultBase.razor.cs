@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
-using MSCaddie.Shared.Containers;
-using MSCaddie.Shared.Models;
-using MSCaddie.Shared.Extensions;
-using MSCaddie.Shared.Services;
-using Microsoft.AspNetCore.Components;
-using MSCaddie.Components.Pages;
 using BlazorBootstrap;
+using Microsoft.AspNetCore.Components;
+using MSCaddie.Shared.Models;
+using MSCaddie.Shared.Services;
 
 namespace MSCaddie.Components.MatchResults;
 

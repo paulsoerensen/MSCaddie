@@ -13,6 +13,7 @@ public class MatchResultModel
     public string? Firstname { get; set; }
     public string? Lastname { get; set; }
     public string Fullname { get; set; }
+    public string WinnerText => Rank == 1 ? "Overall vinder" : "";
     public bool Dining { get; set; }
     public int HcpGroup { get; set; }
     public int Hcp { get; set; }
