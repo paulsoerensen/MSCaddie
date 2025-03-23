@@ -26,6 +26,7 @@ public class ResultListBase : MatchResultBase
     protected List<MatchResultModel>? filteredResults;
     protected string message = string.Empty;
     protected int rank { get; set; } = -1;
+    protected int WinnerHcpGroup { get; set; } = -1;
 
     public enum ResultAction
     {
@@ -116,6 +117,7 @@ public class ResultListBase : MatchResultBase
         logger.LogInformation($"Dining MatchId {Match.MatchId} - {diningInfo.Text}");
         DiningInfoChanged.InvokeAsync(diningInfo);
 
+        WinnerHcpGroup = filteredResults.Where(x => (x.Rank == 1)).Select(x => x.HcpGroup).SingleOrDefault();
         filteredResults = filteredResults?.Where(x => (x.HcpGroup == HcpGroup) || (HcpGroup == 0)).ToList();
         rank = -1;
         StateHasChanged();
@@ -129,16 +131,9 @@ public class ResultListBase : MatchResultBase
             StateHasChanged();
         }
     }
-    protected string DisplayRank(int i)
+    protected int WinnerOffset(int hcpGroup)
     {
-        _logger.LogInformation($"DisplayRank({i}-{rank})");
-        if (rank != i)
-        {
-            rank = rank < 1 ? rank+1 : i;
-            if (rank < 1) return "1";
-            return rank.ToString();
-        }
-        _logger.LogInformation($"DisplayRank - blank");
-        return "";
+        if (WinnerHcpGroup == hcpGroup) return 0;
+        return 1;
     }
 }

@@ -40,9 +40,9 @@ else
     <RadzenDataGrid @ref="grid" AllowColumnResize="true"
         AllowSorting="true" Data="@filteredResults" Render="@OnRender">
         <Columns>
-            <RadzenDataGridColumn Property="@nameof(MatchResultModel.No)" Title="Nr" Width="3rem" Visible=@(HcpGroup > 0)>
+            <RadzenDataGridColumn Property="@nameof(MatchResultModel.No)" Title="Nr" Width="8rem" Visible=@(HcpGroup > 0)>
                 <Template Context="data">
-                    @(filteredResults.IndexOf(data)  == data.No ? data.No : "")
+                    @(filteredResults.IndexOf(data) + WinnerOffset(data.HcpGroup) == data.No ? data.No : "")
                 </Template>
             </RadzenDataGridColumn>
             <RadzenDataGridColumn Property="@nameof(MatchResultModel.VgcNo)" Title="Vgc nr." FormatString="{0:d}" TextAlign="TextAlign.Center" Width="5rem" />
