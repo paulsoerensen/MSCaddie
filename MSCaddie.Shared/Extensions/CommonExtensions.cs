@@ -16,7 +16,7 @@ public static class CommonExtensions
 //#if DEBUG
 //        return new DateTime(2024, 6, 6);
 //#else
-        return DateTime.Now;
+        return new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
 //#endif
     }
 }

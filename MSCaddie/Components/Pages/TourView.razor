@@ -12,7 +12,7 @@
 }
 else
 {
-    <RadzenTabs Change=@OnChange  TabPosition="TabPosition.Top" RenderMode="TabRenderMode.Client">
+    <RadzenTabs Change=@OnTourChange  TabPosition="TabPosition.Top" RenderMode="TabRenderMode.Client">
         <Tabs>
             @foreach (var tour in tours)
             {
@@ -30,9 +30,11 @@ else
                     AlignItems="AlignItems.Start" class="rz-p-4 rz-border-radius-1" 
                     Style="border: var(--rz-grid-cell-border);"
                     JustifyContent="JustifyContent.Normal" >
-                        <PlayerSelection Players="@nonPlayers" SelectedItemChanged="HandlePlayerSelected" />
+                        <PlayerSelection Players="@nonPlayers" 
+                            SelectedItemChanged="HandlePlayerSelected"
+                            PropertyValue="@Fullname" />
                         <RadzenButton Icon="save" Click="@(args => Subscribe())"
-                            ButtonStyle="ButtonStyle.Success" Disabled="@(VgcNo < 1)" />
+                        ButtonStyle="ButtonStyle.Success" Disabled="@(player == null)" />
                     </RadzenStack>
                 </RadzenColumn>
             </RadzenRow>
@@ -42,7 +44,6 @@ else
     <div class="container">
         <div class="row py-5">
             <RadzenDataGrid @ref="playerGrid" AllowFiltering="false" 
-            Render="@OnRender" 
             AllowPaging="false" AllowSorting="true"
             Data="@players" TItem="TourPlayerModel" AllowVirtualization="true" AllowColumnResize="true"
             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" 
@@ -62,7 +63,7 @@ else
                             <RadzenDataGridColumn Context="data" TextAlign="TextAlign.Right" Filterable="false">
                                 <Template Context="data">
                                     <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" 
-                                                  Shade="Shade.Lighter" class="rz-my-1 rz-ms-1" Click="@(args => Unsubscribe(data.VgcNo))" @onclick:stopPropagation="true" />
+                                    Shade="Shade.Lighter" class="rz-my-1 rz-ms-1" Click="@(args => Unsubscribe(data.VgcNo))" @onclick:stopPropagation="true" />
                                 </Template>
                             </RadzenDataGridColumn> 
                         </Authorized>
@@ -81,17 +82,17 @@ else
 
     public List<PlayerModel?> nonPlayers = null;
     protected PlayerModel? player { get; set; }
-    protected int VgcNo = -1;
+    protected string Fullname;
 
     [Inject] public ITourService tourSvc { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
         tours = (await tourSvc.GetTours())?.ToList() ?? new List<TourModel>();
-        await OnChange(0);
+        await OnTourChange(0);
     }
 
-    protected async Task OnChange(int index)
+    protected async Task OnTourChange(int index)
     {
         tour = tours.ElementAtOrDefault(index);
         await RefreshPlayers();
@@ -108,14 +109,15 @@ else
             players = new List<TourPlayerModel?>();
             nonPlayers = null;
         }
+        player = null;
+        Fullname = "";
         StateHasChanged();
     }
 
     protected async Task Subscribe()
     {
-        await tourSvc.Subscribe(tour.TourId, VgcNo);
+        await tourSvc.Subscribe(tour.TourId, player.VgcNo);
         await RefreshPlayers();
-        VgcNo = -1;
     }
 
     protected async Task Unsubscribe(int? vgcNo)
@@ -124,45 +126,9 @@ else
         await RefreshPlayers();
     }
 
-    void OnRender(DataGridRenderEventArgs<TourPlayerModel> args)
+    protected async Task HandlePlayerSelected(PlayerModel model)
     {
-        if (args.FirstRender)
-        {
-            // args.Grid.Groups.Add(new GroupDescriptor() { Property = "Tilmeldt", SortOrder = SortOrder.Descending });
-            StateHasChanged();
-        }
-    }
-
-    protected async Task<AutoCompleteDataProviderResult<PlayerModel>> PlayerProvider(AutoCompleteDataProviderRequest<PlayerModel> request)
-    {
-        if (nonPlayers == null)
-        {
-            nonPlayers = new List<PlayerModel>(); // Initialize as an empty set if results is null
-        }
-
-        // If results is empty, fetch the data from the service
-        if (!nonPlayers.Any())
-        {
-            nonPlayers = (await tourSvc.GetNonTourPlayers(tour.TourId))?.ToList() ?? new List<PlayerModel?>();
-        }
-
-        // Filter results based on the request filter value
-        var filteredResults = nonPlayers.Where(x => x.Fullname.Contains(request.Filter.Value, StringComparison.OrdinalIgnoreCase)).ToList();
-
-        // Return the filtered results in an AutoCompleteDataProviderResult
-        return await Task.FromResult(new AutoCompleteDataProviderResult<PlayerModel>
-            {
-                Data = nonPlayers, // return filtered results
-                TotalCount = nonPlayers.Count // return filtered count
-            });
-    }
-    protected void OnAutoCompleteChanged(PlayerModel res)
-    {
-        player = res;
-    }
-
-    protected async Task HandlePlayerSelected(int vgcNo)
-    {
-        VgcNo = vgcNo;
+        player = model;
+        Fullname = model?.Fullname ?? "";
     }
 }

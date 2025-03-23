@@ -16,6 +16,7 @@ public partial class MemberDetailViewBase : ComponentBase
 
     public PlayerModel? player { get; set; } = new PlayerModel();
     public required IEnumerable<PlayerModel?> NonMembers { get; set; }
+    protected string Fullname;
 
     protected string Message = string.Empty;
 
@@ -30,11 +31,11 @@ public partial class MemberDetailViewBase : ComponentBase
             NonMembers = await playerSvc.GetNonMembers();
         }
     }
-    protected async Task HandlePlayerSelected(int vgcNo)
+    protected async Task HandlePlayerSelected(PlayerModel model)
     {
         Message = string.Empty;
-        player = await playerSvc.GetPlayer(vgcNo);
-        StateHasChanged();
+        player = model;
+        Fullname = model?.Fullname ?? "";
     }
 
     protected async Task OnSubmit(PlayerModel player)
@@ -42,8 +43,9 @@ public partial class MemberDetailViewBase : ComponentBase
         try
         {
             Message = string.Empty;
-            //player.Season = player.Season;
-            player = await playerSvc.UpsertPlayer(player);
+            await playerSvc.UpsertPlayer(player);
+            player = null;
+            Fullname = "";
             dialogService.Close(true);
         }
         catch (Exception e)

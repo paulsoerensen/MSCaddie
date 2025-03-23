@@ -11,7 +11,9 @@
             <RadzenRow AlignItems="AlignItems.End" Visible="@(playerId < 0)">
 
                 <RadzenColumn Size="12">
-                    <PlayerSelection Players="@NonMembers" SelectedItemChanged="HandlePlayerSelected" />
+                    <PlayerSelection Players="@NonMembers" 
+                        SelectedItemChanged="HandlePlayerSelected" 
+                        PropertyValue="@Fullname" />
                 </RadzenColumn>
             </RadzenRow>
 
@@ -23,7 +25,7 @@
                                            InputAttributes="@(new Dictionary<string, object>() { { "aria-label", "enter value" } })" />
                         </ChildContent>
                         <End>
-                            <RadzenButton Click=@(args => HandlePlayerSelected(player.VgcNo)) Icon="refresh" ButtonStyle="ButtonStyle.Primary" />
+                            <RadzenButton Click=@(args => HandlePlayerSelected(player)) Icon="refresh" ButtonStyle="ButtonStyle.Primary" />
                         </End>
                     </RadzenFormField>
                 </RadzenColumn>

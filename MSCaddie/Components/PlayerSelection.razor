@@ -1,23 +1,48 @@
 @using BlazorBootstrap;
 
+@* 
+    <PlayerSelection Players="@nonPlayers"
+                 SelectedItemChanged="HandlePlayerSelected"
+                 PropertyValue="@Fullname" />
+
+    protected string Fullname;
+
+    // action
+    player = null;
+    Fullname = "";
+
+    protected async Task HandlePlayerSelected(PlayerModel model)
+    {
+        player = model;
+        Fullname = model?.Fullname ?? "";
+    }
+
+ *@
+
 <div class="rz-p-2 rz-text-align-center">
-    <BlazorBootstrap.AutoComplete @bind-Value="Fullname"
+    <BlazorBootstrap.AutoComplete @bind-Value="PropertyValue"
         TItem="PlayerModel"
         DataProvider="PlayerProvider"
         PropertyName="Fullname"
         Placeholder="Vælg spiller..."
         StringComparison="StringComparison.Ordinal"
-        OnChanged="(PlayerModel res) => OnAutoCompleteChanged(res)" />
+        OnChanged="(PlayerModel res) => OnAutoCompleteChanged(res)"  />
 </div>
 
 @code {
     [Parameter]
-    public IEnumerable<PlayerModel?> Players { get; set; }
+    public IEnumerable<PlayerModel>? Players { get; set; }
 
     [Parameter]
-    public EventCallback<int> SelectedItemChanged { get; set; }
+    public string PropertyValue { get; set; }
 
-    private string? Fullname;
+    [Parameter]
+    public EventCallback<PlayerModel> SelectedItemChanged { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        ;
+    }
 
     protected async Task<AutoCompleteDataProviderResult<PlayerModel>> PlayerProvider(AutoCompleteDataProviderRequest<PlayerModel> request)
     {
@@ -30,10 +55,9 @@
             });
     }
 
-    protected void OnAutoCompleteChanged(PlayerModel res)
+    protected void OnAutoCompleteChanged(PlayerModel model)
     {
-        if (res!=null) {
-            SelectedItemChanged.InvokeAsync(res.VgcNo);
-        }
+        SelectedItemChanged.InvokeAsync(model);
+        PropertyValue = model?.Fullname ?? "";
     }
 }

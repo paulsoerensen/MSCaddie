@@ -81,7 +81,6 @@ public class PlayerResultBase : MatchResultBase
     {
         try
         {
-
             logger.LogInformation($"HandleValidSubmit {result}");
             bool b = await service.UpsertResultMatch(result); 
             if (b)
@@ -101,6 +100,12 @@ public class PlayerResultBase : MatchResultBase
             message = e.Message;
             ToastService.Notify(new(ToastType.Danger, $"Error: {e.Message}."));
         }
+    }
+
+    protected async Task OnEdit(MatchResultModel model)
+    {
+        result = model;
+        Fullname = model.Fullname;
     }
 
     protected async Task OnDelete(MatchResultModel model)

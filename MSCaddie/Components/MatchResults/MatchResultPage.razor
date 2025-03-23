@@ -27,6 +27,8 @@
         <RadzenLabel Text="@match?.Matchform" />
         <RadzenLabel Text="Sponsor:" />
         <RadzenLabel Text="@match?.Sponsor" />
+        <RadzenLabel Text="(Spiser/ikke):" />
+        <RadzenLabel Text="@diningInfo.Text" />
     </RadzenStack>
 
     <RadzenTabs Change=@OnChange TabPosition="@tabPosition" RenderMode="TabRenderMode.Client">
@@ -39,7 +41,7 @@
                 </Authorized>
             </AuthorizeView>
             <RadzenTabsItem Text="Resultater">
-                <ResultList Match="match"></ResultList>
+                <ResultList Match="match" ></ResultList>
             </RadzenTabsItem>
             <RadzenTabsItem Text="Øvrige resultater" Visible="@_otherResultsTabVisible">
                 <OtherResults Match="match"></OtherResults>

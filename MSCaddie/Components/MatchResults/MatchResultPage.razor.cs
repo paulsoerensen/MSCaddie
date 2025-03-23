@@ -5,6 +5,7 @@ using BlazorBootstrap;
 using Radzen;
 using MSCaddie.Shared.Extensions;
 
+
 namespace MSCaddie.Components.MatchResults;
 
 public partial class MatchResultPageBase : ComponentBase
@@ -25,10 +26,14 @@ public partial class MatchResultPageBase : ComponentBase
     public int matchId { get; set; } = -1;
     public MatchModel? match { get; set; }
     public string Message { get; set; }
+    public int dining { get; set; }
+    public int notDining { get; set; }
     //protected IEnumerable<MatchResult>? results;
 
     protected string _selectedTab = "Results";
     protected bool _otherResultsTabVisible = false;
+
+    protected DiningInfo diningInfo = new DiningInfo();
 
     protected override async Task OnInitializedAsync()
     {
@@ -60,7 +65,10 @@ public partial class MatchResultPageBase : ComponentBase
 
     protected async Task HandleMatchSelected(int selectedKey)
     {
-        try {
+        _logger.LogInformation($"HandleMatchSelected({selectedKey})");
+
+        try
+        {
             Message = string.Empty;
             matchId = selectedKey;
             match = await service.GetMatch(matchId);
@@ -88,14 +96,17 @@ public partial class MatchResultPageBase : ComponentBase
         _selectedTab = name;
         await tabsRef.ShowTabByNameAsync(_selectedTab);
     }
+
+    private ResultListBase resultListPage;
     internal void SetResultListPage(ResultListBase page)
     {
         resultListPage = page;
         StateHasChanged();
     }
-    private ResultListBase resultListPage;
-    protected void ResultListClicked()
+
+    protected async Task DiningInfoChanged(DiningInfo model)
     {
-        //resultListPage.Clicked();
+        diningInfo = model;
+        //StateHasChanged();
     }
 }

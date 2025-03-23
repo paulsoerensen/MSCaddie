@@ -3,6 +3,7 @@ using MSCaddie.Shared.Models;
 using MSCaddie.Shared.Services;
 using Radzen;
 using Radzen.Blazor;
+using System.Linq;
 
 namespace MSCaddie.Components.MatchResults;
 
@@ -10,6 +11,10 @@ public class ResultListBase : MatchResultBase
 {
     [Parameter]
     public MatchModel Match { get; set; }
+
+    [Parameter]
+    public EventCallback<DiningInfo> DiningInfoChanged { get; set; }
+
     protected IEnumerable<MatchResultModel>? results;
 
     [Inject] public IMatchService? service { get; set; }
@@ -36,15 +41,21 @@ public class ResultListBase : MatchResultBase
         await base.OnInitializedAsync();
     }
 
-    protected override async Task OnParametersSetAsync()
+
+    protected async Task LoadData()
     {
-        _logger.LogInformation("OnParametersSetAsync");
         if (Match != null)
         {
             results = await service.GetMatchResults(Match.MatchId);
-            logger.LogInformation($"OnParametersSet MatchId {Match.MatchId}");
+            logger.LogInformation($"LoadData({Match.MatchId})");
             FilterResult();
         }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _logger.LogInformation("OnParametersSetAsync");
+        await LoadData();
         await base.OnParametersSetAsync();
     }
     protected async Task OnFilterResult(ResultAction filter)
@@ -94,8 +105,17 @@ public class ResultListBase : MatchResultBase
         {
             filteredResults = results?.Where(x => x.Points != null)
                 .OrderByDescending(x => x.Points)
-                .ThenByDescending(x => x.HcpIndex).ToList();
+                .ThenBy(x => x.HcpIndex).ToList();
         }
+
+        DiningInfo diningInfo = new DiningInfo()
+        {
+            Dining = filteredResults.Where(x => (x.Dining == true)).Count(),
+            NotDining = filteredResults.Where(x => (x.Dining == false)).Count()
+        };
+        logger.LogInformation($"Dining MatchId {Match.MatchId} - {diningInfo.Text}");
+        DiningInfoChanged.InvokeAsync(diningInfo);
+
         filteredResults = filteredResults?.Where(x => (x.HcpGroup == HcpGroup) || (HcpGroup == 0)).ToList();
         rank = -1;
         StateHasChanged();

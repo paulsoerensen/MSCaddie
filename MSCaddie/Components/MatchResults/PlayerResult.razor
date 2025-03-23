@@ -109,9 +109,14 @@ else
             <RadzenDataGridColumn Property="@nameof(MatchResultModel.Points)" Title="Stableford" TextAlign="TextAlign.Center" />
             <RadzenDataGridColumn Property="@nameof(MatchResultModel.Puts)" Title="Puts" Visible="Match.IsStrokePlay" TextAlign="TextAlign.Center" />
             <RadzenDataGridColumn Property="@nameof(MatchResultModel.Birdies)" Title="Birdies" TextAlign="TextAlign.Center" />
-            <RadzenDataGridColumn Context="data" TextAlign="TextAlign.Right" Filterable="false">
+            <RadzenDataGridColumn Context="data" TextAlign="TextAlign.Right" Filterable="false" Width="4rem">
                 <Template Context="data">
-                    <RadzenButton Icon="delete" Click="@(args => OnDelete(data))" ButtonStyle="ButtonStyle.Warning" />
+                    <RadzenButton Icon="edit" Click="@(args => OnEdit(data))" ButtonStyle="ButtonStyle.Success" />
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn Context="data" TextAlign="TextAlign.Right" Filterable="false" Width="4rem">
+                <Template Context="data">
+                        <RadzenButton Icon="delete" Click="@(args => OnDelete(data))" ButtonStyle="ButtonStyle.Danger" />
                 </Template>
             </RadzenDataGridColumn>
         </Columns>

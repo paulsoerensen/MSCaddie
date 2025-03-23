@@ -38,7 +38,7 @@
 else
 {
     <RadzenDataGrid @ref="grid" AllowColumnResize="true"
-    AllowSorting="true" Data="@filteredResults" Render="@OnRender">
+        AllowSorting="true" Data="@filteredResults" Render="@OnRender">
         <Columns>
             <RadzenDataGridColumn Property="@nameof(MatchResultModel.No)" Title="Nr" Width="3rem" Visible=@(HcpGroup > 0)>
                 <Template Context="data">

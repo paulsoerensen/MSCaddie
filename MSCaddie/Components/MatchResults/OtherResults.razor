@@ -43,15 +43,9 @@ else
                         </EditTemplate>
                     </RadzenDataGridColumn>
 
-@*                     <RadzenDataGridColumn TItem="MatchplayGameModel" Property="ResultText" Title="Resultat" Width="12rem">
-                        <EditTemplate Context="data">
-                            <RadzenTextBox @bind-Value="data.ResultText" Style="width:100px; display: block" Name="ResultText" aria-label="Enter ship country" />
-                        </EditTemplate>
-                    </RadzenDataGridColumn> *@
-
                     <RadzenDataGridColumn Context="data" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" FrozenPosition="FrozenColumnPosition.Right">
                         <Template Context="data">
-                            <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="rz-my-1 rz-ms-1" Click="@(args => EditResult(data))" @onclick:stopPropagation="true" />
+                                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" class="rz-my-1 rz-ms-1" Click="@(args => EditResult(data))" @onclick:stopPropagation="true" />
                             <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" Size="ButtonSize.Medium" Shade="Shade.Lighter" class="rz-my-1 rz-ms-1" Click="@(args => DeleteRow(data))" @onclick:stopPropagation="true" />
                         </Template>
                         <EditTemplate Context="data">
