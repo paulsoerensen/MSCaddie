@@ -63,11 +63,16 @@ public partial class MatchDetailViewBase : ComponentBase
         clubCourses = courses.Where(x => x.ClubId == i).ToList();
         if (clubCourses.Any())
         {
-            course = clubCourses.FirstOrDefault();
-
-            match.Par = course?.Par ?? 72;
-            match.CourseDetailId = course!.CourseDetailId;
+            course = clubCourses.Where(x => x.CourseDetailId == match.CourseDetailId).FirstOrDefault();
         }
+        StateHasChanged();
+    }
+
+    protected async Task OnTeeChanged(int i)
+    {
+        course = clubCourses.Where(x => x.CourseDetailId == i).FirstOrDefault();
+        match.Par = course?.Par ?? 72;
+        match.CourseDetailId = course!.CourseDetailId;
         StateHasChanged();
     }
 
@@ -76,6 +81,7 @@ public partial class MatchDetailViewBase : ComponentBase
         try
         {
             Message = string.Empty;
+            match.Par = course?.Par ?? 72;
             match = await matchSvc.UpsertMatch(match);
             dialogService.Close(true);
         }

@@ -82,7 +82,7 @@ public class ResultListBase : MatchResultBase
 
     protected async Task OnSettleMatch()
     {
-        _logger.LogInformation("OnSettleMatch");
+        _logger.LogInformation($"OnSettleMatch{Match.MatchId}");
         await service.MatchSettlement(Match.MatchId);
         OnParametersSetAsync();
     }
