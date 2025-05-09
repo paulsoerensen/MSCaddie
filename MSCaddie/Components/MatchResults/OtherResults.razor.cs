@@ -8,8 +8,6 @@ namespace MSCaddie.Components.MatchResults;
 
 public class OtherResultsBase : MatchResultBase
 {
-    [Parameter]
-    public MatchModel Match { get; set; }
 
     protected RadzenDataGrid<CompetitionResultModel> gameGrid;
 
@@ -22,7 +20,6 @@ public class OtherResultsBase : MatchResultBase
     protected IEnumerable<CompetitionResultModel> compResults;
     protected IEnumerable<ListEntryModel>? Competitions;
     protected string? Birdies;
-    protected IEnumerable<MatchResultModel>? Results;
     protected MatchResultModel result { get; set; } = new MatchResultModel();
 
     protected override async Task OnInitializedAsync()
@@ -39,7 +36,7 @@ public class OtherResultsBase : MatchResultBase
         logger.LogInformation($"OtherResultsBase:OnParametersSetAsync");
         if (Match != null)
         {
-            var birdieRes = await service.GetMatchBirdies(Match.MatchId);
+            var birdieRes = await matchService.GetMatchBirdies(Match.MatchId);
             logger.LogInformation($"LoadData: GetMatchBirdies,{birdieRes?.Count()} ");
             List<string>? lst = birdieRes?.Select(i => i.BirdieString).ToList();
             Birdies = string.Join(",", lst);
@@ -61,23 +58,31 @@ public class OtherResultsBase : MatchResultBase
     {
         logger.LogInformation($"OnDeleteResultClicked: {id}");
         await competitionService.DeleteCompetitionResult(id);
-        logger.LogInformation($"OnDeleteResultClicked done");
-        compResults = await competitionService.GetMatchCompetitionResults(result.MatchId);
+        await LoadData();
     }
 
     protected async Task SaveResult(CompetitionResultModel model)
     {
         logger.LogInformation($"OnCompetitionSave: {model?.VgcNo}: {model.CompetitionText} ");
-        var res = await competitionService.UpsertGetCompetitionResult(model);
-        compResults = await competitionService.GetMatchCompetitionResults(result.MatchId);
-        inserting = false;
+        model.MatchId = Match.MatchId;
+        try
+        {
+	        var res = await competitionService.UpsertGetCompetitionResult(model);
+	        await gameGrid.UpdateRow(model);
+            await LoadData();
+
+        }
+        catch (Exception e)
+        {
+            logger.LogError($"OtherResultsBase:SaveResult");
+        }
     }
 
     protected async Task InsertRow()
     {
         if (inserting) return;
 
-        var res = new CompetitionResultModel();
+        var res = new CompetitionResultModel() { MatchId = Match.MatchId};
         await gameGrid.InsertRow(res);
         inserting = true;
     }

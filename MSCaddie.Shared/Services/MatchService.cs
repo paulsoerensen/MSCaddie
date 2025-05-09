@@ -33,10 +33,34 @@ public class MatchService : IMatchService
                     opt.MapFrom(src => src.Key))
                 .ForMember(dest => dest.KeyValue, opt =>
                     opt.MapFrom(src => src.Value));
+            cfg.CreateMap<NearestPinResultDto, NearestPinResultModel>().ReverseMap();
         })
         .CreateMapper();
     }
 
+    public async Task<NearestPinResultModel?> GetNearestPinResult(int nearestPinId)
+    {
+        NearestPinResultDto dto = await _matchRepository.GetNearestPinResult(nearestPinId);
+        return mapper.Map<NearestPinResultModel>(dto);
+    }
+
+    public async Task<IEnumerable<NearestPinResultModel>?> GetNearestPinResults(int matchId)
+    {
+        IEnumerable<NearestPinResultDto> dtos = await _matchRepository.GetNearestPinResults(matchId);
+        return mapper.Map<IEnumerable<NearestPinResultModel>>(dtos);
+    }
+
+    public async Task<NearestPinResultModel> UpdateNearestPinResult(NearestPinResultModel model)
+    {
+        NearestPinResultDto dto = mapper.Map<NearestPinResultDto>(model);
+        dto = await _matchRepository.UpdateNearestPinResult(dto);
+        return mapper.Map<NearestPinResultModel>(dto);
+    }
+    public async Task<bool> DeleteNearestPinResult(int id)
+    {
+        var i = await _matchRepository.DeleteNearestPinResult(id);
+        return i > 0;
+    }
     public async Task<IEnumerable<MatchModel>?> GetMatches()
     {
         IEnumerable<MatchDto> dtos = await _matchRepository.GetSeasonMatchList(season);
@@ -94,8 +118,6 @@ public class MatchService : IMatchService
     {
         var i = await _matchRepository.MatchResultDelete(matchResultId);
         return i > 0;
-        //var res = await _client.DeleteAsync($"{BaseAddress}/result/{matchResultId}");
-        //return res.IsSuccessStatusCode;
     }
     public async Task<string>MatchRegistration(int matchId, string regFile)
     {

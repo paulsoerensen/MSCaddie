@@ -9,8 +9,6 @@ namespace MSCaddie.Components.MatchResults;
 
 public class PlayerResultBase : MatchResultBase
 {
-    [Parameter]
-    public MatchModel Match { get; set; }
     [Inject] public ILogger<PlayerResultBase> logger { get; set; } = default!;
     protected RadzenDataGrid<MatchResultModel> resultsGrid;
 
@@ -36,7 +34,7 @@ public class PlayerResultBase : MatchResultBase
     {
         if (Match != null)
         {
-            Results = await service.MatchResultForRegistration(Match.MatchId);
+            Results = await matchService.MatchResultForRegistration(Match.MatchId);
             registredResults = Results?.Where(x => x.Points != null)
                                         .OrderByDescending(x => x.MatchResultId).ToList();
         }
@@ -57,7 +55,7 @@ public class PlayerResultBase : MatchResultBase
 
         if (!Results.Any())
         {
-            Results = await service.MatchResultForRegistration(Match.MatchId);
+            Results = await matchService.MatchResultForRegistration(Match.MatchId);
         }
 
         var filteredResults = Results.Where(x => x.Fullname.Contains(request.Filter.Value, StringComparison.OrdinalIgnoreCase)).ToList();
@@ -82,7 +80,7 @@ public class PlayerResultBase : MatchResultBase
         try
         {
             logger.LogInformation($"HandleValidSubmit {result}");
-            bool b = await service.UpsertResultMatch(result); 
+            bool b = await matchService.UpsertResultMatch(result); 
             if (b)
             {
                 ToastService.Notify(new(ToastType.Success, $"Resultatet er opdateret."));
@@ -114,7 +112,7 @@ public class PlayerResultBase : MatchResultBase
         {
             if (model?.MatchResultId.HasValue == true)
             {
-                await service!.DeleteResultMatch(model.MatchResultId.Value); 
+                await matchService!.DeleteResultMatch(model.MatchResultId.Value); 
                 ToastService.Notify(new(ToastType.Success, $"Resultatet er slettet."));
                 await LoadData();
             }

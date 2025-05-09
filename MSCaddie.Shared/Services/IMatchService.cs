@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MSCaddie.Shared.Dtos;
 using MSCaddie.Shared.Interfaces;
 using MSCaddie.Shared.Models;
 
@@ -6,8 +7,6 @@ namespace MSCaddie.Shared.Services
 {
     public interface IMatchService
     {
-        //string Baseaddress { get; }
-
         Task<MatchModel?> GetMatch(int matchId);
         Task<IEnumerable<MatchModel>?> GetMatches();
         Task<MatchModel> UpsertMatch(MatchModel match);
@@ -19,5 +18,9 @@ namespace MSCaddie.Shared.Services
         Task<bool> DeleteResultMatch(int matchResultId);
         Task<string> MatchRegistration(int matchResultId, string regFile);
         Task<IEnumerable<ListEntryModel>?> GetMatchforms();
+        Task<NearestPinResultModel?> GetNearestPinResult(int nearestPinId);
+        Task<IEnumerable<NearestPinResultModel>?> GetNearestPinResults(int matchId);
+        Task<NearestPinResultModel> UpdateNearestPinResult(NearestPinResultModel model);
+        Task<bool> DeleteNearestPinResult(int id);
     }
 }

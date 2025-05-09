@@ -1,21 +1,8 @@
-﻿@inherits OtherResultsBase
-@page "/match/{MatchId:int}/otherresults"
+﻿@inherits NearestPinBase    
+@page "/match/{MatchId:int}/NearestPin"
 
-@rendermode InteractiveServer
 
-@if (Birdies == null)
-{
-    <div Position="Position.Absolute.Top.Is50.Start.Is50.Translate.Middle"><DisplaySpinner /></div>
-}
-else
-{
-    <div class="mb-3">
-        <BSLabel>Birdies</BSLabel>
-        <BSInput InputType="InputType.TextArea" Value="@Birdies" />
-    </div>
-}
-
-@if (Competitions == null)
+@if (results == null)
 {
     <div Position="Position.Absolute.Top.Is50.Start.Is50.Translate.Middle"><DisplaySpinner /></div>
 }
@@ -23,30 +10,37 @@ else
 {
     <div class="container">
         <div class="row py-5">
-            <RadzenDataGrid @ref="gameGrid" AllowFiltering="false" EditMode="DataGridEditMode.Single"
-                            Data="@compResults" TItem="CompetitionResultModel" AllowVirtualization="true" AllowColumnResize="true">
+            <RadzenDataGrid @ref="pinGrid" AllowFiltering="false" EditMode="DataGridEditMode.Single" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow"
+                            Data="@results" TItem="NearestPinResultModel" AllowVirtualization="true" AllowColumnResize="true">
                 <HeaderTemplate>
                     <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle" Text="Nyt resultat" Click="@InsertRow" Disabled="@(inserting)" />
                 </HeaderTemplate>
                 <Columns>
-                    <RadzenDataGridColumn TItem="CompetitionResultModel" Property="CompetitionText" Title="Text" Width="20rem">
+                    <RadzenDataGridColumn TItem="NearestPinResultModel" Property="PinName" Title="Par 3 hul" Width="20rem">
                         <EditTemplate Context="data">
-                            <RadzenDropDown @bind-Value=@data.CompetitionId Data=@Competitions
-                                            TextProperty="@nameof(ListEntryModel.Value)" ValueProperty="@nameof(ListEntryModel.Key)"
-                                        Style="width: 100%; max-width: 400px;" Name="DropDownTextValueProperties" />
+                            <RadzenDropDown @bind-Value=@data.PinName Data=@par3s
+                                            TextProperty="@nameof(ListEntryModel.Value)" ValueProperty="@nameof(ListEntryModel.Value)"
+                                            Style="width: 100%; max-width: 400px;" Name="DropDownTextValueProperties" />
                         </EditTemplate>
                     </RadzenDataGridColumn>
-                    <RadzenDataGridColumn TItem="CompetitionResultModel" Property="Fullname" Title="Spiller" Width="20rem">
+
+                    <RadzenDataGridColumn TItem="NearestPinResultModel" Property="Fullname" Title="Spiller" Width="20rem">
                         <EditTemplate Context="data">
                             <RadzenDropDown @bind-Value=@data.VgcNo Data=@matchPlayers
                                             TextProperty="Fullname" ValueProperty="VgcNo"
                                             Style="width: 100%; max-width: 400px;" Name="DropDownTextValueProperties" />
                         </EditTemplate>
-                    </RadzenDataGridColumn>
+                    </RadzenDataGridColumn>                    
+
+                    <RadzenDataGridColumn TItem="NearestPinResultModel" Property="DistanceInCM" Title="Afstand(cm)" TextAlign="TextAlign.Center" Width="10rem">
+                        <EditTemplate Context="data">
+                            <RadzenNumeric Name="DistanceInCM" @bind-Value=@data.DistanceInCM Min="1" Max="1000" />
+                        </EditTemplate>
+                    </RadzenDataGridColumn>                    
 
                     <RadzenDataGridColumn Context="data" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" FrozenPosition="FrozenColumnPosition.Right">
                         <Template Context="data">
-                                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" class="rz-my-1 rz-ms-1" Click="@(args => EditResult(data))" @onclick:stopPropagation="true" />
+                            <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" class="rz-my-1 rz-ms-1" Click="@(args => EditResult(data))" @onclick:stopPropagation="true" />
                             <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Variant="Variant.Flat" Size="ButtonSize.Medium" Shade="Shade.Lighter" class="rz-my-1 rz-ms-1" Click="@(args => DeleteRow(data))" @onclick:stopPropagation="true" />
                         </Template>
                         <EditTemplate Context="data">

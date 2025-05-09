@@ -10,9 +10,6 @@ namespace MSCaddie.Components.MatchResults;
 public class ResultListBase : MatchResultBase
 {
     [Parameter]
-    public MatchModel Match { get; set; }
-
-    [Parameter]
     public EventCallback<DiningInfo> DiningInfoChanged { get; set; }
 
     protected IEnumerable<MatchResultModel>? results;

@@ -12,11 +12,14 @@ public class MatchResultBase : ComponentBase
     protected MatchResultPageBase Parent { get; set; }
     [Parameter]
     public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public MatchModel Match { get; set; }
 
     [Inject] protected ToastService ToastService { get; set; } = default!;
-    [Inject] public IMatchService? service { get; set; }
+    [Inject] public IMatchService? matchService { get; set; }
     [Inject] public ILogger<MatchResultBase> logger { get; set; } = default!;
 
+    protected IEnumerable<MatchResultModel>? matchPlayers;
     protected string Message = string.Empty;
     protected string TextMessage = string.Empty;
     protected string StatusClass = string.Empty;
@@ -38,5 +41,14 @@ public class MatchResultBase : ComponentBase
         //_matchResultContainerList.OnChange += FetchOptions;
         logger.LogInformation($"MatchResultBase:OnInitializedAsync");
         await base.OnInitializedAsync();
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        logger.LogInformation($"OtherResultsBase:OnParametersSetAsync");
+        if (Match != null && matchService != null)
+        {
+            var results = await matchService.GetMatchResults(Match.MatchId);
+            matchPlayers = results?.OrderBy(x => x.Lastname);
+        }
     }
 }

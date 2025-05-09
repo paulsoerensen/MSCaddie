@@ -252,6 +252,100 @@ namespace MSCaddie.Data
         }
         #endregion
 
+        #region NearestPin
+
+        public async Task<NearestPinResultDto?> GetNearestPinResult(int NearestPinId)
+        {
+            try
+            {
+                string sql = @"SELECT [VgcNo],[Firstname],[Lastname],[NearestPinId]
+                            ,[MemberShipId],[MatchId],[PinName],[CourseName],[DistanceInCm],[MatchDate] 
+                             FROM [ms].[vNearestPin]
+                             where NearestPinId = @NearestPinId";
+
+                using IDbConnection db = new SqlConnection(ConnectionString);
+                return (NearestPinResultDto?)(await db.QueryAsync<NearestPinResultDto>(sql, new { NearestPinId })).FirstOrDefault();
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<NearestPinResultDto>?> GetNearestPinResults(int matchId)
+        {
+            try
+            {
+                using IDbConnection db = new SqlConnection(ConnectionString);
+                return await db.QueryAsync<NearestPinResultDto>("[ms].[MatchResultNearestPin] @MatchId", new { matchId });
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
+        }
+
+        /*
+        create PROCEDURE [ms].[NearestPinUpsert]
+	        @VgcNo int,
+	        @MatchId int,
+	        @PinName varchar(100),
+	        @DistanceInCm int,
+	        @NearestPinId int OUTPUT
+        */
+        public async Task<NearestPinResultDto> UpdateNearestPinResult(NearestPinResultDto dto)
+        {
+            try
+            {
+                using var con = new SqlConnection(ConnectionString);
+                using var cmd = con.CreateCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "[ms].[NearestPinUpsert]";
+
+                cmd.Parameters.AddWithValue("@VgcNo", dto.VgcNo);
+                cmd.Parameters.AddWithValue("@MatchId", dto.MatchId);
+                cmd.Parameters.AddWithValue("@PinName", dto.PinName);
+                cmd.Parameters.AddWithValue("@DistanceInCm", dto.DistanceInCM);
+
+                var idParam = new SqlParameter("@NearestPinId", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.InputOutput,
+                    Value = dto.NearestPinId == 0 ? DBNull.Value : dto.NearestPinId
+                };
+                cmd.Parameters.Add(idParam);
+
+                cmd.CommandTimeout = 240;
+                con.Open();
+                await cmd.ExecuteNonQueryAsync();
+                dto.NearestPinId = idParam.Value != DBNull.Value ? Convert.ToInt32(idParam.Value) : dto.NearestPinId;
+
+                return dto;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
+        }
+        public async Task<int> DeleteNearestPinResult(int id)
+        {
+            try
+            {
+                using IDbConnection db = new SqlConnection(ConnectionString);
+                var res = await db.ExecuteAsync("delete [ms].[NearestPin] where NearestPinId = @id", new { id });
+                return (int)res;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
+        }
+        #endregion 
+
         #region Match
         private const string matchSelect = @"select  
                 [MatchId],[MatchDate],[MatchForm],[MatchText],[ClubId],[Sponsor],[SponsorLogoId],[CourseName]

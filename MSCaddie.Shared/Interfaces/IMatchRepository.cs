@@ -1,5 +1,6 @@
 using MSCaddie.Shared.Dtos;
 
+
 namespace MSCaddie.Shared.Interfaces;
 
 public interface IMatchRepository
@@ -10,6 +11,13 @@ public interface IMatchRepository
     Task<IEnumerable<CompetitionResultDto>> GetCompetitionResults(int matchId);
     Task<int> UpsertCompetitionResult(CompetitionResultDto dto);
     Task<int> DeleteCompetitionResult(int resultId);
+    #endregion
+
+    #region NearestPin
+    Task<NearestPinResultDto?> GetNearestPinResult(int id);
+    Task<IEnumerable<NearestPinResultDto>?> GetNearestPinResults(int matchId);
+    Task<NearestPinResultDto> UpdateNearestPinResult(NearestPinResultDto dto);
+    Task<int> DeleteNearestPinResult(int id);
     #endregion
 
     #region Match

@@ -15,8 +15,8 @@ public partial class MatchResultPageBase : ComponentBase
 
     //[Inject] protected NavigationManager NavigationManager { get; set; } = default!;
     [Inject] public ILogger<MatchResultPageBase> _logger { get; set; } = default!;
-    [Inject] public IMatchService service { get; set; } = default!;
     [Inject] public ICompetitionService? competitionService { get; set; }
+    [Inject] public IMatchService? matchService { get; set; }
 
 
     protected TabPosition tabPosition = TabPosition.Top;
@@ -41,7 +41,7 @@ public partial class MatchResultPageBase : ComponentBase
         {
             Message = string.Empty;
 
-            matches = await service.GetMatches();
+            matches = await matchService.GetMatches();
             match = matches.FirstOrDefault(r => r.MatchDate >= DateTime.Now.CustomDateTimeNow());
             if (match == null)
             {
@@ -71,7 +71,7 @@ public partial class MatchResultPageBase : ComponentBase
         {
             Message = string.Empty;
             matchId = selectedKey;
-            match = await service.GetMatch(matchId);
+            match = await matchService.GetMatch(matchId);
             var compResults = await competitionService.GetMatchCompetitionResults(matchId);
             _otherResultsTabVisible = compResults.Any();
 
