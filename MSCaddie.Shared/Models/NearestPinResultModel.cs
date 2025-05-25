@@ -4,9 +4,9 @@ public class NearestPinResultModel
 {
     public int NearestPinId { get; set; }
 
-    public int MatchId { get; set; }
+    public int MatchId { get; set; } = 0;
 
-    public int VgcNo { get; set; }
+    public int VgcNo { get; set; } = 0;
 
     public string Fullname { get; set; }
 
@@ -14,6 +14,6 @@ public class NearestPinResultModel
 
     public string CourseName { get; set; }
 
-    public int DistanceInCM { get; set; }
+    public int DistanceInCM { get; set; } = 0;
 }
 

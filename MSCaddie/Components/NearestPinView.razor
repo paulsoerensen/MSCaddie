@@ -1,0 +1,35 @@
+﻿@page "/NearestPinView/{matchId:int}"
+@inherits NearestPinViewBase
+
+@rendermode InteractiveServer
+
+<RadzenStack Gap="1rem" Orientation="Orientation.Vertical" JustifyContent="JustifyContent.SpaceBetween" Style="height: 100%;">
+    <RadzenStack>
+        <RadzenRow AlignItems="AlignItems.End">
+            <RadzenColumn Size="6">
+                <PlayerSelection Players="@players"
+                                    SelectedItemChanged="HandlePlayerSelected"
+                                    PropertyValue="@Fullname" />
+            </RadzenColumn>
+
+            <RadzenColumn Size="4">
+                <RadzenFormField Text="Par 3 hul" Variant="Variant.Outlined" Style="width: 100%;">
+                    <RadzenDropDown @bind-Value=@result.PinName Data=@par3s TextProperty="@nameof(ListEntryModel.Value)"
+                                    ValueProperty="@nameof(ListEntryModel.Value)" Name="Par3DropDown"
+                                    Multiple=false AllowClear=true  
+                                    Style="width: 100%; max-width: 200px;" />
+                </RadzenFormField>
+            </RadzenColumn>
+
+            <RadzenColumn Size="2">
+                <RadzenFormField Text="cm" Variant="Variant.Outlined" Style="width: 100%;">
+                    <RadzenNumeric @bind-Value=@result.DistanceInCM />
+                </RadzenFormField>
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenRow>
+            <RadzenButton Click="@SaveResult" Icon="save" Text="Opdater" ButtonStyle="ButtonStyle.Success" />
+            <RadzenButton Click="@((args) => dialogService.Close(false))" Icon="cancel" Text="Fortryd" ButtonStyle="ButtonStyle.Base" />
+        </RadzenRow>
+    </RadzenStack>
+</RadzenStack>

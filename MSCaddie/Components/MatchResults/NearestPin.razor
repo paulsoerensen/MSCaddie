@@ -13,8 +13,9 @@ else
             <RadzenDataGrid @ref="pinGrid" AllowFiltering="false" EditMode="DataGridEditMode.Single" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow"
                             Data="@results" TItem="NearestPinResultModel" AllowVirtualization="true" AllowColumnResize="true">
                 <HeaderTemplate>
-                    <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle" Text="Nyt resultat" Click="@InsertRow" Disabled="@(inserting)" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle" Text="Nyt resultat" Click="@(args => NewResult(-1))" />
                 </HeaderTemplate>
+
                 <Columns>
                     <RadzenDataGridColumn TItem="NearestPinResultModel" Property="PinName" Title="Par 3 hul" Width="20rem">
                         <EditTemplate Context="data">

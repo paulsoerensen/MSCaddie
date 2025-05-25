@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.JSInterop;
 using MSCaddie.Shared.Models;
 using MSCaddie.Shared.Services;
+using Radzen;
 using Radzen.Blazor;
 
 namespace MSCaddie.Components.MatchResults;
@@ -15,6 +16,8 @@ public class NearestPinBase : MatchResultBase
     private MatchResultPageBase? TabControl { get; set; }
     [Inject] public ILogger<NearestPinBase> logger { get; set; } = default!;
     [Inject] public IMatchService? matchService { get; set; }
+    [Inject] public DialogService DialogService { get; set; }
+    [Inject] public IJSRuntime JSRuntime { get; set; }
 
     protected IEnumerable<NearestPinResultModel> results;
     protected IEnumerable<ListEntryModel>? par3s = new List<ListEntryModel>
@@ -52,6 +55,36 @@ public class NearestPinBase : MatchResultBase
             results = await matchService.GetNearestPinResults(Match.MatchId);
         }
         inserting = false;
+    }
+
+    public async Task NewResult(int id)
+    {
+        string txt = "Nærmest flaget";
+        //if (matchId > 0)
+        //{
+        //    matchModel = await matchSvc.GetMatch(matchId);
+        //    txt = matchModel!.MatchText;
+        //}
+        //else
+        //{
+        //    txt = "Ny match";
+        //}
+
+        await DialogService.OpenAsync<NearestPinView>(txt,
+               new Dictionary<string, object>() { { "MatchId", Match.MatchId } },
+               new DialogOptions()
+               {
+                   Resizable = true,
+                   Draggable = true,
+                   //Resize = OnResize,
+                   //Drag = OnDrag,
+                   Width = "700px",
+                   Height = "250px",
+                   Left = null,
+                   Top = null
+               });
+
+        //await SaveStateAsync();
     }
 
     protected async Task OnDeleteResultClicked(int id)
