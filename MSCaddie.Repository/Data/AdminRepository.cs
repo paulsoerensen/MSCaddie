@@ -5,11 +5,13 @@ using MSCaddie.Shared.Interfaces;
 using MSCaddie.Shared.Dtos;
 using System.Data;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 
 
-namespace MSCaddie.Data
+
+namespace MSCaddie.Repository.Data
 {
     public class AdminRepository : RepositoryBase, IAdminRepository
     {

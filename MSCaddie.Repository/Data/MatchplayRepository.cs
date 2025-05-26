@@ -1,12 +1,14 @@
 using AutoMapper;
 using Dapper;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using MSCaddie.Shared.Dtos;
 using MSCaddie.Shared.Interfaces;
 using System.Data;
 
 
-namespace MSCaddie.Data;
+namespace MSCaddie.Repository.Data;
 
 public class MatchplayRepository : RepositoryBase, IMatchplayRepository
 {

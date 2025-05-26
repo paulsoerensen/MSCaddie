@@ -4,8 +4,10 @@ using MSCaddie.Shared.Interfaces;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using MSCaddie.Shared.Dtos;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
-namespace MSCaddie.Data
+namespace MSCaddie.Repository.Data
 {
     public class MatchRepository : RepositoryBase, IMatchRepository
     {

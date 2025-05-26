@@ -5,10 +5,10 @@ using System.Data;
 using Microsoft.Data.SqlClient;
 using MSCaddie.Shared.Interfaces;
 using MSCaddie.Shared.Models;
-using Radzen.Blazor.Rendering;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
-
-namespace MSCaddie.Data;
+namespace MSCaddie.Repository.Data;
 
 
 public class TourRepository : RepositoryBase, ITourRepository

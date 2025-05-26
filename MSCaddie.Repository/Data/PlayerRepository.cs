@@ -5,9 +5,11 @@ using MSCaddie.Shared.Models;
 using MSCaddie.Shared.Interfaces;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 
-namespace MSCaddie.Data;
+namespace MSCaddie.Repository.Data;
 
 public class PlayerRepository : RepositoryBase, IPlayerRepository
 {
