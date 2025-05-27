@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MSCaddie.Repository.Data;
-using MSCaddie.Shared.Interfaces;
+using MSCaddie.Repository.Interfaces;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddMyServices(this IServiceCollection services)
+    public static IServiceCollection AddRepositoryServices(this IServiceCollection services)
     {
         services.AddScoped<IAdminRepository, AdminRepository>();
         services.AddScoped<ITourRepository, TourRepository>();

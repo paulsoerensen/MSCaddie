@@ -3,8 +3,8 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using MSCaddie.Shared.Dtos;
-using MSCaddie.Shared.Interfaces;
+using MSCaddie.Repository.Interfaces;
+using MSCaddie.Repository.Dtos;
 using System.Data;
 
 

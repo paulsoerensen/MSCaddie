@@ -1,7 +1,6 @@
 using AutoMapper;
-using Dapper;
-using MSCaddie.Shared.Models;
-using MSCaddie.Shared.Interfaces;
+using MSCaddie.Repository.Dtos;
+using MSCaddie.Repository.Interfaces;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;

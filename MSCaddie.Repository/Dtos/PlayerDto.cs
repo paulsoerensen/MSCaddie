@@ -1,7 +1,4 @@
-﻿using System.Globalization;
-using MSCaddie.Shared.Models;
-
-namespace MSCaddie.Repository.Dtos;
+﻿namespace MSCaddie.Repository.Dtos;
 
 public class PlayerDto
 {

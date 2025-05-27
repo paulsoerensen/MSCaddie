@@ -1,7 +1,7 @@
 ﻿using MSCaddie.Shared.Models;
-using MSCaddie.Shared.Services;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using MSCaddie.Shared.Interfaces;
 
 namespace MSCaddie.Shared.Containers;
 

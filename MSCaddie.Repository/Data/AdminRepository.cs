@@ -1,15 +1,12 @@
 using AutoMapper;
 using Dapper;
+using MSCaddie.Repository.Interfaces;
+using MSCaddie.Repository.Dtos;
 using MSCaddie.Shared.Models;
-using MSCaddie.Shared.Interfaces;
-using MSCaddie.Shared.Dtos;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-
-
-
 
 namespace MSCaddie.Repository.Data
 {

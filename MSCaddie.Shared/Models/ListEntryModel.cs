@@ -1,8 +1,7 @@
-﻿namespace MSCaddie.Shared.Models
+﻿namespace MSCaddie.Shared.Models;
+
+public class ListEntryModel
 {
-    public class ListEntryModel
-    {
-        public int Key { get; set; }
-        public string? Value { get; set; }
-    }
+    public int Key { get; set; }
+    public string? Value { get; set; }
 }

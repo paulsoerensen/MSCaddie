@@ -8,7 +8,8 @@ using MSCaddie.Components;
 using MSCaddie.Components.Account;
 using MSCaddie.Shared.Containers;
 using MSCaddie.Shared.Interfaces;
-using MSCaddie.Shared.Services;
+using MSCaddie.Repository.Services;
+
 using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,7 +29,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStat
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
-
+builder.Services.AddRepositoryServices();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<ITourService, TourService>();
 builder.Services.AddScoped<ICourseService, CourseService>();

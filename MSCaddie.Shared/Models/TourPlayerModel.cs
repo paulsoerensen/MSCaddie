@@ -1,7 +1,4 @@
-﻿using MSCaddie.Shared.Dtos;
-using System.Globalization;
-
-namespace MSCaddie.Shared.Models;
+﻿namespace MSCaddie.Shared.Models;
 
 public class TourPlayerModel
 {

@@ -12,7 +12,6 @@
     <PackageReference Include="Blazor.Bootstrap" Version="3.2.0" />
     <PackageReference Include="BlazorStrap" Version="5.2.103.250102" />
     <PackageReference Include="BlazorStrap.V5" Version="5.2.103.122024" />
-    <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
@@ -23,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MSCaddie.Repository\MSCaddie.Repository.csproj" />
     <ProjectReference Include="..\MSCaddie.Shared\MSCaddie.Shared.csproj" />
   </ItemGroup>
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace  MSCaddie.Shared.Models;
+﻿namespace  MSCaddie.Shared.Models;
 
 public class UserSession
 {

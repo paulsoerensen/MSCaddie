@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MSCaddie.Shared.Models
+namespace MSCaddie.Shared.Models;
+
+public class DiningInfo
 {
-    public class DiningInfo
-    {
-        public int Dining { set; get; } = 0;
-        public int NotDining { set; get; } = 0;
-        public string Text => $"{Dining}/{NotDining}";
-    }
+    public int Dining { set; get; } = 0;
+    public int NotDining { set; get; } = 0;
+    public string Text => $"{Dining}/{NotDining}";
 }
