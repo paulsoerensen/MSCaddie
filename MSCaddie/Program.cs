@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using MSCaddie.Auth;
 using MSCaddie.Components;
 using MSCaddie.Components.Account;
-using MSCaddie.Shared.Containers;
-using MSCaddie.Shared.Interfaces;
+using MSCaddie.Containers;
+using MSCaddie.Repository.Interfaces;
 using MSCaddie.Repository.Services;
 
 using Radzen;

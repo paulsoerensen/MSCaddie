@@ -1,4 +1,4 @@
-namespace  MSCaddie.Shared.Interfaces;
+namespace  MSCaddie.Repository.Interfaces;
 public interface IEndpointDefinition
 {
     //void DefineServices(IServiceCollection

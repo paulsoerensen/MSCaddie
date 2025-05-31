@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
-using MSCaddie.Shared.Interfaces;
-using MSCaddie.Shared.Models;
+using MSCaddie.Repository.Interfaces;
+using MSCaddie.Repository.Models;
 
 namespace MSCaddie.Components.MatchResults;
 

@@ -1,8 +1,8 @@
 ﻿using MSCaddie.Repository.Interfaces;
 using MSCaddie.Repository.Dtos;
-using MSCaddie.Shared.Models;
+using MSCaddie.Repository.Models;
 using AutoMapper;
-using MSCaddie.Shared.Interfaces;
+using MSCaddie.Repository.Interfaces;
 
 namespace MSCaddie.Repository.Services;
 

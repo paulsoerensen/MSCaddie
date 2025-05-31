@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using MSCaddie.Shared.Interfaces;
-using MSCaddie.Shared.Models;
+using MSCaddie.Repository.Interfaces;
+using MSCaddie.Repository.Models;
 using Radzen;
 using Radzen.Blazor;
 

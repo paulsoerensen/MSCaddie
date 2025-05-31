@@ -1,5 +1,5 @@
 using MSCaddie.Repository.Dtos;
-using  MSCaddie.Shared.Models;
+using  MSCaddie.Repository.Models;
 
 namespace  MSCaddie.Repository.Interfaces;
 

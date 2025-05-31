@@ -4,18 +4,27 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <IsPackable>true</IsPackable>
+    <PackageId>MSCaddie.Repository</PackageId>
+    <Version>1.2.0</Version>
+    <Authors>Paul S</Authors>
+    <Company>PaulS</Company>
+    <Description>Repository for Mens Section database</Description>
+    <PackageTags>utilities;tools</PackageTags>
+    <RepositoryUrl>https://github.com/paulsoerensen/repo</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MSCaddie.Shared\MSCaddie.Shared.csproj" />
-  </ItemGroup>
-
+  <Target Name="CopyPackage" AfterTargets="Pack">
+    <Copy SourceFiles="$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg"  
+          DestinationFolder="D:\Projects\LocalPackages" />
+  </Target>
 </Project>

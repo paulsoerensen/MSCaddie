@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using MSCaddie.Repository.Interfaces;
 using MSCaddie.Repository.Dtos;
-using MSCaddie.Shared.Models;
-using MSCaddie.Shared.Interfaces;
+using MSCaddie.Repository.Models;
+using MSCaddie.Repository.Interfaces;
 
 namespace MSCaddie.Repository.Services;
 public class CourseService : ICourseService

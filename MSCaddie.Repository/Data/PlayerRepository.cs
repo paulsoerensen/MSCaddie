@@ -6,7 +6,7 @@ using System.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using MSCaddie.Shared.Models;
+using MSCaddie.Repository.Models;
 
 
 namespace MSCaddie.Repository.Data;

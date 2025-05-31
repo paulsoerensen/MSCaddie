@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Logging;
 using MSCaddie.Repository.Interfaces;
 using MSCaddie.Repository.Dtos;
-using MSCaddie.Shared.Models;
-using MSCaddie.Shared.Interfaces;
+using MSCaddie.Repository.Models;
+using MSCaddie.Repository.Interfaces;
 
 namespace MSCaddie.Repository.Services;
 public class MatchplayService : IMatchplayService

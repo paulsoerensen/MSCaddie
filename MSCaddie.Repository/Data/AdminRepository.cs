@@ -2,7 +2,7 @@ using AutoMapper;
 using Dapper;
 using MSCaddie.Repository.Interfaces;
 using MSCaddie.Repository.Dtos;
-using MSCaddie.Shared.Models;
+using MSCaddie.Repository.Models;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -44,6 +44,7 @@ namespace MSCaddie.Repository.Data
         public async Task<SettingsDto?> GetSettings()
         {
             string sql = @"SELECT [SettingsId],[Season],[SeasonStart],[SeasonEnd],
+                                [SeasonStartDamstahl],[SeasonEndDamstahl],
                                 [MensSectionLogoUrl],[MensSectionShort],[NoOfRoundsRankings],[RyderCupSponsor],
                                 [MaxHcpA],[MaxHcpB],[GBAccount],[GBUsername],[GBPassword],[GBGuid]
                             FROM [ms].[Settings]";
@@ -51,8 +52,6 @@ namespace MSCaddie.Repository.Data
             using (IDbConnection db = new SqlConnection(ConnectionString))
             return await db.QueryFirstOrDefaultAsync<SettingsDto>(sql);
         }
-
-
 
         public async Task<int> SettingsUpsert(SettingsDto model)
         {

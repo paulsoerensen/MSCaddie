@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
-using MSCaddie.Shared.Models;
+using MSCaddie.Repository.Models;
 using Radzen.Blazor;
 using Radzen;
 using MSCaddie.Components.Account;
 using Microsoft.JSInterop;
 using System.Text.Json;
-using MSCaddie.Shared.Interfaces;
+using MSCaddie.Repository.Interfaces;
 
 
 namespace MSCaddie.Components.Pages;

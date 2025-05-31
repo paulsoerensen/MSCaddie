@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Logging;
 using MSCaddie.Repository.Dtos;
 using MSCaddie.Repository.Interfaces;
-using MSCaddie.Shared.Interfaces;
-using MSCaddie.Shared.Models;
+using MSCaddie.Repository.Interfaces;
+using MSCaddie.Repository.Models;
 
 
 namespace MSCaddie.Repository.Services;
