@@ -44,7 +44,6 @@ namespace MSCaddie.Repository.Data
         public async Task<SettingsDto?> GetSettings()
         {
             string sql = @"SELECT [SettingsId],[Season],[SeasonStart],[SeasonEnd],
-                                [SeasonStartDamstahl],[SeasonEndDamstahl],
                                 [MensSectionLogoUrl],[MensSectionShort],[NoOfRoundsRankings],[RyderCupSponsor],
                                 [MaxHcpA],[MaxHcpB],[GBAccount],[GBUsername],[GBPassword],[GBGuid]
                             FROM [ms].[Settings]";

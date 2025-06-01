@@ -7,8 +7,6 @@ public class SettingsDto
     public int? Season { get; set; }
     public DateTime? SeasonStart { get; set; }
     public DateTime? SeasonEnd { get; set; }
-    public DateTime? SeasonStartDamstahl { get; set; }
-    public DateTime? SeasonEndDamstahl { get; set; }
     public string? MensSectionLogoUrl { get; set; }
     public string? MensSectionShort { get; set; }  
     public string? RyderCupSponsor { get; set; }  
