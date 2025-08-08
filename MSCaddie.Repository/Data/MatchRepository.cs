@@ -153,6 +153,7 @@ namespace MSCaddie.Repository.Data
             using IDbConnection db = new SqlConnection(ConnectionString);
             MatchDto m = (await db.QueryAsync<MatchDto>(sql, new { matchId })).FirstOrDefault();
 
+            var result = db.Execute($"[ms].[MatchResultSetHcpGroup] @MatchId", new { MatchId = matchId });
             if (m.MatchformId == 1)
                 sql = "[ms].[MatchResultSettleByStroke]";
             else if (m.MatchformId == 3)
@@ -160,7 +161,7 @@ namespace MSCaddie.Repository.Data
             else 
                 sql = "[ms].[MatchResultSettleByPoints]";
 
-            var result = db.Execute($"{sql} @MatchId", new { MatchId = matchId });
+            result = db.Execute($"{sql} @MatchId", new { MatchId = matchId });
             result = db.Execute($"[ms].[MatchResultSetDamstahlPoints] @MatchId", new { MatchId = matchId });
             return 1;
         }
