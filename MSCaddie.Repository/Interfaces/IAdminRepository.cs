@@ -17,7 +17,7 @@ public interface IAdminRepository
     TValue? GetPropertyValue<TValue>(string key);
     Task<int> PropertyValueUpsert<TValue>(string key, TValue value);
 
-    Task<SettingsDto> GetSettings();
+    SettingsDto GetSettings();
     Task<int> SettingsUpsert(SettingsDto model);
 
 

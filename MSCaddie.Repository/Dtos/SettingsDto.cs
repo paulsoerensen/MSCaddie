@@ -4,9 +4,9 @@ namespace MSCaddie.Repository.Dtos;
 public class SettingsDto
 {
     public int SettingsId { get; set; }
-    public int? Season { get; set; }
-    public DateTime? SeasonStart { get; set; }
-    public DateTime? SeasonEnd { get; set; }
+    public int Season { get; set; } = DateTime.Now.Year;
+    public DateTime SeasonStart { get; set; } = DateTime.Now;
+    public DateTime SeasonEnd { get; set; } = DateTime.Now.AddYears(1);
     public string? MensSectionLogoUrl { get; set; }
     public string? MensSectionShort { get; set; }  
     public string? RyderCupSponsor { get; set; }  

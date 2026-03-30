@@ -13,6 +13,7 @@ namespace MSCaddie.Repository.Data
     public class AdminRepository : RepositoryBase, IAdminRepository
     {
         private List<KeyValuePair<int, string>>? settings;
+        private SettingsDto settingsDto { get; set; }
 
         public AdminRepository(IConfiguration config, ILogger<AdminRepository> logger, IMapper mapper) : base(config, logger, mapper)
         {
@@ -41,7 +42,7 @@ namespace MSCaddie.Repository.Data
             using IDbConnection db = new SqlConnection(ConnectionString);
             return (PropertyDto?)(await db.QueryAsync<PropertyDto>(sql, new { id })).FirstOrDefault();
         }
-        public async Task<SettingsDto?> GetSettings()
+        public SettingsDto GetSettings()
         {
             string sql = @"SELECT [SettingsId],[Season],[SeasonStart],[SeasonEnd],
                                 [MensSectionLogoUrl],[MensSectionShort],[NoOfRoundsRankings],[RyderCupSponsor],
@@ -49,7 +50,8 @@ namespace MSCaddie.Repository.Data
                             FROM [ms].[Settings]";
 
             using (IDbConnection db = new SqlConnection(ConnectionString))
-            return await db.QueryFirstOrDefaultAsync<SettingsDto>(sql);
+            settingsDto = db.QueryFirstOrDefault<SettingsDto>(sql);
+            return settingsDto;
         }
 
         public async Task<int> SettingsUpsert(SettingsDto model)
@@ -151,17 +153,34 @@ namespace MSCaddie.Repository.Data
 
         public DateTime SeasonStart
         {
-            get { return new DateTime(GetPropertyValue<int>(PropertyKey.Season), 1, 1); }
+            get { 
+                if (settingsDto == null)
+                    settingsDto = GetSettings();
+                return settingsDto.SeasonStart; 
+            }
+            //get { return new DateTime(GetPropertyValue<int>(PropertyKey.Season), 1, 1); }
         }
 
         public int Season
         {
-            get { return GetPropertyValue<int>(PropertyKey.Season); }
+            get
+            {
+                if (settingsDto == null)
+                    settingsDto = GetSettings(); 
+                return settingsDto.Season; 
+            }
+            //get { return GetPropertyValue<int>(PropertyKey.Season); }
         }
 
         public DateTime SeasonEnd
         {
-            get { return new DateTime(GetPropertyValue<int>(PropertyKey.Season), 12, 31); }
+            get
+            {
+                if (settingsDto == null)
+                    settingsDto = GetSettings(); 
+                return settingsDto.SeasonEnd; 
+            }
+            //get { return new DateTime(GetPropertyValue<int>(PropertyKey.Season), 12, 31); }
         }
         public TValue? GetPropertyValue<TValue>(string key)
         {

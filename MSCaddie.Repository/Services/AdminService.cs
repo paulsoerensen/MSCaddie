@@ -30,7 +30,7 @@ public class AdminService : IAdminService
     {
         _logger.LogInformation($"Called GetSettings()");
 
-        SettingsDto dto = await _repo.GetSettings();
+        SettingsDto dto = _repo.GetSettings();
         dto.Database = _repo.Database;
         dto.DatabaseServer = _repo.DatabaseServer;
         return mapper.Map<SettingsModel>(dto);
