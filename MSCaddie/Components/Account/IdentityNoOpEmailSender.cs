@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using MSCaddie.Data;
+using MSCaddie.Auth;
 
 namespace MSCaddie.Components.Account
 {

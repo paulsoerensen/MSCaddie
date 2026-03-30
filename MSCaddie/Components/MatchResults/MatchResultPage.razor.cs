@@ -1,9 +1,9 @@
-using MSCaddie.Shared.Models;
+using MSCaddie.Repository.Models;
 using Microsoft.AspNetCore.Components;
-using MSCaddie.Shared.Services;
 using BlazorBootstrap;
 using Radzen;
-using MSCaddie.Shared.Extensions;
+using MSCaddie.Repository.Extensions;
+using MSCaddie.Repository.Interfaces;
 
 
 namespace MSCaddie.Components.MatchResults;

@@ -1,6 +1,6 @@
-﻿using MSCaddie.Shared.Models;
-using MSCaddie.Shared.Services;
+﻿using MSCaddie.Repository.Models;
 using Microsoft.AspNetCore.Components;
+using MSCaddie.Repository.Interfaces;
 
 namespace MSCaddie.Components.Pages;
 

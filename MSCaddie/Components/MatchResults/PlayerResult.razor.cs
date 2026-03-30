@@ -1,6 +1,6 @@
 ﻿using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
-using MSCaddie.Shared.Models;
+using MSCaddie.Repository.Models;
 using Radzen;
 using Radzen.Blazor;
 

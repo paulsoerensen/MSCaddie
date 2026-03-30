@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MSCaddie.Auth;
 using MSCaddie.Components;
 using MSCaddie.Components.Account;
-using MSCaddie.Data;
-using MSCaddie.Shared.Containers;
-using MSCaddie.Shared.Interfaces;
-using MSCaddie.Shared.Services;
+using MSCaddie.Containers;
+using MSCaddie.Repository.Interfaces;
+using MSCaddie.Repository.Services;
+
 using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,13 +28,8 @@ builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddScoped<IAdminRepository, AdminRepository>();
-builder.Services.AddScoped<ITourRepository, TourRepository>();
-builder.Services.AddScoped<IClubRepository, ClubRepository>();
-builder.Services.AddScoped<IMatchRepository, MatchRepository>();
-builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
-builder.Services.AddScoped<IMatchplayRepository, MatchplayRepository>();
 
+builder.Services.AddRepositoryServices();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<ITourService, TourService>();
 builder.Services.AddScoped<ICourseService, CourseService>();

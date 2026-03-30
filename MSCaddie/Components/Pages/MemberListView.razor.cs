@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using MSCaddie.Shared.Models;
-using MSCaddie.Shared.Services;
+using MSCaddie.Repository.Interfaces;
+using MSCaddie.Repository.Models;
 using Radzen;
 using Radzen.Blazor;
 using System.Text.Json;
