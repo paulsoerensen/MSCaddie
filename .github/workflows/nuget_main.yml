@@ -18,6 +18,10 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
+    - name: Show shell
+      run: echo $0
+      shell: bash
+  
     - name: Add GitHub Packages source
       shell: bash
       run: |
