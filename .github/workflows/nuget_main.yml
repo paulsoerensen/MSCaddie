@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*'   # Publish only when you push a version tag like v1.0.0
+    branches: [master]
 
 jobs:
   publish:
