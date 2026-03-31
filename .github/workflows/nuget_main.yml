@@ -19,11 +19,13 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Add GitHub Packages source
-      run: dotnet nuget add source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
-        --name github \
-        --password "${{ secrets.GITHUB_TOKEN }}" \
-        --username "${{ github.actor }}" \
-        --store-password-in-clear-text
+      shell: bash
+      run: |
+        dotnet nuget add source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
+          --name github \
+          --password "${{ secrets.GITHUB_TOKEN }}" \
+          --username "${{ github.actor }}" \
+          --store-password-in-clear-text
 
     - name: Debug
       run: echo "Actor is ${{ github.actor }}"
