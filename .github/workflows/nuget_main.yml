@@ -3,8 +3,7 @@ name: Publish NuGet Package
 on:
   push:
     tags:
-      - 'v*'   # Publish only when you push a version tag like v1.0.0c
-    branches: [master]
+      - 'v*'   # Publish only when you push a version tag like v1.0.0
 
 jobs:
   publish:
