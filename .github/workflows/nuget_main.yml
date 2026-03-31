@@ -10,14 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Show variables
-      run: |
-        echo "Actor: ${{ github.actor }}"
-        echo "Owner: ${{ github.repository_owner }}"
-        echo "Token length: ${#GITHUB_TOKEN}"
+    - name: Show NuGet config
+      run: dotnet nuget list source --verbosity detailed
       shell: bash
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: Checkout repository
-      uses: actions/checkout@v4
