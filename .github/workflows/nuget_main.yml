@@ -21,3 +21,13 @@ jobs:
     
     - name: Checkout repository
       uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Show shell
+      run: echo $0
+      shell: bash
+
