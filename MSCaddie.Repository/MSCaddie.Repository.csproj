@@ -11,7 +11,7 @@
 
     <!-- NuGet metadata -->
     <PackageId>MSCaddie.Repository</PackageId>
-    <Version>1.2.1</Version>
+    <Version>$(GITHUB_REF_NAME)</Version>
     <Authors>Paul S</Authors>
     <Company>PaulS</Company>
     <Description>Repository for Mens Section database</Description>

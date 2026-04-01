@@ -28,7 +28,7 @@ jobs:
       run: dotnet build --configuration Release --no-restore
 
     - name: Pack NuGet package
-      run: dotnet pack --configuration Release --no-build --output ./nupkgs
+      run: dotnet pack --configuration Release --no-build --output ./nupkgs /p:Version=${GITHUB_REF_NAME#v}
 
     - name: Publish package to GitHub Packages
       shell: bash
