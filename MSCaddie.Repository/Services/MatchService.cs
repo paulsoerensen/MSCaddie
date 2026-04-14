@@ -66,14 +66,17 @@ public class MatchService : IMatchService
     {
         IEnumerable<MatchDto> dtos = await _matchRepository.GetSeasonMatchList(season);
         return mapper.Map<IEnumerable<MatchModel>>(dtos);
-        //return await _client.GetFromJsonAsync<IEnumerable<Match>>(BaseAddress);
+    }
+    public async Task<IEnumerable<MatchModel>?> GetMatches(DateTime start, DateTime end)
+    {
+        IEnumerable<MatchDto> dtos = await _matchRepository.GetMatchList(start, end);
+        return mapper.Map<IEnumerable<MatchModel>>(dtos);
     }
 
     public async Task<MatchModel?> GetMatch(int id)
     {
         MatchDto? dto = await _matchRepository.GetMatch(id);
         return mapper.Map<MatchModel>(dto);
-        //return await _client.GetFromJsonAsync<IEnumerable<Match>>(BaseAddress);
     }
 
     public async Task<IEnumerable<MatchResultModel>?> GetMatchResults(int matchId)
