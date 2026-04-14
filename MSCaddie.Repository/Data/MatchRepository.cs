@@ -374,6 +374,14 @@ namespace MSCaddie.Repository.Data
             using (IDbConnection db = new SqlConnection(ConnectionString))
             return (IEnumerable<MatchDto>)(await db.QueryAsync<MatchDto>(sql));
         }
+        public async Task<IEnumerable<MatchDto>> GetMatchList(DateTime start, DateTime end)
+        {
+            string sql = $"{matchSelect} WHERE @Start < MatchDate AND MatchDate < @End {orderBy}";
+
+            using (IDbConnection db = new SqlConnection(ConnectionString))
+                return (await db.QueryAsync<MatchDto>(sql, new { Start = start, End = end }));
+        }
+
         public async Task<IEnumerable<MatchDto>>GetSeasonMatchList(int season)
         {
             string sql = matchSelect + " where Season = @season " + orderBy;

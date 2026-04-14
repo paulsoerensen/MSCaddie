@@ -22,6 +22,7 @@ public interface IMatchRepository
     #region Match
     Task<MatchDto?> GetMatch(int matchId);
     Task<IEnumerable<MatchDto>> GetMatchList();
+    Task<IEnumerable<MatchDto>> GetMatchList(DateTime start, DateTime end);
     Task<IEnumerable<MatchDto>> GetSeasonMatchList(int season);
     Task<MatchDto> MatchUpsert(MatchDto dto);
 
