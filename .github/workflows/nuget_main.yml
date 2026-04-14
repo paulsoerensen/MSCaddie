@@ -22,11 +22,15 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore /p:Version=${GITHUB_REF_NAME#v}
 
     - name: Build
       run: dotnet build --configuration Release --no-restore
-
+    - name: Debug Version
+      run: |
+        echo "GITHUB_REF_NAME=${GITHUB_REF_NAME}"
+        echo "Version to use: ${GITHUB_REF_NAME#v}"
+    
     - name: Pack NuGet package
       run: dotnet pack --configuration Release --no-build --output ./nupkgs /p:Version=${GITHUB_REF_NAME#v}
 
