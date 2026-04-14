@@ -22,7 +22,7 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore /p:Version=${GITHUB_REF_NAME#v}
 
     - name: Build
       run: dotnet build --configuration Release --no-restore
