@@ -23,6 +23,7 @@ public interface IMatchplayRepository
 
     // games
     Task<IEnumerable<MatchplayGameDto>> GetMatchplayGames(char league);
+    Task<IEnumerable<MatchplayGameDto>> GetLatestMatchplays(int top);
     Task<int> MatchplayGameUpsert(MatchplayGameDto model);
     Task<int> MatchplayGameDelete(int id);
 
@@ -31,25 +32,12 @@ public interface IMatchplayRepository
     Task<int> MatchplayGameParUpsert(MatchplayGameDto model);
     Task<int> MatchplayGameParDelete(int id);
 
-
-
-
-
     Task<IEnumerable<PlayerForMatchplayDto>> GetPlayersForMatchplay();
     Task<IEnumerable<PlayerDto>> GetPlayersForMatchplayPar();
 
     Task<IEnumerable<MatchplayTeamDto>> MatchplayTeamList(int leagueId);
     Task<IEnumerable<MatchplayTeamDto>> GetMatchplays();
     Task DeleteMatchplayPar(int id);
-    //Task<IEnumerable<MatchplayTeamDto>> GetMatchplayTeams(int leagueId);
-    Task<IEnumerable<MatchTeamDto>> GetMatchTeams(int leagueId);
-
-
-    //Task<MatchplayTeamDto> GetMatchplay(int matchId);
-    //Task<IEnumerable<ListEntry>?> GetCompetitions();
-    //Task<IEnumerable<CompetitionResult>> GetCompetitionResults(int matchId);
-    //Task<int> UpsertCompetitionResult(CompetitionUpsertDto dto);
-    //Task<int> DeleteCompetitionResult(int resultId);
     #endregion
 
 }
