@@ -4,3 +4,7 @@ This repository contains the implementation of the MSCaddie application, which i
 ## Features
 - User authentication and authorization
 - Caddie management
+
+## Create new version
+git tag v1.5.2
+git push origin v1.5.2

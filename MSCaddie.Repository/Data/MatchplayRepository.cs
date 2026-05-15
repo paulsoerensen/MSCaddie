@@ -175,7 +175,7 @@ public class MatchplayRepository : RepositoryBase, IMatchplayRepository
             return await db.QueryAsync<MatchplayGameDto>(sql, new { league, season });
     }
 
-    public async Task<IEnumerable<MatchplayGameDto>> GetLatestMatchplays(int top)
+    public async Task<IEnumerable<MatchplayGameDto>> GetLatestMatchplayResults(int top)
     {
         string sql = @"SELECT top(@top) MatchplayGameId, MatchResult, ResultText, League, 
                         PlayRound, TeamId1, TeamName1, TeamId2, TeamName2, LastUpdate

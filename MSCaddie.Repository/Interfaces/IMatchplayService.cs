@@ -17,6 +17,7 @@ public interface IMatchplayService
     // match fixing
     Task<IEnumerable<MatchplayTeamModel>> GetMatchplayTeams(char league);
     Task<IEnumerable<MatchplayGameModel>> GetMatchplayGames(char league);
+    Task<IEnumerable<MatchplayGameModel>> GetLatestMatchplayResults(int top);
     Task<int> MatchplayGameUpsert(MatchplayGameModel model);
     Task<int> MatchplayGameDelete(int id);
 

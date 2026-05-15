@@ -23,7 +23,7 @@ public interface IMatchplayRepository
 
     // games
     Task<IEnumerable<MatchplayGameDto>> GetMatchplayGames(char league);
-    Task<IEnumerable<MatchplayGameDto>> GetLatestMatchplays(int top);
+    Task<IEnumerable<MatchplayGameDto>> GetLatestMatchplayResults(int top);
     Task<int> MatchplayGameUpsert(MatchplayGameDto model);
     Task<int> MatchplayGameDelete(int id);
 

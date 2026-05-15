@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using MSCaddie.Repository.Interfaces;
 using MSCaddie.Repository.Dtos;
 using MSCaddie.Repository.Models;
-using MSCaddie.Repository.Interfaces;
 
 namespace MSCaddie.Repository.Services;
 public class MatchplayService : IMatchplayService
@@ -138,6 +137,14 @@ public class MatchplayService : IMatchplayService
     {
         _logger.LogInformation($"Called GetMatchplayGames()");
         IEnumerable<MatchplayGameDto> dtos = await _matchRepository.GetMatchplayGames(league);
+        return mapper.Map<IEnumerable<MatchplayGameModel>>(dtos);
+    }
+
+
+    public async Task<IEnumerable<MatchplayGameModel>> GetLatestMatchplayResults(int top)
+    {
+        _logger.LogInformation($"Called GetLatestMatchplayResults()");
+        IEnumerable<MatchplayGameDto> dtos = await _matchRepository.GetLatestMatchplayResults(top);
         return mapper.Map<IEnumerable<MatchplayGameModel>>(dtos);
     }
 
