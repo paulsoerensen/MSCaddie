@@ -14,7 +14,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "10.0.x"
+          dotnet-version: "8.0.x"
 
       - name: Install dependencies
         shell: bash
@@ -25,9 +25,9 @@ jobs:
       - name: Publish
         shell: bash
         run: |
-          dotnet publish MSCaddie.csproj \
+          dotnet publish MSCaddie\MSCaddie.csproj \
             --configuration Release \
-            --framework net10.0 \
+            --framework net8.0 \
             --output publish \
             --runtime win-x86 \
             --no-restore \
