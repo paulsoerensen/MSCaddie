@@ -20,7 +20,7 @@ jobs:
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: dotnet restore
+        run: dotnet restore MSCaddie/MSCaddie.csproj --runtime win-x86
 
       - name: Publish
         shell: bash
