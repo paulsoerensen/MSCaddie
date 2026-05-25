@@ -1,60 +1,46 @@
-name: Build and Deploy develop
-
+name: Build project and deploy to FTP server
 on:
   push:
-    branches: [master]
+    branches: [ "master" ]
   workflow_dispatch:
- 
-jobs:
-  build_and_deploy_to_ftp:
-    runs-on: ubuntu-latest
- 
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: master
-      - name: Publish
-        run: |
-          dotnet publish -c Release -o ./publish --runtime win-x64 --self-contained true
-         
-      - name: Rename _app_offline.htm to app_offline.htm to stop the site
-        shell: python
-        run: |
-          import ftplib
-          ftp = ftplib.FTP('vgcms.dk')
-          ftp.login('vgcms.dk', '${{ secrets.VGCMS_FTP_PASSWORD }}')
-          ftp.cwd('caddie')
-          # List files in the current directory
-          files = ftp.nlst()
-          print('Files in current directory:', files)
 
-          # Try to rename the file if it exists
-          if '_app_offline.htm' in files:
-              ftp.rename('_app_offline.htm', 'app_offline.htm')
-              print("Renamed _app_offline.htm to app_offline.htm")
-          else:
-              print("_app_offline.htm does not exist in the directory")
-        
-          ftp.quit()
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+jobs:
+  build_and_deploy:
+    name: Build package and deploy to FTP server
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v4
         with:
-          server: 'vgcms.dk'
-          # FTP account username
-          username: 'vgcms.dk'
-          # FTP account password
-          password: ${{ secrets.VGCMS_FTP_PASSWORD }}
-          # The local folder to copy, defaults to root project folder
-          local-dir: ./publish/
-          server-dir: ./caddie/
- 
-      - name: Rename app_offline.htm to _app_offline.htm to start the site
-        shell: python
+          dotnet-version: "10.0.x"
+
+      - name: Install dependencies
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: dotnet restore
+
+      - name: Publish
+        shell: bash
         run: |
-          import ftplib
-          ftp = ftplib.FTP('vgcms.dk')
-          ftp.login('vgcms.dk', '${{ secrets.VGCMS_FTP_PASSWORD }}')
-          ftp.cwd('caddie')
-          ftp.rename('app_offline.htm', '_app_offline.htm')
-          ftp.quit()
- 
+          dotnet publish MSCaddie.csproj \
+            --configuration Release \
+            --framework net10.0 \
+            --output publish \
+            --runtime win-x86 \
+            --no-restore \
+            --self-contained true \
+            -p:PublishTrimmed=false \
+            -p:PublishSingleFile=false
+
+      - name: Deploy to Simply
+        uses: rasmusbuchholdt/simply-web-deploy@2.2.0
+        with:
+          website-name: 'paulsweb.dk'
+          server-computer-name: 'https://nt7.unoeuro.com:8172'
+          server-username: 'paulsweb.dk'
+          server-password: ${{ secrets.PAULSWEB_PWD }}
+          source-path: 'publish'
+          target-path: '/admin/'
