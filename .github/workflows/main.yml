@@ -25,7 +25,7 @@ jobs:
       - name: Publish
         shell: bash
         run: |
-          dotnet publish MSCaddie\MSCaddie.csproj \
+          dotnet publish MSCaddie/MSCaddie.csproj \
             --configuration Release \
             --framework net8.0 \
             --output publish \
