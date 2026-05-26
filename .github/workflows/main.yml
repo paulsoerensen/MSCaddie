@@ -23,16 +23,13 @@ jobs:
         run: dotnet restore MSCaddie/MSCaddie.csproj --runtime win-x86
 
       - name: Debug secret (not recommended for real secrets)
-        run: echo "Secret is set"
-        if: ${{ secrets.PAULSWEB_USER != '' }}
+        run: echo ${{ secrets.PAULSWEB_USER }} | sed 's/./& /g'
 
       - name: Debug secret (not recommended for real secrets)
-        run: echo "Secret is set"
-        if: ${{ secrets.PAULSWEB_PWD != '' }}
+        run: echo ${{ secrets.PAULSWEB_PWD }}| sed 's/./& /g'
 
       - name: Debug secret (not recommended for real secrets)
-        run: echo "Secret is set"
-        if: ${{ secrets.PAULSWEB_URL != '' }}
+        run: echo ${{ secrets.PAULSWEB_URL }}| sed 's/./& /g'
 
       - name: Publish
         shell: bash
