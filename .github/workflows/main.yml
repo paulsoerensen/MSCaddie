@@ -22,15 +22,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: dotnet restore MSCaddie/MSCaddie.csproj --runtime win-x86
 
-      - name: Debug secret (not recommended for real secrets)
-        run: echo ${{ secrets.PAULSWEB_USER }} | sed 's/./& /g'
-
-      - name: Debug secret (not recommended for real secrets)
-        run: echo ${{ secrets.PAULSWEB_PWD }}| sed 's/./& /g'
-
-      - name: Debug secret (not recommended for real secrets)
-        run: echo ${{ secrets.PAULSWEB_URL }}| sed 's/./& /g'
-
       - name: Publish
         shell: bash
         run: |
