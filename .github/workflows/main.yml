@@ -22,6 +22,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: dotnet restore MSCaddie/MSCaddie.csproj --runtime win-x86
 
+      - name: Debug secret (not recommended for real secrets)
+        run: echo "Secret is set"
+        if: ${{ secrets.PAULSWEB_USER != '' }}
+
+      - name: Debug secret (not recommended for real secrets)
+        run: echo "Secret is set"
+        if: ${{ secrets.PAULSWEB_PWD != '' }}
+
+      - name: Debug secret (not recommended for real secrets)
+        run: echo "Secret is set"
+        if: ${{ secrets.PAULSWEB_URL != '' }}
+
       - name: Publish
         shell: bash
         run: |
@@ -44,3 +56,4 @@ jobs:
           server-password: ${{ secrets.PAULSWEB_PWD }}
           source-path: 'publish'
           target-path: '/admin/'
+
