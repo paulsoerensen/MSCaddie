@@ -43,5 +43,5 @@ jobs:
           server-username: 'paulsweb.dk'
           server-password: ${{ secrets.PAULSWEB_PWD }}
           source-path: 'publish'
-          target-path: '/admin/'
+          target-path: '/'
 
