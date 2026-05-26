@@ -50,7 +50,7 @@ jobs:
       - name: Deploy to Simply
         uses: rasmusbuchholdt/simply-web-deploy@2.2.0
         with:
-          website-name: 'paulsweb.dk'
+          website-name: 'admin.paulsweb.dk'
           server-computer-name: 'https://nt7.unoeuro.com:8172'
           server-username: 'paulsweb.dk'
           server-password: ${{ secrets.PAULSWEB_PWD }}
