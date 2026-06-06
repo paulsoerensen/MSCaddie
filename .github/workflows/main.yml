@@ -8,6 +8,7 @@ jobs:
   build_and_deploy:
     name: Build package and deploy to FTP server
     runs-on: windows-latest
+    environment: ${{ github.ref_name == 'master' && 'prod' || 'test' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -22,14 +23,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: dotnet restore MSCaddie/MSCaddie.csproj --runtime win-x86
 
-      - name: Debug WEBSITE_NAME
-        run: echo ${{ env.WEBSITE_NAME }}| sed 's/./& /g'
-
-      - name: Debug WEBSITE_USER
-        run: echo ${{ env.WEBSITE_NAME }}| sed 's/./& /g'
-
-      - name: Debug SITE_PWD
-        run: echo ${{ secrets.WEBSITE_PWD }}| sed 's/./& /g'
+      - name: Debug environment
+        shell: bash
+        run: |
+          echo "Environment: ${{ github.ref_name == 'master' && 'prod' || 'test' }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "WEBSITE_NAME: ${{ env.WEBSITE_NAME }}"
+          echo "COMPUTER_NAME: ${{ env.COMPUTER_NAME }}"
+          echo "WEBSITE_USER: ${{ env.WEBSITE_USER }}"
+          echo "WEBSITE_PWD (masked): ${{ secrets.WEBSITE_PWD }}" | sed 's/./& /g'
 
       - name: Publish
         shell: bash
