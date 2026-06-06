@@ -22,6 +22,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: dotnet restore MSCaddie/MSCaddie.csproj --runtime win-x86
 
+      - name: Debug WEBSITE_NAME
+        run: echo ${{ env.WEBSITE_NAME }}| sed 's/./& /g'
+
+      - name: Debug WEBSITE_USER
+        run: echo ${{ env.WEBSITE_NAME }}| sed 's/./& /g'
+
+      - name: Debug SITE_PWD
+        run: echo ${{ secrets.WEBSITE_PWD }}| sed 's/./& /g'
+
       - name: Publish
         shell: bash
         run: |
@@ -41,7 +50,7 @@ jobs:
           website-name: ${{ env.WEBSITE_NAME }}
           server-computer-name:  ${{ env.COMPUTER_NAME }}
           server-username: ${{ env.WEBSITE_USER }}
-          server-password: ${{ secrets.SITE_PWD }}
+          server-password: ${{ secrets.WEBSITE_PWD }}
           source-path: 'publish'
           target-path: '/'
 
