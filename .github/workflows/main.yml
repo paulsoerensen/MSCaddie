@@ -28,9 +28,9 @@ jobs:
         run: |
           echo "Environment: ${{ github.ref_name == 'master' && 'prod' || 'test' }}"
           echo "Branch: ${{ github.ref_name }}"
-          echo "WEBSITE_NAME: ${{ env.WEBSITE_NAME }}"
-          echo "COMPUTER_NAME: ${{ env.COMPUTER_NAME }}"
-          echo "WEBSITE_USER: ${{ env.WEBSITE_USER }}"
+          echo "WEBSITE_NAME: ${{ vars.WEBSITE_NAME }}"
+          echo "COMPUTER_NAME: ${{ vars.COMPUTER_NAME }}"
+          echo "WEBSITE_USER: ${{ vars.WEBSITE_USER }}"
           echo "WEBSITE_PWD (masked): ${{ secrets.WEBSITE_PWD }}" | sed 's/./& /g'
 
       - name: Publish
@@ -49,9 +49,9 @@ jobs:
       - name: Deploy to Simply
         uses: rasmusbuchholdt/simply-web-deploy@2.2.0
         with:
-          website-name: ${{ env.WEBSITE_NAME }}
-          server-computer-name:  ${{ env.COMPUTER_NAME }}
-          server-username: ${{ env.WEBSITE_USER }}
+          website-name: ${{ vars.WEBSITE_NAME }}
+          server-computer-name:  ${{ vars.COMPUTER_NAME }}
+          server-username: ${{ vars.WEBSITE_USER }}
           server-password: ${{ secrets.WEBSITE_PWD }}
           source-path: 'publish'
           target-path: '/'
