@@ -27,7 +27,7 @@ jobs:
         shell: bash
         run: |
           echo "Environment: ${{ github.ref_name == 'master' && 'prod' || 'test' }}"
-          echo "Branch: ${{ github.ref_name }}"
+          echo "Branch: ${{ github.ref_name }} "
           echo "WEBSITE_NAME: ${{ vars.WEBSITE_NAME }}"
           echo "COMPUTER_NAME: ${{ vars.COMPUTER_NAME }}"
           echo "WEBSITE_USER: ${{ vars.WEBSITE_USER }}"
