@@ -23,15 +23,20 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: dotnet restore MSCaddie/MSCaddie.csproj --runtime win-x86
 
+      - name: Set version
+        shell: bash
+        run: echo "APP_VERSION=${{ github.run_number }}" >> $GITHUB_ENV
+
       - name: Debug environment
         shell: bash
         run: |
           echo "Environment: ${{ github.ref_name == 'master' && 'prod' || 'test' }}"
           echo "Branch: ${{ github.ref_name }} "
-          echo "WEBSITE_NAME: ${{ vars.WEBSITE_NAME }}"
+          echo "WEBSITE_NAME: ${{ vars.WEBSITE_NAME }} x"
           echo "COMPUTER_NAME: ${{ vars.COMPUTER_NAME }}"
           echo "WEBSITE_USER: ${{ vars.WEBSITE_USER }}"
           echo "WEBSITE_PWD (masked): ${{ secrets.WEBSITE_PWD }}" | sed 's/./& /g'
+          echo "APP_VERSION=${{ github.run_number }}" 
 
       - name: Publish
         shell: bash
