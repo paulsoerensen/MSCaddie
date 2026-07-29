@@ -85,6 +85,7 @@ namespace MSCaddie.Repository.Data
             cmd.Parameters.AddWithValue("VgcNo", dto.VgcNo);
             cmd.Parameters.AddWithValue("MatchId", dto.MatchId);
             cmd.Parameters.AddWithValue("Hcp", dto.Hcp);
+            cmd.Parameters.AddWithValue("HcpIndex", dto.HcpIndex);
             cmd.Parameters.AddWithValue("HcpGroup", dto.HcpGroup);
             cmd.Parameters.AddWithValue("Puts", dto.Puts);
             cmd.Parameters.AddWithValue("Brutto", dto.Brutto);
