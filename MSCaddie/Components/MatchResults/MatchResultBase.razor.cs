@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging.Abstractions;
 using MSCaddie.Repository.Interfaces;
 using MSCaddie.Repository.Models;
 
@@ -33,7 +34,8 @@ public class MatchResultBase : ComponentBase
         {
             cfg.CreateMap<MatchModel, MatchModel>()
                 .ReverseMap();
-        }).CreateMapper();
+        }, NullLoggerFactory.Instance)
+        .CreateMapper();
     }
 
     protected override async Task OnInitializedAsync()

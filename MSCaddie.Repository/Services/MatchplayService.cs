@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
-using MSCaddie.Repository.Interfaces;
+using Microsoft.Extensions.Logging.Abstractions;
 using MSCaddie.Repository.Dtos;
+using MSCaddie.Repository.Interfaces;
 using MSCaddie.Repository.Models;
 
 namespace MSCaddie.Repository.Services;
@@ -42,8 +43,8 @@ public class MatchplayService : IMatchplayService
             cfg.CreateMap<PlayerForMatchplayDto, PlayerForMatchplayModel>();
 
             cfg.CreateMap<PlayerForMatchplayModel, MatchTeamDto>().ReverseMap();
-            cfg.CreateMap<MatchTeamModel, MatchTeamDto>().ReverseMap(); 
-        })
+            cfg.CreateMap<MatchTeamModel, MatchTeamDto>().ReverseMap();
+        }, NullLoggerFactory.Instance)
         .CreateMapper();
 
     }

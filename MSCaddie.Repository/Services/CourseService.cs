@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
-using MSCaddie.Repository.Interfaces;
+using Microsoft.Extensions.Logging.Abstractions;
 using MSCaddie.Repository.Dtos;
-using MSCaddie.Repository.Models;
 using MSCaddie.Repository.Interfaces;
+using MSCaddie.Repository.Interfaces;
+using MSCaddie.Repository.Models;
 
 namespace MSCaddie.Repository.Services;
 public class CourseService : ICourseService
@@ -20,7 +21,7 @@ public class CourseService : ICourseService
         {
             cfg.CreateMap<ClubDto, ClubModel>().ReverseMap();
             cfg.CreateMap<CourseDto, CourseModel>().ReverseMap();
-        })
+        }, NullLoggerFactory.Instance)
         .CreateMapper();
     }
     public async Task<IEnumerable<ClubModel>> GetClubs()

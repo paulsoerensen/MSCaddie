@@ -1,9 +1,10 @@
-﻿using MSCaddie.Repository.Interfaces;
-using MSCaddie.Repository.Dtos;
-using MSCaddie.Repository.Models;
+﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using MSCaddie.Repository.Dtos;
 using MSCaddie.Repository.Interfaces;
-using AutoMapper;
+using MSCaddie.Repository.Interfaces;
+using MSCaddie.Repository.Models;
 
 namespace MSCaddie.Repository.Services;
 public class MatchService : IMatchService
@@ -35,7 +36,7 @@ public class MatchService : IMatchService
                 .ForMember(dest => dest.KeyValue, opt =>
                     opt.MapFrom(src => src.Value));
             cfg.CreateMap<NearestPinResultDto, NearestPinResultModel>().ReverseMap();
-        })
+        }, NullLoggerFactory.Instance)
         .CreateMapper();
     }
 

@@ -55,7 +55,7 @@
           "dependencies": {
             "AutoMapper": {
               "target": "Package",
-              "version": "[13.0.1, )"
+              "version": "[16.2.0, )"
             },
             "Dapper": {
               "target": "Package",
@@ -435,7 +435,7 @@
           "dependencies": {
             "AutoMapper": {
               "target": "Package",
-              "version": "[13.0.1, )"
+              "version": "[16.2.0, )"
             },
             "Blazor.Bootstrap": {
               "target": "Package",

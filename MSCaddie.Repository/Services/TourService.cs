@@ -1,8 +1,9 @@
-﻿using MSCaddie.Repository.Interfaces;
+﻿using AutoMapper;
+using Microsoft.Extensions.Logging.Abstractions;
 using MSCaddie.Repository.Dtos;
-using MSCaddie.Repository.Models;
-using AutoMapper;
 using MSCaddie.Repository.Interfaces;
+using MSCaddie.Repository.Interfaces;
+using MSCaddie.Repository.Models;
 
 namespace MSCaddie.Repository.Services;
 
@@ -21,7 +22,7 @@ public class TourService : ITourService
             cfg.CreateMap<TourDto, TourModel>().ReverseMap();
             cfg.CreateMap<TourPlayerDto, TourPlayerModel>().ReverseMap();
             cfg.CreateMap<TourPlayerDto, PlayerModel>();
-        })
+        }, NullLoggerFactory.Instance)
         .CreateMapper();
 
     }
