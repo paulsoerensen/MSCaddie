@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using MSCaddie.Repository.Dtos;
 using MSCaddie.Repository.Interfaces;
-using MSCaddie.Repository.Interfaces;
 using MSCaddie.Repository.Models;
 
 namespace MSCaddie.Repository.Services;

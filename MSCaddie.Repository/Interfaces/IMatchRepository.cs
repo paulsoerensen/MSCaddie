@@ -27,6 +27,7 @@ public interface IMatchRepository
     Task<MatchDto> MatchUpsert(MatchDto dto);
 
     Task<IEnumerable<MatchResultDto>> GetMatchResults(int matchId);
+    Task<IEnumerable<ListEntryDto>> GetMatchResultDates(DateTime startDate, DateTime endDate);
     Task<IEnumerable<MatchResultDto>?> GetMatchResultForRegistration(int matchId);
     Task<MatchResultDto> MatchResultUpsert(MatchResultDto dto);
     Task<int> MatchRegistrationUpsert(MatchRegistrationDto dto);

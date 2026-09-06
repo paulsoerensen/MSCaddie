@@ -9,6 +9,7 @@ namespace MSCaddie.Repository.Interfaces
         Task<IEnumerable<MatchModel>?> GetMatches(DateTime start, DateTime end);
         Task<MatchModel> UpsertMatch(MatchModel match);
         Task<IEnumerable<MatchResultModel>?> GetMatchResults(int matchId);
+        Task<IEnumerable<ListEntryModel>?> GetMatchResultDates(DateTime startDate, DateTime endDate);
         Task<IEnumerable<MatchResultModel>?> GetMatchBirdies(int matchId);
         Task<IEnumerable<MatchResultModel>?> MatchResultForRegistration(int matchId);
         Task<bool> UpsertResultMatch(MatchResultModel dto);

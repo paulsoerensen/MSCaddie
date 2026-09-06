@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using MSCaddie.Repository.Dtos;
 using MSCaddie.Repository.Interfaces;
-using MSCaddie.Repository.Interfaces;
 using MSCaddie.Repository.Models;
 
 namespace MSCaddie.Repository.Services;
@@ -86,6 +85,13 @@ public class MatchService : IMatchService
         IEnumerable<MatchResultDto> dtos = await _matchRepository.GetMatchResults(matchId);
         return mapper.Map<IEnumerable<MatchResultModel>>(dtos);
         //return await _client.GetFromJsonAsync<IEnumerable<MatchResultDto>>($"{BaseAddress}/{matchId}/result");
+    }
+
+    public async Task<IEnumerable<ListEntryModel>?> GetMatchResultDates(DateTime startDate, DateTime endDate)
+    {
+        _logger.LogInformation("Called GetMatchResultDates");
+        IEnumerable<ListEntryDto> dtos = await _matchRepository.GetMatchResultDates(startDate, endDate);
+        return mapper.Map<IEnumerable<ListEntryModel>>(dtos);
     }
 
     public async Task<IEnumerable<MatchResultModel>?> MatchResultForRegistration(int matchId)
