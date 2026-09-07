@@ -25,17 +25,17 @@ namespace MSCaddie.Repository.Data
 
         #region Method: MatchResults
 
-        public async Task<IEnumerable<ListEntryDto>>GetMatchResultDates(DateTime seasonStart)
+        public async Task<IEnumerable<DateTimeItem>>GetMatchResultDates(DateTime seasonStart)
         {
             return await GetMatchResultDates(seasonStart, seasonStart);
         }
 
-        public  async Task<IEnumerable<ListEntryDto>> GetMatchResultDates(DateTime startDate, DateTime endDate)
+        public  async Task<IEnumerable<DateTimeItem>> GetMatchResultDates(DateTime startDate, DateTime endDate)
         {
             string sql = "exec [ms].[MatchResultSelectDates] @StartDate=startDate, @EndDate= endDate";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
-            return (await db.QueryAsync<ListEntryDto>(sql, new { startDate, endDate })).ToList();
+            return (await db.QueryAsync<DateTimeItem>(sql, new { startDate, endDate })).ToList();
         }
 
         public async Task<MatchResultDto?>GetLastResult()
