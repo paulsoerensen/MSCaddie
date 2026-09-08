@@ -36,7 +36,7 @@ public class MatchService : IMatchService
                     opt.MapFrom(src => src.Value));
             cfg.CreateMap<DateTimeItem, ListEntryModel>()
                 .ForMember(dest => dest.Key, opt =>
-                    opt.MapFrom(src => src.KeyId))
+                    opt.MapFrom(src => src.Key))
                 .ForMember(dest => dest.DateTimeValue, opt =>
                     opt.MapFrom(src => src.Value));
             cfg.CreateMap<NearestPinResultDto, NearestPinResultModel>().ReverseMap();
@@ -89,7 +89,6 @@ public class MatchService : IMatchService
         _logger.LogInformation("Called GetMatchResults");
         IEnumerable<MatchResultDto> dtos = await _matchRepository.GetMatchResults(matchId);
         return mapper.Map<IEnumerable<MatchResultModel>>(dtos);
-        //return await _client.GetFromJsonAsync<IEnumerable<MatchResultDto>>($"{BaseAddress}/{matchId}/result");
     }
 
     public async Task<IEnumerable<ListEntryModel>?> GetMatchResultDates(DateTime startDate, DateTime endDate)
