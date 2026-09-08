@@ -6,12 +6,12 @@ public class DateTimeItem
     {
     }
 
-    public DateTimeItem(int keyId, DateTime keyValue)
+    public DateTimeItem(int keyId, DateTime value)
     {
         KeyId = keyId;
-        KeyValue = keyValue;
+        Value = value;
     }
 
     public int KeyId { get; set; } = default!;
-    public DateTime KeyValue { get; set; } = default!;
+    public DateTime Value { get; set; } = default!;
 }

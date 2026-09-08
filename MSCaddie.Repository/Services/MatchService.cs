@@ -38,7 +38,7 @@ public class MatchService : IMatchService
                 .ForMember(dest => dest.Key, opt =>
                     opt.MapFrom(src => src.KeyId))
                 .ForMember(dest => dest.DateTimeValue, opt =>
-                    opt.MapFrom(src => src.KeyValue));
+                    opt.MapFrom(src => src.Value));
             cfg.CreateMap<NearestPinResultDto, NearestPinResultModel>().ReverseMap();
         }, NullLoggerFactory.Instance)
         .CreateMapper();
