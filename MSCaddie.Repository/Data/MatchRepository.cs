@@ -30,10 +30,10 @@ namespace MSCaddie.Repository.Data
 
         public  async Task<IEnumerable<DateTimeItem>> GetMatchResultDates(DateTime startDate, DateTime endDate)
         {
-            string sql = "exec [ms].[MatchResultSelectDates] @StartDate=startDate, @EndDate= endDate";
+            string sql = "[ms].[MatchResultSelectDates] @StartDate, @EndDate";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
-            return (await db.QueryAsync<DateTimeItem>(sql, new { startDate, endDate })).ToList();
+            return (await db.QueryAsync<DateTimeItem>(sql, new { StartDate = startDate, EndDate = endDate })).ToList();
         }
 
         public async Task<MatchResultDto?>GetLastResult()
