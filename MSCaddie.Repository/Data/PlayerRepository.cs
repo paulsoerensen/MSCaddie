@@ -23,7 +23,7 @@ public class PlayerRepository : RepositoryBase, IPlayerRepository
     {
         try
         {
-            string sql = "exec [ms].[PlayerSelectAll] @Season";
+            string sql = "[ms].[PlayerSelectAll] @Season";
             using IDbConnection db = new SqlConnection(ConnectionString);
             return await db.QueryAsync<PlayerModel>(sql, new { Season=season });
         }

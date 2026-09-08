@@ -171,7 +171,7 @@ namespace MSCaddie.Repository.Data
         public int MatchResultSetDamstahlPoints(int matchId)
         {
             using IDbConnection db = new SqlConnection(ConnectionString);
-            var result = db.Execute(";exec [ms].[MatchResultSetDamstahlPoints] @MatchId",
+            var result = db.Execute("[ms].[MatchResultSetDamstahlPoints] @MatchId",
                 new { MatchId = matchId });
             return 0;
         }
