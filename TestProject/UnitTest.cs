@@ -36,8 +36,8 @@ public class UnitTest
 
         IMatchService service = serviceProvider.GetRequiredService<IMatchService>();
 
-        DateTime startDate = new(2026, 1, 1);
-        DateTime endDate = new(2026, 12, 31);
+        DateTime startDate = DateTime.Now;
+        DateTime endDate = new DateTime(2027, 1, 1);
 
         // Act
         IEnumerable<ListEntryModel>? result = await service.GetMatchResultDates(startDate, endDate);

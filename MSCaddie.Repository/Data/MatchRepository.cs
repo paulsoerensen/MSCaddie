@@ -40,7 +40,7 @@ namespace MSCaddie.Repository.Data
         {
             string sql = "SELECT TOP (1) FirstName, LastName, Brutto, Netto, " +
                 "DamstahlPoints, Points, Hallington, Tee, MatchFormId, OverallWinner, " +
-                "MatchDate, MatchResultId, MatchId, HcpIndex, Hcp, Dining, " +
+                "MatchDate, MatchResultId, MatchId, MatchFormId, HcpIndex, Hcp, Dining, " +
                 "Puts, Birdies, [Rank], Official, VgcNo, ClubName, CourseName " +
                 "from [ms].[vMatchResult]	" +
                 "WHERE ([OverallWinner] = 1) " +
