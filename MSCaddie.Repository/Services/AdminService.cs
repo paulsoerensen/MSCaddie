@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using MSCaddie.Repository.Dtos;
 using MSCaddie.Repository.Interfaces;
 using MSCaddie.Repository.Models;
@@ -23,7 +24,8 @@ public class AdminService : IAdminService
         mapper = new MapperConfiguration(cfg =>
         {
             cfg.CreateMap<SettingsDto, SettingsModel>().ReverseMap();
-        }).CreateMapper();
+        }, NullLoggerFactory.Instance)
+            .CreateMapper();
     }
     public async Task<SettingsModel> GetSettings()
     {

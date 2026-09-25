@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using MSCaddie.Repository.Dtos;
-using MSCaddie.Repository.Interfaces;
 using MSCaddie.Repository.Interfaces;
 using MSCaddie.Repository.Models;
 
@@ -29,7 +29,7 @@ public class CompetitionService : ICompetitionService
                     opt.MapFrom(src => src.Key))
                 .ForMember(dest => dest.KeyValue, opt =>
                     opt.MapFrom(src => src.Value));
-        })
+        }, NullLoggerFactory.Instance)
         .CreateMapper();
     }
 

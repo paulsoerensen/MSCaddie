@@ -1,9 +1,9 @@
-﻿using MSCaddie.Repository.Interfaces;
-using MSCaddie.Repository.Dtos;
-using MSCaddie.Repository.Models;
+﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using MSCaddie.Repository.Dtos;
 using MSCaddie.Repository.Interfaces;
-using AutoMapper;
+using MSCaddie.Repository.Models;
 
 namespace MSCaddie.Repository.Services;
 public class MatchService : IMatchService
@@ -34,15 +34,20 @@ public class MatchService : IMatchService
                     opt.MapFrom(src => src.Key))
                 .ForMember(dest => dest.KeyValue, opt =>
                     opt.MapFrom(src => src.Value));
+            cfg.CreateMap<DateTimeItem, ListEntryModel>()
+                .ForMember(dest => dest.Key, opt =>
+                    opt.MapFrom(src => src.Key))
+                .ForMember(dest => dest.DateTimeValue, opt =>
+                    opt.MapFrom(src => src.Value));
             cfg.CreateMap<NearestPinResultDto, NearestPinResultModel>().ReverseMap();
-        })
+        }, NullLoggerFactory.Instance)
         .CreateMapper();
     }
 
     public async Task<NearestPinResultModel?> GetNearestPinResult(int nearestPinId)
     {
-        NearestPinResultDto dto = await _matchRepository.GetNearestPinResult(nearestPinId);
-        return mapper.Map<NearestPinResultModel>(dto);
+        NearestPinResultDto? dto = await _matchRepository.GetNearestPinResult(nearestPinId);
+        return dto == null ? null : mapper.Map<NearestPinResultModel>(dto);
     }
 
     public async Task<IEnumerable<NearestPinResultModel>?> GetNearestPinResults(int matchId)
@@ -84,7 +89,13 @@ public class MatchService : IMatchService
         _logger.LogInformation("Called GetMatchResults");
         IEnumerable<MatchResultDto> dtos = await _matchRepository.GetMatchResults(matchId);
         return mapper.Map<IEnumerable<MatchResultModel>>(dtos);
-        //return await _client.GetFromJsonAsync<IEnumerable<MatchResultDto>>($"{BaseAddress}/{matchId}/result");
+    }
+
+    public async Task<IEnumerable<ListEntryModel>?> GetMatchResultDates(DateTime startDate, DateTime endDate)
+    {
+        _logger.LogInformation("Called GetMatchResultDates");
+        IEnumerable<DateTimeItem> dtos = await _matchRepository.GetMatchResultDates(startDate, endDate);
+        return mapper.Map<IEnumerable<ListEntryModel>>(dtos);
     }
 
     public async Task<IEnumerable<MatchResultModel>?> MatchResultForRegistration(int matchId)

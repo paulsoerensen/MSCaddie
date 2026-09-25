@@ -5,9 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MSCaddie.Repository.Dtos;
 using MSCaddie.Repository.Interfaces;
-using MSCaddie.Repository.Models;
 using System.Data;
-using System.Text.RegularExpressions;
 
 
 namespace MSCaddie.Repository.Data
@@ -25,24 +23,24 @@ namespace MSCaddie.Repository.Data
 
         #region Method: MatchResults
 
-        public async Task<IEnumerable<ListEntryDto>>GetMatchResultDates(DateTime seasonStart)
+        public async Task<IEnumerable<DateTimeItem>>GetMatchResultDates(DateTime seasonStart)
         {
             return await GetMatchResultDates(seasonStart, seasonStart);
         }
 
-        public  async Task<IEnumerable<ListEntryDto>> GetMatchResultDates(DateTime startDate, DateTime endDate)
+        public  async Task<IEnumerable<DateTimeItem>> GetMatchResultDates(DateTime startDate, DateTime endDate)
         {
-            string sql = "exec [ms].[MatchResultSelectDates] @StartDate=startDate, @EndDate= endDate";
+            string sql = "[ms].[MatchResultSelectDates] @StartDate, @EndDate";
 
             using IDbConnection db = new SqlConnection(ConnectionString);
-            return (await db.QueryAsync<ListEntryDto>(sql, new { startDate, endDate })).ToList();
+            return (await db.QueryAsync<DateTimeItem>(sql, new { StartDate = startDate, EndDate = endDate })).ToList();
         }
 
         public async Task<MatchResultDto?>GetLastResult()
         {
             string sql = "SELECT TOP (1) FirstName, LastName, Brutto, Netto, " +
                 "DamstahlPoints, Points, Hallington, Tee, MatchFormId, OverallWinner, " +
-                "MatchDate, MatchResultId, MatchId, HcpIndex, Hcp, Dining, " +
+                "MatchDate, MatchResultId, MatchId, MatchFormId, HcpIndex, Hcp, Dining, " +
                 "Puts, Birdies, [Rank], Official, VgcNo, ClubName, CourseName " +
                 "from [ms].[vMatchResult]	" +
                 "WHERE ([OverallWinner] = 1) " +
@@ -173,7 +171,7 @@ namespace MSCaddie.Repository.Data
         public int MatchResultSetDamstahlPoints(int matchId)
         {
             using IDbConnection db = new SqlConnection(ConnectionString);
-            var result = db.Execute(";exec [ms].[MatchResultSetDamstahlPoints] @MatchId",
+            var result = db.Execute("[ms].[MatchResultSetDamstahlPoints] @MatchId",
                 new { MatchId = matchId });
             return 0;
         }
